@@ -8,6 +8,8 @@ This is a backrgound project of mine to get a personal website running for inter
 ## Installing
 
 ```sh
+git clone https://github.com/trevorflahardy/Personal-Website
+cd Personal-Website
 npm install
 ```
 
