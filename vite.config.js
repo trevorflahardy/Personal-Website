@@ -7,6 +7,7 @@ import tailwindcss from 'tailwindcss';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/Personal-Website/",
   plugins: [
     vue(),
     vueJsx(),
