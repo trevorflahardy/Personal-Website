@@ -1,20 +1,17 @@
-# personal-website
+# Personal Website
 
-This template should help get you started developing with Vue 3 in Vite.
+This is a backrgound project of mine to get a personal website running for internship applications in gthe near future. This is a work in progress, basically everything is subject to change - but the main idea is that the website is going to be centered around mimicing Apple's VisionOS within a web application, which I thought was a nifty idea. Here's a preview of what I have:
 
-## Recommended IDE Setup
+![Home Page](./previews/homepage.png)
+![Example Project Page](./previews/project.png)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+## Installing
 
 ```sh
 npm install
 ```
+
+## Running
 
 ### Compile and Hot-Reload for Development
 
@@ -26,10 +23,4 @@ npm run dev
 
 ```sh
 npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
 ```
