@@ -15,7 +15,7 @@ export default {
       }
     },
     fontFamily: {
-      'sf-pro-display': ['SF Pro Display', 'Helvetica Neue', 'sans-serif']
+      'sf-pro-display': ['SF Pro Display', 'Helvetica Neue', 'sans-serif'],
     },
   },
   plugins: [

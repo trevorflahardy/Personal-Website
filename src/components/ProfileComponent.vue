@@ -67,7 +67,7 @@ const goals = [
                         </span>
                     </div>
                     <div class="w-full basis-1/2 glass-thick rounded-xl text-center p-5 flex flex-row flex-wrap items-center justify-center gap-2 hover:scale-[1.01] translation duration-500 ease-out">
-                        <div v-for="language in devconLanguages" class="flex flex-col items-center justify-center hover:scale-110 translation duration-300 ease-in-out rounded-md glass-thick p-2 shadow-xl text-2xl [transform: translateZ(30px)]">
+                        <div v-for="language in devconLanguages" class="flex flex-col items-center justify-center hover:scale-110 translation duration-200 ease-in-out rounded-md glass-thick p-2 shadow-xl text-2xl [transform: translateZ(30px)]">
                             <i :class="'devicon-' + language + '-plain'" class="text-white"></i>
                         </div>
                     </div>
