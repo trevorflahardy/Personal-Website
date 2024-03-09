@@ -15,19 +15,23 @@
     @apply glass-thin backdrop-blur-lg bg-[#f6f4f4] bg-opacity-30;
   }
 
+  .glass-semi-thick {
+    @apply glass-regular backdrop-blur-md bg-[#464646] bg-opacity-30;
+  }
+
   .glass-thick {
-    @apply glass-regular backdrop-blur-2xl bg-[#000000] bg-opacity-40;
+    @apply glass-regular backdrop-blur-2xl bg-[#232323] bg-opacity-50;
   }
 
   .button-glass {
     @apply glass-thin p-3 rounded-xl shadow flex flex-row items-center justify-center gap-2;
-    transition: transform 0.3s;
+    transition: transform 0.2s;
   }
 
   .button-glass:hover {
     transform: scale(1.05);
     transition-timing-function: ease-in-out;
-    @apply shadow-xl
+    @apply shadow-xl;
   }
 }
 
