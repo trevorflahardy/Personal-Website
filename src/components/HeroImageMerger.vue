@@ -1,5 +1,3 @@
 <template>
-    <div>
-        Image merger
-    </div>
+  <div>Image merger</div>
 </template>

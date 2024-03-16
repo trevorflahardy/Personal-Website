@@ -1,5 +1,3 @@
 <template>
-    <div>
-        Tixte Component
-    </div>
+  <div>Tixte Component</div>
 </template>
