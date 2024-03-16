@@ -3,24 +3,36 @@
 @tailwind utilities;
 
 @layer components {
+  .glass-regular-base {
+    @apply glass-regular backdrop-blur-3xl;
+  }
+
   .glass-regular {
-    @apply backdrop-filter backdrop-blur-xl backdrop-saturate-150 bg-[#313131] bg-opacity-40;
+    @apply bg-glass-regular/20;
+  }
+
+  .glass-thin-base {
+    @apply bg-glass-thin/[.49] backdrop-blur-2xl;
   }
 
   .glass-thin {
-    @apply glass-regular backdrop-blur-lg bg-[#6f6f6f] bg-opacity-30;
+    @apply bg-glass-thin/[.18];
   }
 
-  .glass-thin-front {
-    @apply glass-thin backdrop-blur-lg bg-[#f6f4f4] bg-opacity-30;
-  }
-
-  .glass-semi-thick {
-    @apply glass-regular backdrop-blur-md bg-[#464646] bg-opacity-30;
+  .glass-thick-base {
+    @apply glass-thick backdrop-blur-3xl;
   }
 
   .glass-thick {
-    @apply glass-regular backdrop-blur-2xl bg-[#232323] bg-opacity-50;
+    @apply bg-glass-thick/[.60];
+  }
+
+  .glass-semithick-base {
+    @apply glass-semithick-base backdrop-blur-[100px];
+  }
+
+  .glass-semithick {
+    @apply bg-glass-semithick/[.45];
   }
 
   .button-glass {
