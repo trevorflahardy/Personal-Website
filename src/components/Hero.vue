@@ -24,7 +24,7 @@ const projects = ref([
 ]);
 
 // Hold the active component so that it can be changed
-const activeComponent = shallowRef(HeroProfile);
+const activeComponent = shallowRef(markRaw(HeroProfile));
 
 function changeComponent(component) {
   activeComponent.value = component;
@@ -69,7 +69,7 @@ function changeComponent(component) {
 
         <!-- Holds each project -->
         <div
-          class="rounded-xl grid grid-cols-1 w-full divide-y divide-gray-400 shadow-xl overflow-hidden [transform: translateZ(30px)]"
+          class="rounded-xl grid grid-cols-1 w-full divide-y divide-gray-400 shadow-xl [transform: translateZ(30px)] overflow-hidden"
         >
           <button
             v-for="{ icon, name, component } in projects"
