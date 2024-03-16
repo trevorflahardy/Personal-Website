@@ -1,5 +1,5 @@
 <script setup>
-import { ref, shallowRef } from "vue";
+import { ref, shallowRef, markRaw, Transition } from "vue";
 import HeroProfile from "./HeroProfile.vue";
 import HeroChai from "./HeroChai.vue";
 import HeroTixte from "./HeroTixte.vue";
@@ -9,20 +9,21 @@ const projects = ref([
   {
     icon: "https://via.placeholder.com/150",
     name: "Chai",
-    component: HeroChai,
+    component: markRaw(HeroChai), // Marked raw so it doesn't get wrapped in a proxy (which causes unessecary performance overhead)
   },
   {
     icon: "https://via.placeholder.com/150",
     name: "Tixte",
-    component: HeroTixte,
+    component: markRaw(HeroTixte),
   },
   {
     icon: "https://via.placeholder.com/150",
     name: "Image Merger",
-    component: HeroImageMerger,
+    component: markRaw(HeroImageMerger),
   },
 ]);
 
+// Hold the active component so that it can be changed
 const activeComponent = shallowRef(HeroProfile);
 
 function changeComponent(component) {
@@ -90,8 +91,38 @@ function changeComponent(component) {
       <div
         class="basis-3/5 md:basis-3/4 h-full overflow-y-scroll no-scrollbar scroll-smooth snap-y"
       >
-        <component :is="activeComponent" />
+        <Transition name="fade">
+          <component :is="activeComponent" />
+        </Transition>
       </div>
     </div>
   </div>
 </template>
+
+<style>
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-leave-from {
+  opacity: 1;
+}
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  transition:
+    opacity 0.3s,
+    /* transform 0.3s; */;
+  transition-delay: 0.3s;
+}
+
+.fade-enter-from {
+  opacity: 0;
+  /*transform: scale(0.95); */
+}
+.fade-enter-to {
+  /*transform: scale(1); */
+  opacity: 1;
+}
+</style>
