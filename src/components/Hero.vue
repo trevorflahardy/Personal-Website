@@ -82,4 +82,4 @@ function changeComponent(component) {
       </div>
     </div>
   </div>
-</template>./HeroTixte.vue./HeroChai.vue
+</template>
