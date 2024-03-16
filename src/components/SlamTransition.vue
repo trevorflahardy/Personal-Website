@@ -8,6 +8,16 @@ const props = defineProps({
     type: String,
     default: "div",
   },
+  opacityDuration: {
+    type: String,
+    default: "0.3s",
+    required: false,
+  },
+  transformDuration: {
+    type: String,
+    default: "0.6s",
+    required: false,
+  },
 });
 </script>
 
@@ -23,8 +33,8 @@ const props = defineProps({
 <style>
 .slam-enter-active {
   transition:
-    opacity 0.3s ease-in-out,
-    transform 0.6s ease-in-out;
+    opacity v-bind("props.opacityDuration") ease-in-out,
+    transform v-bind("props.transformDuration") ease-in-out;
 }
 .slam-enter-from {
   opacity: 0;
