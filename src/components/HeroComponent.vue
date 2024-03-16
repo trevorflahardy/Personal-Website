@@ -1,29 +1,29 @@
 <script setup>
 import { ref, shallowRef } from 'vue'
-import ProfileComponent from './ProfileComponent.vue'
-import ChaiComponent from './ChaiComponent.vue';
-import TixteComponent from './TixteComponent.vue';
-import ImageMergerComponent from './ImageMergerComponent.vue';
+import HeroProfile from './HeroProfile.vue'
+import HeroChai from './HeroChai.vue';
+import HeroTixte from './HeroTixte.vue';
+import HeroImageMerger from './HeroImageMerger.vue';
 
 const projects = ref([
   {
     icon: 'https://via.placeholder.com/150',
     name: 'Chai',
-    component: ChaiComponent
+    component: HeroChai
   },
   {
     icon: 'https://via.placeholder.com/150',
     name: 'Tixte',
-    component: TixteComponent
+    component: HeroTixte
   },
   {
     icon: 'https://via.placeholder.com/150',
     name: "Image Merger",
-    component: ImageMergerComponent
+    component: HeroImageMerger
   }
 ])
 
-const activeComponent = shallowRef(ProfileComponent)
+const activeComponent = shallowRef(HeroProfile)
 
 function changeComponent(component) {
   activeComponent.value = component
@@ -46,7 +46,7 @@ function changeComponent(component) {
         <!-- NOTE, eventually add transition here using <transition/> -->
         <button
           class="h-18 rounded-xl grid grid-cols-1 w-full glass-regular hover:glass-thick transition duration-200 ease-out shadow-xl [transform: translateZ(30px)]"
-          @click="changeComponent(ProfileComponent)"
+          @click="changeComponent(HeroProfile)"
         >
           <div class="flex flex-row items-center rounded-xl">
             <!-- Holds the PFP -->
@@ -82,4 +82,4 @@ function changeComponent(component) {
       </div>
     </div>
   </div>
-</template>
+</template>./HeroTixte.vue./HeroChai.vue
