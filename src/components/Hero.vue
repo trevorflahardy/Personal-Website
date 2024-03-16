@@ -4,22 +4,27 @@ import HeroProfile from "./HeroProfile.vue";
 import HeroChai from "./HeroChai.vue";
 import HeroTixte from "./HeroTixte.vue";
 import HeroImageMerger from "./HeroImageMerger.vue";
+import HeroSidebarProject from "./HeroSidebarProject.vue";
 
+// Marked raw so it doesn't get wrapped in a proxy (which causes unessecary performance overhead)
 const projects = ref([
   {
     icon: "https://via.placeholder.com/150",
     name: "Chai",
-    component: markRaw(HeroChai), // Marked raw so it doesn't get wrapped in a proxy (which causes unessecary performance overhead)
+    component: markRaw(HeroChai),
+    id: 1,
   },
   {
     icon: "https://via.placeholder.com/150",
     name: "Tixte",
     component: markRaw(HeroTixte),
+    id: 2,
   },
   {
     icon: "https://via.placeholder.com/150",
     name: "Image Merger",
     component: markRaw(HeroImageMerger),
+    id: 3,
   },
 ]);
 
@@ -32,11 +37,13 @@ function changeComponent(component) {
 </script>
 
 <template>
-  <div class="glass-regular rounded-[49px] w-4/5 h-3/4 shadow-xl">
-    <div class="w-full flex flex-row items-center h-full rounded-l-[49px]">
+  <div
+    class="glass-regular-base rounded-[40px] w-4/5 h-[70%] stroke-[#CBCBCB] relative"
+  >
+    <div class="w-full flex flex-row items-center h-full rounded-l-[40px]">
       <!-- Holds "settings" on the page -->
       <div
-        class="basis-1/4 h-full space-y-5 px-5 py-7 glass-thin rounded-l-[49px] [transform: translateZ(20px)]"
+        class="basis-1/4 h-full space-y-5 px-5 py-7 glass-semithick rounded-l-[40px] [transform: translateZ(20px)]"
       >
         <div class="h-fit">
           <p class="text-white text-md font-semibold text-lg">Projects</p>
@@ -46,45 +53,41 @@ function changeComponent(component) {
         <!-- Holds the PFP and name -->
         <!-- NOTE, eventually add transition here using <transition/> -->
         <button
-          class="h-18 rounded-xl grid grid-cols-1 w-full glass-regular hover:glass-thick transition duration-200 ease-out shadow-xl [transform: translateZ(30px)]"
+          class="h-18 rounded-lg w-full hover:glass-thin transition duration-200 ease-in-out [transform: translateZ(30px)] flex flex-row items-center p-2 gap-3"
+          :class="{
+            'glass-thin shadow-md': activeComponent === HeroProfile,
+          }"
           @click="changeComponent(HeroProfile)"
         >
-          <div class="flex flex-row items-center rounded-xl">
-            <!-- Holds the PFP -->
-            <div class="h-full flex justify-center items-center px-3 py-2">
-              <img
-                src="../assets/ProfilePic.png"
-                class="w-12 h-12 rounded-full object-cover"
-              />
+          <!-- Holds the PFP -->
+          <img
+            src="../assets/ProfilePic.png"
+            class="w-12 h-12 rounded-full object-cover"
+          />
 
-              <div class="px-3 text-left">
-                <p class="text-white text-md">Trevor Flahardy</p>
-                <p class="font-light text-white text-xs">
-                  Full Stack Developer
-                </p>
-              </div>
+          <div class="text-left">
+            <div class="text-white text-md">Trevor Flahardy</div>
+            <div class="font-light text-white text-xs">
+              Full Stack Developer
             </div>
           </div>
         </button>
 
-        <!-- Holds each project -->
-        <div
-          class="rounded-xl grid grid-cols-1 w-full divide-y divide-gray-400 shadow-xl [transform: translateZ(30px)] overflow-hidden"
-        >
-          <button
-            v-for="{ icon, name, component } in projects"
-            :key="name"
-            class="flex flex-row items-center transition duration-200 glass-regular hover:glass-thick"
+        <!-- Holds the projects -->
+        <div class="space-y-1">
+          <HeroSidebarProject
+            v-for="{ icon, name, component, id } in projects"
+            :key="id"
+            :title="name"
+            class="w-full"
+            :class="{ 'glass-thin shadow-md': activeComponent === component }"
             @click="changeComponent(component)"
           >
-            <!-- Holds the image for the project -->
-            <div class="flex flex-row items-center pl-3 pr-2 py-2">
-              <img :src="icon" class="w-6 h-6 rounded-md" />
-            </div>
-
-            <!-- Holds the project name -->
-            <p class="text-white text-xs">{{ name }}</p>
-          </button>
+            <!-- the image for this project-->
+            <template #image>
+              <img :src="icon" />
+            </template>
+          </HeroSidebarProject>
         </div>
       </div>
 
