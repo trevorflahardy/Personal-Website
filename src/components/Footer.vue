@@ -1,17 +1,22 @@
+<script setup>
+import placeholderImgContent from "../assets/PlaceholderImgContent.vue";
+
+function toggleTheme() {
+  localStorage.theme = localStorage.theme === "dark" ? "light" : "dark";
+  document.documentElement.classList.toggle("dark");
+}
+</script>
+
 <template>
   <div
-    class="w-96 h-14 glass-thin-front rounded-full relative -top-6 shadow-lg flex flex-row items-center justify-start px-5 [transform: translateZ(40px)]"
+    class="w-96 h-14 glass-thin-base rounded-full relative -top-6 shadow-xl flex flex-row items-center justify-start p-4 [transform: translateZ(40px)]"
   >
-    <div
-      class="glass-thin rounded-full h-10 w-10 flex flex-row items-center justify-center"
+    <!-- Lightswitch for light and dark mode -->
+    <button
+      class="glass-semithick rounded-full h-9 w-9 flex flex-row items-center justify-center overflow-hidden"
+      @click="toggleTheme()"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 text-white fill-white"
-        fill="white"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      />
-    </div>
+      <placeholderImgContent />
+    </button>
   </div>
 </template>
