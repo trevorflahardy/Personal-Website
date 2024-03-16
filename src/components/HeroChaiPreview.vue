@@ -6,8 +6,10 @@
       </span>
     </div>
 
-    <div class="w-full h-96 rounded-xl shadow-2xl flex flex-row items-stretch">
-      <div class="px-2 py-5 glass-thick rounded-l-xl space-y-5 drop-shadow">
+    <div
+      class="w-full h-96 rounded-xl shadow-2xl flex flex-row items-stretch glass-thick-base"
+    >
+      <div class="px-2 py-5 glass-semithick rounded-l-xl space-y-5 drop-shadow">
         <!-- Circle Discord Logo-->
         <div class="glass-thick h-5 w-5 rounded-full"></div>
 
@@ -20,7 +22,7 @@
         </div>
       </div>
       <!-- Holds the server name and channels section-->
-      <div class="shadow-xl p-2 glass-semi-thick space-y-2">
+      <div class="shadow-xl p-2 glass-thin space-y-2">
         <!-- Holds the channel name -->
         <div class="px-2">
           <span class="text-white font-semibold text-xs whitespace-nowrap">
@@ -28,7 +30,7 @@
           </span>
         </div>
 
-        <div class="glass-thin-front rounded text-right p-2 shadow"></div>
+        <div class="glass-thin-base rounded text-right p-2 shadow"></div>
         <div class="glass-normal rounded text-right p-2 shadow"></div>
         <div class="glass-normal rounded text-right p-2 shadow"></div>
         <div class="glass-normal rounded text-right p-2 shadow"></div>
@@ -87,8 +89,8 @@
           <!-- Holds the fake "send message" button-->
           <div class="flex absolute bottom-0 w-full px-5 py-3 space-x-5">
             <!-- "Attachment" button - circle with a plus in it -->
-            <div class="flex-none h-5 w-5 glass-thin-front rounded-full"></div>
-            <div class="h-5 w-full glass-thin-front rounded-full"></div>
+            <div class="flex-none h-5 w-5 glass-thin-base rounded-full"></div>
+            <div class="h-5 w-full glass-thin-base rounded-full"></div>
           </div>
         </div>
       </div>
