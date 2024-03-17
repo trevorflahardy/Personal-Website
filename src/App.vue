@@ -5,7 +5,7 @@ import Footer from "./components/Footer.vue";
 
 <template>
   <main
-    class="bg-apt-day dark:bg-apt-night bg-cover bg-clip-border h-screen w-screen overflow-hidden"
+    class="bg-apt-day dark:bg-apt-night bg-cover bg-center bg-clip-border h-screen w-screen overflow-hidden"
   >
     <div
       data-tilt
