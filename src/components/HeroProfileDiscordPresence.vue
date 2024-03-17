@@ -1,4 +1,4 @@
-<script setup>
+<script async setup>
 import axios from "axios";
 
 const discordId = 146348630926819328;

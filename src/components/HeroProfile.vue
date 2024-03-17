@@ -1,11 +1,12 @@
 <script setup>
-import { defineAsyncComponent } from "vue";
+import { defineAsyncComponent, defineComponent, Suspense } from "vue";
 
 import HeroProfileIntro from "./HeroProfileIntro.vue";
 import SlamTransition from "./SlamTransition.vue";
+import HeroProfileWakaLoading from "./HeroProfileWakaLoading.vue";
 
-const DiscordPresenceAsync = defineAsyncComponent(
-  () => import("./DiscordPresence.vue")
+const HeroProfileWaka = defineAsyncComponent(
+  () => import("./HeroProfileWaka.vue")
 );
 </script>
 
@@ -15,6 +16,16 @@ const DiscordPresenceAsync = defineAsyncComponent(
     opacity-duration="0.6s"
     transform-duration="1.2s"
   >
-    <HeroProfileIntro />
+    <HeroProfileIntro class="snap-center" />
+
+    <div class="flex flex-row items-stretch justify-center snap-center">
+      <Suspense>
+        <HeroProfileWaka class="basis-1/2 p-5" />
+
+        <template #fallback>
+          <HeroProfileWakaLoading />
+        </template>
+      </Suspense>
+    </div>
   </SlamTransition>
 </template>
