@@ -9,7 +9,7 @@ const wakaUrl =
 
 async function fetchData(url) {
   const response = await axios.get(url);
-  return response.data["data"];
+  return response.data.data;
 }
 
 function calculateDaysSinceStart(startDate) {
@@ -41,7 +41,7 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
 </script>
 
 <template>
-  <div class="glass-thick rounded-xl space-y-2 shadow-xl">
+  <div class="glass-thick rounded-xl space-y-2 shadow-xl p-5">
     <div>
       <div>
         <span class="text-white font-semibold text-xl">
@@ -71,7 +71,7 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
       <div>
         <span class="text-white">
           On {{ humanReadableBestDay }}, I logged
-          {{ humanReadableBestDayTime }} of coding.
+          {{ humanReadableBestDayTime }} of coding!
         </span>
       </div>
     </div>
