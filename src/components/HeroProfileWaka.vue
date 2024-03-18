@@ -66,7 +66,9 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
     </div>
     <div>
       <div>
-        <span class="text-white font-semibold text-lg"> My Best Day </span>
+        <span class="text-white font-semibold text-lg text-pretty">
+          My Best Day
+        </span>
       </div>
       <div>
         <span class="text-white">
