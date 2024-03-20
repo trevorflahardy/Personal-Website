@@ -9,7 +9,7 @@ import HeroSidebarProject from "./HeroSidebarProject.vue";
 // Marked raw so it doesn't get wrapped in a proxy (which causes unessecary performance overhead)
 const projects = ref([
   {
-    icon: "https://via.placeholder.com/150",
+    icon: "https://cdn.discordapp.com/avatars/728115804826239017/0747ea1e75a2b294c8a7834bb31cd7ee.png?size=1024",
     name: "Chai",
     component: markRaw(HeroChai),
     id: 1,
