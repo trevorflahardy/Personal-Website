@@ -26,9 +26,8 @@ import DiscordIcon from "@/assets/DiscordIcon.vue";
 
         <div>
           <span class="text-gray-300 text-md">
-            Some sort of descripiton about trying the bot on Discord. This can
-            be super duper long and take up multiple lines so that the card
-            looks super duper good.
+            Interested? Add Chai to your Discord server, login to your Epic
+            Games account, and start using Fortnite stats commands now!
           </span>
         </div>
       </div>

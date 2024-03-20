@@ -1,38 +1,26 @@
-<script setup>
-const cardContents = [
-  {
-    title: "Why Chai?",
-    description:
-      "Some long text about why I made chai and why I think it's important and groundbreaking.",
-    id: 1,
-  },
-  {
-    title: "What's to Come?",
-    description:
-      "Some long text about what I plan to do with Chai in the future.",
-    id: 2,
-  },
-];
-</script>
-
 <template>
-  <div class="flex flex-row gap-5 justify-center items-stretch snap-center">
-    <div v-for="content in cardContents" :key="content.id">
-      <div
-        class="basis-1/2 glass-thick p-5 rounded-xl shadow-xl text-center space-y-2 translation hover:scale-[1.03] duration-300 ease-out"
-      >
-        <div>
-          <span class="text-white text-2xl font-semibold">
-            {{ content.title }}
-          </span>
-        </div>
+  <div class="glass-thick p-5 rounded-xl shadow-xl text-center space-y-3">
+    <div>
+      <span class="text-white text-2xl font-semibold"> What's to Come? </span>
+    </div>
 
-        <div>
-          <span class="text-gray-300">
-            {{ content.description }}
-          </span>
-        </div>
-      </div>
+    <div class="text-white">
+      Chai is undergoing
+      <span class="font-medium text-green-400">significant upgrades</span> to
+      enhance functionality! I'm revamping its backend tools, particularly
+      focusing on image generation, utilizing Rust for improved performance.
+      Additionally, Chai will soon
+      <span class="font-medium text-green-400"
+        >boast a suite of new features</span
+      >. Expect convenient commands to monitor your monthly spending within the
+      game, along with alerts when expenditures approach preset limits.
+      Furthermore, Chai will enable in-game purchases directly through Discord,
+      making Fortnite purchases much easier. Chai will soon keep you informed
+      about Fortnite item shop updates, ensuring you never miss out on
+      sought-after items. These enhancements aim to
+      <span class="font-medium text-green-400"
+        >elevate your Fortnite experience</span
+      >, providing seamless integration and timely notifications.
     </div>
   </div>
 </template>
