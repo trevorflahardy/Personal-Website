@@ -92,7 +92,7 @@ function changeComponent(component) {
       </div>
 
       <div
-        class="basis-3/5 md:basis-3/4 h-full overflow-y-scroll no-scrollbar scroll-smooth snap-y"
+        class="basis-3/5 md:basis-3/4 h-full overflow-y-scroll no-scrollbar scroll-smooth snap-y p-5"
       >
         <Transition name="fade">
           <component :is="activeComponent" />

@@ -7,7 +7,7 @@ import SlamTransition from "./SlamTransition.vue";
 </script>
 
 <template>
-  <SlamTransition tag="div" class="p-5 space-y-5">
+  <SlamTransition tag="div" class="space-y-5">
     <HeroChaiDescription />
     <HeroChaiCardsInfo />
     <HeroChaiPreview />
