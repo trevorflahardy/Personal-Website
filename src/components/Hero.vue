@@ -16,14 +16,14 @@ const projects = ref([
   },
   {
     icon: "https://via.placeholder.com/150",
-    name: "Tixte",
-    component: markRaw(HeroTixte),
+    name: "Image Merger",
+    component: markRaw(HeroImageMerger),
     id: 2,
   },
   {
     icon: "https://via.placeholder.com/150",
-    name: "Image Merger",
-    component: markRaw(HeroImageMerger),
+    name: "Tixte",
+    component: markRaw(HeroTixte),
     id: 3,
   },
 ]);
