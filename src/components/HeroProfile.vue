@@ -17,7 +17,7 @@ const HeroProfileDiscord = defineAsyncComponent(
 
 <template>
   <SlamTransition
-    class="px-5 py-7 space-y-5"
+    class="px-5 py-7 space-y-7"
     opacity-duration="0.6s"
     transform-duration="1.2s"
   >

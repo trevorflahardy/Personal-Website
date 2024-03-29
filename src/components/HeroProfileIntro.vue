@@ -1,17 +1,18 @@
 <template>
-  <div
-    class="p-5 snap-center flex flex-col items-center justify-center space-y-2"
+  <div class="flex flex-row items-center justify-center snap-center gap-5">
+    <div
+    class="flex flex-col items-center justify-center space-y-2 "
   >
-    <div class="">
+    <div>
       <div>
         <span class="text-3xl font-bold text-white"> Hi, I'm </span>
       </div>
 
-      <div class="text-7xl font-bold text-white">Trevor Flahardy</div>
+      <div class="text-6xl font-bold text-white">Trevor Flahardy</div>
     </div>
 
     <Transition name="slide-up-appear" appear>
-      <div class="max-w-[80%] text-center text-fancy text-pretty">
+      <div class="text-center text-fancy text-pretty">
         <span class="text-white font-light">
           Welcome to my personal website! This is some sort of description about
           who I am, what I like, and what I want to do! Honestly.. uh.. not sure
@@ -19,6 +20,13 @@
         </span>
       </div>
     </Transition>
+  </div>
+
+    <!-- Holds the profile picture preview -->
+    <div class="w-fit rounded-full overflow-hidden glass-thick p-1 shadow-xl">
+      <img src="../assets/ProfilePicNoBG.png" class="scale-110"/>
+    </div>
+
   </div>
 </template>
 
