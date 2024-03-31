@@ -10,12 +10,12 @@ const props = defineProps({
   },
   opacityDuration: {
     type: String,
-    default: "0.3s",
+    default: "0.6s",
     required: false,
   },
   transformDuration: {
     type: String,
-    default: "0.6s",
+    default: "1.2s",
     required: false,
   },
 });
