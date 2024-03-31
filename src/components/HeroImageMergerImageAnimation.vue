@@ -1,35 +1,13 @@
 <script setup>
 import { onBeforeMount, ref, TransitionGroup } from 'vue';
 
-const colors = [
-  "rose",
-  "pink",
-  "purple",
-  "indigo",
-  "blue",
-  "sky",
-  "cyan",
-  "teal",
-  "emerald",
-  "green",
-  "yellow",
-  "orange",
-  "red",
-]
-
-const colorValues = [
-  "400", "500", "600",
-]
-
-function randomColor() {
-  const randomColor = colors[Math.floor(Math.random() * colors.length)];
-  const randomColorValue = colorValues[Math.floor(Math.random() * colorValues.length)];
-  return `${randomColor}-${randomColorValue}`
-}
-
 
 function backgroundColor(color) {
-  return `bg-${color}`;
+  if (color != null) {
+    return `bg-${color}`;
+  }
+
+  return "glass-thin"
 }
 
 const imageCount = 20;
@@ -37,7 +15,7 @@ const blocks = ref([]);
 
 onBeforeMount(() => {
   for (let i = 0; i < imageCount; i++) {
-    let color = randomColor();
+    let color = null;
 
     blocks.value.push({
       id: i,
@@ -54,6 +32,22 @@ function changeBlockColor(index, color) {
   block.backgroundColor = backgroundColor(color);
 }
 
+function nextColor(color) {
+  if (color === "green-400") {
+    return "yellow-400";
+  } else if (color === "yellow-400") {
+    return "orange-500";
+  }
+  else if (color === "orange-500") {
+    return "red-500";
+  }
+  else if (color == "red-500") {
+    return "red-500";
+  }
+
+  return "green-400";
+}
+
 function swapWithRandomBlock(index) {
   // Get a random block that isn't the current block
   let randomBlockIndex = Math.floor(Math.random() * imageCount);
@@ -61,27 +55,33 @@ function swapWithRandomBlock(index) {
     randomBlockIndex = Math.floor(Math.random() * imageCount);
   }
 
+  // Set the current block and the random block to new colors depending on their current.
+  // If a block is green, set it to yellow. If it's yellow, set it to red. And if it's red do nothing.
+  let currentBlock = blocks.value[index];
+  changeBlockColor(index, nextColor(currentBlock.color));
+
+  let randomBlock = blocks.value[randomBlockIndex];
+  changeBlockColor(randomBlockIndex, nextColor(randomBlock.color));
+
   // Swap these two blocks in the array
   const tempBlock = blocks.value[index];
   blocks.value[index] = blocks.value[randomBlockIndex];
   blocks.value[randomBlockIndex] = tempBlock;
 }
 
-function doRandomAction() {
-  // Get a random number between 1 and 100
-  const action = Math.floor(Math.random() * 100) + 1;
-
+function swapBlocks() {
   const randomBlockIndex = Math.floor(Math.random() * imageCount);
+  swapWithRandomBlock(randomBlockIndex);
 
-  if (action >= 1 && action <= 50) {
-    changeBlockColor(randomBlockIndex, randomColor())
-  }
-  else {
-    swapWithRandomBlock(randomBlockIndex);
+  // If all the blocks are green, reset them
+  if (blocks.value.every(block => block.color === "red-500")) {
+    blocks.value.forEach((block, index) => {
+      changeBlockColor(index, null);
+    });
   }
 }
 
-setInterval(doRandomAction, 2000);
+setInterval(swapBlocks, 2000);
 </script>
 
 <template>
