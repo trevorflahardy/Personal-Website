@@ -28,4 +28,14 @@ export default {
     },
   },
   plugins: [require("tailwindcss-3d")],
+  purge: {
+    content: ['./src/**/*.vue'],
+    options: {
+      safelist: [
+        {
+          pattern: /^bg-(rose|pink|purple|indigo|blue|sky|cyan|teal|emerald|green|yellow|orange|red)-[3-7]00$/
+        },
+      ],
+    }
+  }
 };
