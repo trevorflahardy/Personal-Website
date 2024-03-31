@@ -4,14 +4,14 @@ import HeroImageMergerImageAnimation from "./HeroImageMergerImageAnimation.vue";
 
 <template>
     <div class="flex flex-row items-center justify-center gap-7 pt-5">
-        <div class="text-left text-6xl font-bold">
-            <div>
-                <span class="text-white">
+        <div class="text-left text-6xl font-bold text-white">
+            <div>   
+                <span>
                     Image
                 </span>
             </div>
             <div>
-                <span class="text-white">
+                <span>
                     Merger
                 </span>
             </div>
