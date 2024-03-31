@@ -21,7 +21,6 @@ const colorValues = [
   "400", "500", "600",
 ]
 
-
 function randomColor() {
   const randomColor = colors[Math.floor(Math.random() * colors.length)];
   const randomColorValue = colorValues[Math.floor(Math.random() * colorValues.length)];
@@ -86,20 +85,6 @@ setInterval(doRandomAction, 2000);
 </script>
 
 <template>
-  <div class="flex flex-row items-center justify-center gap-7 pt-5">
-    <div class="text-left text-6xl font-bold">
-      <div>
-        <span class="text-white">
-          Image
-        </span>
-      </div>
-      <div>
-        <span class="text-white">
-          Merger
-        </span>
-      </div>
-    </div>
-
     <div class="grid grid-cols-5 gap-2">
       <TransitionGroup name="fade-swap">
         <div v-for="block in blocks" :key="block.id"
@@ -111,7 +96,6 @@ setInterval(doRandomAction, 2000);
         </div>
       </TransitionGroup>
     </div>
-  </div>
 </template>
 
 <style>

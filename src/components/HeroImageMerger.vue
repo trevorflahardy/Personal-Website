@@ -1,10 +1,10 @@
 <script setup>
 import SlamTransition from "./SlamTransition.vue";
-import HeroImageMergerImageAnimation from "./HeroImageMergerImageAnimation.vue";
+import HeroImageMergerIntro from "./HeroImageMergerIntro.vue";
 </script>
 
 <template>
   <SlamTransition tag="div" class="space-y-5">
-    <HeroImageMergerImageAnimation />
+    <HeroImageMergerIntro />
   </SlamTransition>
 </template>
