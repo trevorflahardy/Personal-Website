@@ -1,19 +1,39 @@
 <script setup>
-/// The goal of this component is to display a grid of 2x10 images, mimicking how the image merger does it magic. It will be a grid of 100 images, and a constant animation running that does the following:
-/// 1. Randomly select a cell in the grid.
-/// 2. Randomly select a second cell in the grid.
-/// 3. Swap the images in the two cells.
-/// 4. Repeat
-
-import HeroImageMergerImageAnimationImage from "./HeroImageMergerImageAnimationImage.vue";
+import { ref } from 'vue';
 
 const imageCount = 20;
+const blocks = ref([]);
+
+for (let i = 0; i <= imageCount; i++) {
+  blocks.value.push({
+    label: i
+  });
+}
 </script>
 
 <template>
-  <div class="grid grid-cols-10 gap-2">
-    <div v-for="i in imageCount" :key="i">
-      <HeroImageMergerImageAnimationImage :label="i" />
+  <div class="flex flex-row items-center justify-center gap-7 pt-5">
+    <div class="text-left text-6xl font-bold">
+      <div>
+        <span class="text-white">
+          Image
+        </span>
+      </div>
+      <div>
+        <span class="text-white">
+          Merger
+        </span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-5 gap-2">
+      <div v-for="i in imageCount" :key="i">
+        <div class="glass-thick shadow rounded-xl text-center flex items-center justify-center w-20 h-20">
+          <span class="text-white font-semibold text-2xl">
+            {{ blocks[i].label }}
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
