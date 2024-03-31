@@ -16,11 +16,7 @@ const HeroProfileDiscord = defineAsyncComponent(
 </script>
 
 <template>
-  <SlamTransition
-    class="px-5 py-7 space-y-5"
-    opacity-duration="0.6s"
-    transform-duration="1.2s"
-  >
+  <SlamTransition class="px-5 py-7 space-y-5">
     <HeroProfileIntro class="snap-center" />
 
     <div class="flex flex-row items-center justify-center snap-center gap-5">
