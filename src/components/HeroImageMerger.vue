@@ -3,6 +3,7 @@ import SlamTransition from "./SlamTransition.vue";
 import HeroImageMergerIntro from "./HeroImageMergerIntro.vue";
 import HeroImageMergerAbout from "./HeroImageMergerAbout.vue";
 import HeroImageMergerStatistics from "./HeroImageMergerStatistics.vue";
+import HeroImageMergerFuture from "./HeroImageMergerFuture.vue";
 </script>
 
 <template>
@@ -10,5 +11,6 @@ import HeroImageMergerStatistics from "./HeroImageMergerStatistics.vue";
     <HeroImageMergerIntro />
     <HeroImageMergerAbout />
     <HeroImageMergerStatistics />
+    <HeroImageMergerFuture />
   </SlamTransition>
 </template>
