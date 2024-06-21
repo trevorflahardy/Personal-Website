@@ -24,7 +24,7 @@
 
     <!-- Holds the profile picture preview -->
     <div class="w-fit max-w-64 rounded-full overflow-hidden glass-thick p-1 shadow-xl">
-      <img src="../assets/ProfilePicNoBG.png" class="scale-110"/>
+      <img src="@/assets/ProfilePicNoBG.png" class="scale-110"/>
     </div>
 
   </div>
