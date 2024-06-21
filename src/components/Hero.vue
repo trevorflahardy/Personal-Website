@@ -1,9 +1,9 @@
 <script setup>
 import { ref, shallowRef, markRaw, Transition } from "vue";
-import HeroProfile from "./HeroProfile.vue";
-import HeroChai from "./HeroChai.vue";
-import HeroTixte from "./HeroTixte.vue";
-import HeroImageMerger from "./HeroImageMerger.vue";
+import HeroProfile from "@/pages/profile/HeroProfile.vue";
+import Chai from "@/pages/chai/Chai.vue";
+// import HeroTixte from "./HeroTixte.vue";
+import HeroImageMerger from "@/pages/image_merger/HeroImageMerger.vue";
 import HeroSidebarProject from "./HeroSidebarProject.vue";
 
 // Marked raw so it doesn't get wrapped in a proxy (which causes unessecary performance overhead)
@@ -11,7 +11,7 @@ const projects = ref([
   {
     icon: "https://cdn.discordapp.com/avatars/728115804826239017/0747ea1e75a2b294c8a7834bb31cd7ee.png?size=1024",
     name: "Chai",
-    component: markRaw(HeroChai),
+    component: markRaw(Chai),
     id: 1,
   },
   {
@@ -20,12 +20,12 @@ const projects = ref([
     component: markRaw(HeroImageMerger),
     id: 2,
   },
-  {
-    icon: "https://via.placeholder.com/150",
-    name: "Tixte",
-    component: markRaw(HeroTixte),
-    id: 3,
-  },
+  // {
+  //   icon: "https://via.placeholder.com/150",
+  //   name: "Tixte",
+  //   component: markRaw(HeroTixte),
+  //   id: 3,
+  // },
 ]);
 
 // Hold the active component so that it can be changed

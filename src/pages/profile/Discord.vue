@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import HeroProfileDiscordActivity from "./HeroProfileDiscordActivity.vue";
+import HeroProfileDiscordActivity from "./DiscordActivity.vue";
 
 const userId = "146348630926819328";
 const lanyardUrl = `https://api.lanyard.rest/v1/users/${userId}`;

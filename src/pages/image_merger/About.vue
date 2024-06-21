@@ -1,12 +1,12 @@
 <script setup>
-import Button from './Button.vue';
+import Button from '@/components/Button.vue';
 </script>
 
 <template>
     <div class="rounded-xl w-full shadow flex flex-row items-stretch justify-center snap-center">
         <!-- Hold the preview of the image merger -->
-        <div class="w-fit h-fit basis-[40%]">
-            <img src="../assets/ImageMergerPreview.png" alt="Image Merger Preview" class="rounded-l-xl" />
+        <div class="basis-[40%]">
+            <img src="@/assets/ImageMergerPreview.png" alt="Image Merger Preview" class="rounded-l-xl object-cover h-full w-full" />
         </div>
 
         <!-- Hold the description of the image merger -->

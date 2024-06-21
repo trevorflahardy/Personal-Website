@@ -1,5 +1,5 @@
 <script setup>
-import HeroImageMergerImageAnimation from "./HeroImageMergerImageAnimation.vue";
+import HeroImageMergerImageAnimation from "./ImageAnimation.vue";
 </script>
 
 <template>

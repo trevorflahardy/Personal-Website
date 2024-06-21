@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import Button from "./Button.vue";
+import Button from "@/components/Button.vue";
 
 const wakaProfileUrl = "https://wakatime.com/@trevorflahardy";
 
