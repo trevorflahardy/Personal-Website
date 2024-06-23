@@ -19,10 +19,7 @@ function calculateDaysSinceStart(startDate) {
 }
 
 const data = await fetchData(wakaUrl);
-const { range, grand_total, best_day } = data;
-
-const daysSinceStart = calculateDaysSinceStart(range.start);
-const humanReadableDaysSinceStart = daysSinceStart.toLocaleString();
+const { grand_total, best_day } = data;
 
 const humanReadableDailyAverage =
   grand_total.human_readable_daily_average_including_other_language;
@@ -41,49 +38,27 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
 </script>
 
 <template>
-  <div class="glass-thick rounded-xl space-y-2 shadow-xl p-5">
-    <div>
-      <div>
-        <span class="text-white font-semibold text-xl">
-          My Coding Statistics
-        </span>
-      </div>
-      <div>
-        <span class="text-gray-300 text-sm">
-          {{ humanReadableDaysSinceStart }} days of total recorded data.
-        </span>
-      </div>
-      <div>
-        <span class="text-white">
-          {{ humanReadableDailyAverage }} daily average.
-        </span>
-      </div>
-      <div>
-        <span class="text-white">
-          {{ humanReadableTotal }} of total coding time.</span
-        >
-      </div>
-    </div>
-    <div>
-      <div>
-        <span class="text-white font-semibold text-lg text-pretty">
-          My Best Day
-        </span>
-      </div>
-      <div>
-        <span class="text-white">
-          On {{ humanReadableBestDay }}, I logged
-          {{ humanReadableBestDayTime }} of coding!
-        </span>
-      </div>
-    </div>
+  <div class="glass-thick rounded-xl shadow-xl sm:p-5 p-3">
+    <p class="card-title">
+      My Coding Statistics
+    </p>
 
-    <div class="flex items-center justify-end">
-      <Button class="w-fit">
-        <a :href="wakaProfileUrl" target="_blank" rel="noopener noreferrer">
-          My WakaTime Profile
-        </a>
-      </Button>
-    </div>
+    <p class="card-body">
+      {{ humanReadableDailyAverage }} daily average.
+    </p>
+
+    <p class="card-body">
+      {{ humanReadableTotal }} of total coding time.</p>
+
+    <p class="card-subtitle">
+      My Best Day
+    </p>
+
+    <p class="card-body mb-3">
+      On {{ humanReadableBestDay }}, I logged
+      {{ humanReadableBestDayTime }} of coding!
+    </p>
+
+    <Button class="w-fit" :link="wakaProfileUrl" icon="pi-clock" content="View Waka Profile" />
   </div>
 </template>

@@ -1,32 +1,39 @@
+<script setup lang="ts">
+import Button from '@/components/Button.vue';
+</script>
+
 <template>
-  <div class="flex flex-row items-center justify-center snap-center gap-5">
-    <div
-    class="flex flex-col items-center justify-center space-y-2 "
-  >
-    <div>
-      <div>
-        <span class="text-3xl font-bold text-white"> Hi, I'm </span>
+  <div>
+    <!--Holds the intro section-->
+    <div class="snap-center flex-shrink">
+      <div class="flex flex-row justify-around items-center sm:mb-2 mb-0">
+        <!-- Holds the Hi and my name-->
+        <div class="self-end">
+          <p class="subtitle mb-0"> Hi, I'm </p>
+          <p class="title">Trevor Flahardy</p>
+        </div>
+
+        <!-- Holds my PFP alongside it-->
+        <div class="rounded-full overflow-hidden glass-thick p-1 shadow-xl shrink-0 md:block hidden">
+          <img src="@/assets/ProfilePicNoBG.png" class="md:w-28 md:h-28 lg:w-32 lg:h-32 w-14 h-14" />
+        </div>
       </div>
 
-      <div class="text-6xl font-bold text-white">Trevor Flahardy</div>
-    </div>
+      <Transition name="slide-up-appear" appear>
+        <p class="caption text-center">
+          Welcome to my personal website! I am a passionate full stack developer
+          with a love for creating beautiful and functional applications. I am
+          currently a student studying Computer Science, Mathematics, and AI.
+        </p>
+      </Transition>
 
-    <Transition name="slide-up-appear" appear>
-      <div class="text-center text-fancy text-pretty">
-        <span class="text-white font-light">
-          Welcome to my personal website! This is some sort of description about
-          who I am, what I like, and what I want to do! Honestly.. uh.. not sure
-          what to set here yet so we're gonna leave this for now.
-        </span>
+      <!-- Holds the links to my pages -->
+      <div class="flex flex-row gap-5 justify-center flex-wrap">
+        <Button link="https://github.com/trevorflahardy" content="Github" icon="pi-github" class="w-fit" />
+        <Button link="https://www.linkedin.com/in/trevorflahardy/" content="Linkedin" icon="pi-linkedin"
+          class="w-fit" />
       </div>
-    </Transition>
-  </div>
-
-    <!-- Holds the profile picture preview -->
-    <div class="w-fit max-w-64 rounded-full overflow-hidden glass-thick p-1 shadow-xl">
-      <img src="@/assets/ProfilePicNoBG.png" class="scale-110"/>
     </div>
-
   </div>
 </template>
 
@@ -35,9 +42,11 @@
   transition: transform 0.7s;
   transform: translateY(0);
 }
+
 .slide-up-appear-enter-from {
   transform: translateY(100%);
 }
+
 .slide-up-appear-enter-to {
   transform: translateY(0);
 }

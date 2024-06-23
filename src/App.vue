@@ -1,4 +1,7 @@
 <script setup>
+// Load prime icons for the use around the application
+import 'primeicons/primeicons.css';
+
 import Hero from "./components/Hero.vue";
 import Footer from "./components/Footer.vue";
 </script>

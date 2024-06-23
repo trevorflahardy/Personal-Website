@@ -1,8 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import { onBeforeMount, ref, TransitionGroup } from 'vue';
 
+interface Block {
+  id: number;
+  label: number;
+  color: string | null;
+  backgroundColor: string;
+}
 
-function backgroundColor(color) {
+function backgroundColor(color: string | null): string {
   if (color != null) {
     return `bg-${color}`;
   }
@@ -10,8 +16,8 @@ function backgroundColor(color) {
   return "glass-thin"
 }
 
-const imageCount = 20;
-const blocks = ref([]);
+const imageCount: number = 20;
+const blocks = ref<Block[]>([]);
 
 onBeforeMount(() => {
   for (let i = 0; i < imageCount; i++) {
@@ -26,31 +32,31 @@ onBeforeMount(() => {
   }
 });
 
-function changeBlockColor(index, color) {
+function changeBlockColor(index: number, color: string | null) {
   let block = blocks.value[index];
   block.color = color;
   block.backgroundColor = backgroundColor(color);
 }
 
-function nextColor(color) {
-  if (color === "green-400") {
-    return "yellow-400";
-  } else if (color === "yellow-400") {
-    return "orange-500";
+function nextColor(color: string | null) {
+  switch (color) {
+    case "green-400":
+      return "yellow-400";
+    case "yellow-400":
+      return "orange-500";
+    case "orange-500":
+      return "red-500";
+    case "red-500":
+      return "red-500";
+    default:
+      return "green-400";
   }
-  else if (color === "orange-500") {
-    return "red-500";
-  }
-  else if (color == "red-500") {
-    return "red-500";
-  }
-
-  return "green-400";
 }
 
-function swapWithRandomBlock(index) {
+function swapWithRandomBlock(index: number) {
   // Get a random block that isn't the current block
   let randomBlockIndex = Math.floor(Math.random() * imageCount);
+
   while (randomBlockIndex === index) {
     randomBlockIndex = Math.floor(Math.random() * imageCount);
   }
@@ -85,10 +91,10 @@ setInterval(swapBlocks, 2000);
 </script>
 
 <template>
-    <div class="grid grid-cols-5 gap-2">
+    <div class="grid grid-cols-5 gap-1 flex-shrink-0">
       <TransitionGroup name="fade-swap">
         <div v-for="block in blocks" :key="block.id"
-          class="shadow rounded-xl text-center flex items-center justify-center w-20 h-20 transition-all duration-500 ease-in-out"
+          class="shadow rounded-xl text-center flex items-center justify-center transition-all duration-500 ease-in-out w-16 h-16"
           :class="block.backgroundColor">
           <span class="text-white font-semibold text-2xl">
             {{ block.label }}

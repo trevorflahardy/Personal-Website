@@ -16,20 +16,20 @@ const ProfileDiscord = defineAsyncComponent(
 </script>
 
 <template>
-  <SlamTransition class="px-5 py-7 space-y-5">
+  <SlamTransition class="md:px-5 md:py-7 space-y-5">
     <Intro class="snap-center" />
 
-    <div class="flex flex-row items-center justify-center snap-center gap-5">
+    <div class="flex flex-row items-center justify-around snap-center flex-wrap gap-5">
       <Suspense>
-        <ProfileWaka class="basis-1/2" />
+        <ProfileWaka />
 
         <template #fallback>
-          <WakaLoading class="basis-1/2" />
+          <WakaLoading />
         </template>
       </Suspense>
 
       <Suspense>
-        <ProfileDiscord class="basis-1/2" />
+        <ProfileDiscord />
 
         <template #fallback>
           <DiscordLoading />

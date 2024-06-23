@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import SlamTransition from "@/components/SlamTransition.vue";
 import Intro from "./Intro.vue";
 import About from "./About.vue";

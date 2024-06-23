@@ -1,6 +1,6 @@
 <script setup>
 import axios from "axios";
-import HeroProfileDiscordActivity from "./DiscordActivity.vue";
+import DiscordActivity from "./DiscordActivity.vue";
 
 const userId = "146348630926819328";
 const lanyardUrl = `https://api.lanyard.rest/v1/users/${userId}`;
@@ -32,36 +32,30 @@ const avatarOutline = determineAvatarOutline(data.discord_status);
 
 <template>
   <div class="glass-thick rounded-xl space-y-3 shadow-xl p-5">
-    <div class="flex flex-row gap-2">
-      <div
-        class="w-12 h-12 rounded-full overflow-hidden border-2"
-        :class="avatarOutline"
-      >
+    <div class="flex flex-row justify-around items-center">
+      <!-- The Discord image -->
+      <div class="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2" :class="avatarOutline">
         <img :src="avatarUrl" alt="Discord Avatar" />
       </div>
 
-      <div class="text-left">
-        <div class="text-white text-xl font-semibold">
+      <div>
+        <p class="card-title">
           {{ data.discord_user.display_name }}
-        </div>
-        <div class="text-white text-sm">
+        </p>
+
+        <p class="card-body">
           {{ data.discord_user.username }} on Discord
-        </div>
+        </p>
       </div>
     </div>
 
-    <div
-      class="space-y-2"
-      v-if="data.activities && data.activities.length != 0"
-    >
-      <div class="text-white text-lg font-medium">Current Activities</div>
+    <!-- The Discord activities, if any-->
+    <div class="space-y-2" v-if="data.activities && data.activities.length != 0">
+      <div class="card-subtitle">Current Activities</div>
 
-      <div
-        v-for="activity in data.activities"
-        :key="activity.name + activity.type + activity.created_at"
-        class="flex flex-col gap-2"
-      >
-        <HeroProfileDiscordActivity :data="activity" />
+      <div v-for="activity in data.activities" :key="activity.name + activity.type + activity.created_at"
+        class="flex flex-col gap-2">
+        <DiscordActivity :data="activity" />
       </div>
     </div>
   </div>

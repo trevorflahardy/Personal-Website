@@ -1,10 +1,8 @@
 <template>
   <div class="snap-center p-5 gap-5 flex flex-row justify-center items-center">
-    <div class="basis-2/5 text-center">
-      <span class="text-white text-4xl font-semibold text-pretty">
-        Engineered to be easy.
-      </span>
-    </div>
+    <p class="title-2 basis-2/5">
+      Engineered to be easy.
+    </p>
 
     <div
       class="w-full h-96 rounded-xl shadow-2xl flex flex-row items-stretch glass-thick-base"
@@ -71,7 +69,7 @@
 
                   <!-- The actual image of the embed -->
                   <div class="flex justify-center pt-2">
-                    <img src="../assets/locker.png" class="w-fit h-auto" />
+                    <img src="@/assets/locker.png" class="w-fit h-auto" />
                   </div>
 
                   <div class="pt-1 text-gray-300 text-xss">

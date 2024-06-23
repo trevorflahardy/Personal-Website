@@ -71,7 +71,6 @@ function determineTimestamps(data) {
     const endTimestamp = data.timestamps.end;
 
     if (endTimestamp) {
-      const start = new Date(startTimestamp);
       const end = new Date(endTimestamp);
       return `Ends in ${relativeTime(end)}`;
     } else if (startTimestamp) {
@@ -91,15 +90,12 @@ const data = props.data;
 </script>
 
 <template>
-  <div class="p-5 glass-thick shadow-lg rounded-xl space-y-2">
+  <div class="px-5 py-2 glass-thick shadow-lg rounded-xl space-y-2">
     <div>
-      <div class="text-white font-semibold text-lg">
+      <div class="card-caption font-semibold text-white">
         {{ determineHeader(data) }}
       </div>
-      <div class="text-gray-300 font-medium text-sm" v-if="data.state">
-        {{ data.state }}
-      </div>
-      <div class="text-gray-300 font-medium text-sm">
+      <div class="card-body">
         {{ determineTimestamps(data) }}
       </div>
     </div>
@@ -107,33 +103,18 @@ const data = props.data;
     <div class="flex flex-row gap-3 items-center">
       <div v-if="data.assets">
         <div v-if="data.assets.large_image" class="relative">
-          <img
-            :src="parseImage(data.application_id, data.assets.large_image)"
-            class="w-12 h-12 rounded-lg"
-          />
+          <img :src="parseImage(data.application_id, data.assets.large_image)" class="w-12 h-12 rounded-lg" />
 
-          <div
-            v-if="data.assets.small_image"
-            class="absolute -right-2 -bottom-2"
-          >
-            <img
-              :src="parseImage(data.application_id, data.assets.small_image)"
-              class="w-6 h-6 rounded-lg"
-            />
+          <div v-if="data.assets.small_image" class="absolute -right-2 -bottom-2">
+            <img :src="parseImage(data.application_id, data.assets.small_image)" class="w-6 h-6 rounded-lg" />
           </div>
         </div>
       </div>
       <div>
-        <div
-          v-if="data.assets && data.assets.large_text"
-          class="text-white font-medium"
-        >
+        <div v-if="data.assets && data.assets.large_text" class="card-body">
           {{ data.assets.large_text }}
         </div>
-        <div
-          v-if="data.assets && data.assets.small_text"
-          class="text-gray-300 text-xs"
-        >
+        <div v-if="data.assets && data.assets.small_text" class="text-gray-300 text-xs">
           {{ data.assets.small_text }}
         </div>
       </div>

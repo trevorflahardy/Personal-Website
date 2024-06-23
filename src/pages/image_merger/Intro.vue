@@ -1,15 +1,13 @@
-<script setup>
-import HeroImageMergerImageAnimation from "./ImageAnimation.vue";
+<script setup lang="ts">
+import ImageAnimation from "./ImageAnimation.vue";
 </script>
 
 <template>
-    <div class="flex flex-row items-center justify-center pt-5 gap-10">
-        <div class="text-center text-6xl font-bold text-white">
-            <span>
-                Image <br> Merger
-            </span>
-        </div>
+    <div class="flex flex-row flex-wrap items-center justify-center pt-5 snap-center">
+        <p class="title text-center flex-none flex-shrink px-5">
+            Image Merger
+        </p>
 
-        <HeroImageMergerImageAnimation />
+        <ImageAnimation />
     </div>
 </template>
