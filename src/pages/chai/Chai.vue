@@ -2,7 +2,7 @@
 import SlamTransition from "@/components/SlamTransition.vue";
 import Card, { CardProps } from "./components/Card.vue";
 import Preview from './Preview.vue';
-import Nerdy from './Nerdy.vue';
+import DeepDive from './DeepDive.vue';
 
 const chaiMetadata: CardProps[] = [
   {
@@ -40,6 +40,6 @@ const chaiMetadata: CardProps[] = [
     <div class="mb-5 w-full h-fit flex flex-row items-center justify-center">
       <Preview />
     </div>
-    <Nerdy class="mb-5" />
+    <DeepDive class="mb-5" />
   </SlamTransition>
 </template>

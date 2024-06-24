@@ -10,7 +10,7 @@ const highlightedTool = "font-semibold text-chai";
         <!-- Title and caption-->
         <div>
             <h1 class="card-title">
-                Let's get Nerdy!
+                Let's dive deep!
             </h1>
             <p class="card-caption">
                 So we know what Chai is and how it works, but what is it built in?
