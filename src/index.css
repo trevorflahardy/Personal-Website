@@ -6,7 +6,7 @@
   /* Extends the default base to add some uniformity between elements */
 
   .title {
-    @apply text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-white text-pretty mb-1 md:mb-3;
+    @apply text-3xl md:text-5xl lg:text-7xl xl:text-7xl 2xl:text-8xl font-bold text-white text-pretty mb-1 md:mb-3;
   }
 
   .title-2 {
@@ -22,7 +22,7 @@
   }
 
   .subtitle {
-    @apply text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-medium text-gray-100 text-pretty;
+    @apply text-base md:text-lg lg:text-xl xl:text-2xl font-medium text-gray-100 text-pretty;
   }
 
   .caption {
@@ -30,24 +30,30 @@
   }
 
   .body {
-    @apply text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl text-white font-light text-pretty mb-1 lg:mb-2;
+    @apply text-xs sm:text-sm md:text-base xl:text-lg text-white font-light text-pretty mb-1 lg:mb-2;
   }
+
 
   /* Info specifically for cards. This ensures that every card has consistent and smaller titles and captions and subtitles than the normal base */
   .card-title {
-    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl font-semibold text-white text-pretty lg:mb-2;
+    @apply text-lg md:text-xl lg:text-2xl font-semibold text-white text-pretty lg:mb-2;
   }
 
   .card-subtitle {
-    @apply text-base md:text-lg lg:text-xl xl:text-2xl font-medium text-gray-100 text-pretty lg:mb-1;
+    @apply text-base md:text-lg lg:text-xl font-medium text-gray-100 text-pretty lg:mb-1;
   }
 
   .card-caption {
-    @apply text-sm md:text-base lg:text-lg xl:text-xl text-gray-100 font-light text-pretty;
+    @apply text-sm md:text-base lg:text-lg text-gray-100 font-light text-pretty;
   }
 
   .card-body {
-    @apply text-xs md:text-sm lg:text-base xl:text-xl text-white font-light text-pretty;
+    @apply text-sm md:text-base lg:text-lg text-white font-light text-pretty;
+  }
+
+  /* Globally apply that no paragraph should be more than 6xl */
+  p {
+    @apply max-w-6xl;
   }
 }
 
@@ -69,11 +75,15 @@
   }
 
   .glass-thick-base {
-    @apply glass-thick backdrop-blur-3xl;
+    @apply glass-thick backdrop-blur-[200px];
   }
 
   .glass-thick {
     @apply bg-glass-thick/[.60];
+  }
+
+  .glass-superthick {
+    @apply bg-glass-thick/[.92] backdrop-blur-3xl;
   }
 
   .glass-semithick-base {

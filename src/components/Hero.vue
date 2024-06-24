@@ -1,84 +1,18 @@
-<script setup>
-import { ref, shallowRef, markRaw, Transition } from "vue";
+<script setup lang="ts">
+import {  Transition, shallowRef, ref } from "vue";
+import Sidebar from "./sidebar/Sidebar.vue";
 import HeroProfile from "@/pages/profile/HeroProfile.vue";
-import Chai from "@/pages/chai/Chai.vue";
-// import HeroTixte from "./HeroTixte.vue";
-import HeroImageMerger from "@/pages/image_merger/HeroImageMerger.vue";
-import HeroSidebarProject from "./HeroSidebarProject.vue";
 
-// Marked raw so it doesn't get wrapped in a proxy (which causes unessecary performance overhead)
-const projects = ref([
-  {
-    icon: "https://cdn.discordapp.com/avatars/728115804826239017/0747ea1e75a2b294c8a7834bb31cd7ee.png?size=1024",
-    name: "Chai",
-    component: markRaw(Chai),
-    id: 1,
-  },
-  {
-    icon: "https://via.placeholder.com/150",
-    name: "Image Merger",
-    component: markRaw(HeroImageMerger),
-    id: 2,
-  },
-  // {
-  //   icon: "https://via.placeholder.com/150",
-  //   name: "Tixte",
-  //   component: markRaw(HeroTixte),
-  //   id: 3,
-  // },
-]);
-
-// Hold the active component so that it can be changed
-const activeComponent = shallowRef(markRaw(HeroProfile));
-
-function changeComponent(component) {
-  activeComponent.value = component;
-}
+const activeComponent = ref(shallowRef(HeroProfile));
 </script>
 
 <template>
-  <div class="glass-regular-base rounded-[40px] w-[90%] h-[85%] sm:w-4/5 sm:h-[70%] stroke-[#CBCBCB] relative">
+  <div class="glass-regular-base rounded-[40px] h-[95%] sm:h-[70%] max-w-[90%] stroke-[#CBCBCB] relative">
     <div class="w-full flex flex-row items-center h-full rounded-l-[40px]">
-      <!-- Holds "settings" on the page -->
-      <div
-        class="basis-2/5 md:basis-1/4 h-full space-y-5 px-5 py-7 glass-semithick rounded-l-[40px] [transform: translateZ(20px)]">
-        <div class="h-fit">
-          <p class="text-white text-md font-semibold text-lg">Projects</p>
-          <p class="text-gray-300 text-sm">View Some Work</p>
-        </div>
-
-        <!-- Holds the PFP and name -->
-        <!-- NOTE, eventually add transition here using <transition/> -->
-        <button
-          class="h-18 rounded-lg w-full hover:glass-thin transition duration-200 ease-in-out [transform: translateZ(30px)] flex flex-row items-center p-2 gap-3"
-          :class="{
-            'glass-thin shadow-md': activeComponent === HeroProfile,
-          }" @click="changeComponent(HeroProfile)">
-          <!-- Holds the PFP -->
-          <img src="../assets/ProfilePic.png" class="w-12 h-12 rounded-full object-cover" />
-
-          <div class="text-left">
-            <div class="text-white text-md">Trevor Flahardy</div>
-            <div class="font-light text-white text-xs">
-              Full Stack Developer
-            </div>
-          </div>
-        </button>
-
-        <!-- Holds the projects -->
-        <div class="space-y-1">
-          <HeroSidebarProject v-for="{ icon, name, component, id } in projects" :key="id" :title="name" class="w-full"
-            :class="{ 'glass-thin shadow-md': activeComponent === component }" @click="changeComponent(component)">
-            <!-- the image for this project-->
-            <template #image>
-              <img :src="icon" />
-            </template>
-          </HeroSidebarProject>
-        </div>
-      </div>
+      <Sidebar class="h-full" v-model="activeComponent" />
 
       <div
-        class="basis-3/5 md:basis-3/4 h-full overflow-y-scroll no-scrollbar scroll-smooth snap-y sm:p-5 sm:px-2 py-5 px-3">
+        class="h-full overflow-y-scroll no-scrollbar scroll-smooth snap-y sm:p-5 sm:px-2 py-12 sm:py-12 md:py-16 xl:py-5 px-3">
         <Transition name="fade">
           <component :is="activeComponent" />
         </Transition>

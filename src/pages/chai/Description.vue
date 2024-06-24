@@ -1,6 +1,6 @@
 <template>
-  <div class="glass-thick flex flex-col items-center justify-center p-5 rounded-xl snap-center">
-    <p class="title text-center"> Chai </p>
+  <div class="glass-thick flex flex-col items-center justify-center p-5 rounded-xl snap-center w-fit">
+    <p class="title-2 text-center"> Chai </p>
 
     <p class="caption text-center">
       Introducing Chai, the Python-powered Fortnite Discord bot with Epic

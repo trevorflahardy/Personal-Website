@@ -10,7 +10,6 @@ function toggleTheme() {
     class="w-96 h-14 glass-thin-base rounded-full relative -top-6 shadow-xl flex flex-row items-center justify-start p-4 [transform: translateZ(40px)]">
     <!-- Lightswitch for light and dark mode -->
 
-
     <button class="glass-semithick rounded-full h-9 w-9 flex flex-row items-center justify-center overflow-hidden"
       @click="toggleTheme()">
       <i class="pi pi-pencil" />

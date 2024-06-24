@@ -8,12 +8,14 @@ const chaiUrl =
 <template>
   <div class="flex flex-row flex-wrap items-stretch justify-center gap-5 snap-center">
     <article
-      class="basis-1/3 shadow-xl rounded-xl p-5 bg-gradient-to-br from-yellow-500 from-40 to-red-600 h-full title-2">
-      Built in Python, expanded in Rust.
+      class="shadow-xl rounded-xl p-5 bg-gradient-to-br from-yellow-500 from-40 to-red-600 h-full">
+      <p class="title-2 max-w-80">
+        Built in Python, expanded in Rust.
+      </p>
     </article>
 
     <article
-      class="basis-2/3 bg-gradient-to-br from-blue-500 to-indigo-800 shadow rounded-xl overflow-hidden p-5 flex flex-col items-start justify-center">
+      class="bg-gradient-to-br from-blue-500 to-indigo-800 shadow rounded-xl overflow-hidden p-5 flex flex-col items-start justify-center max-w-2xl flex-initial">
       <p class="card-title w-full">
         Try on Discord
       </p>

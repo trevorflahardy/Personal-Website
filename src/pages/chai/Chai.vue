@@ -10,7 +10,7 @@ import SlamTransition from "@/components/SlamTransition.vue";
   <SlamTransition class="space-y-5">
     <Description />
     <Info />
-    <Preview />
+    <!-- <Preview /> -->
     <Future />
   </SlamTransition>
 </template>
