@@ -54,7 +54,7 @@
 
   /* Globally apply that no paragraph should be more than 6xl */
   p, li {
-    @apply max-w-lg sm:max-w-5xl m-0;
+    @apply max-w-sm sm:max-w-5xl m-0;
   }
 }
 
