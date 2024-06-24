@@ -41,11 +41,11 @@
   }
 
   .card-title-2 {
-    @apply text-base md:text-lg lg:text-xl text-gray-200 text-pretty lg:mb-1;
+    @apply text-base md:text-lg lg:text-xl text-gray-100 text-pretty lg:mb-1;
   }
 
   .card-caption {
-    @apply text-sm md:text-base text-gray-200 text-pretty mb-1;
+    @apply text-xs md:text-sm text-gray-300 text-pretty mb-1;
   }
 
   .card-body {
@@ -54,7 +54,7 @@
 
   /* Globally apply that no paragraph should be more than 6xl */
   p, li {
-    @apply max-w-lg sm:max-w-4xl m-0;
+    @apply max-w-lg sm:max-w-5xl m-0;
   }
 }
 
@@ -84,7 +84,7 @@
   }
 
   .glass-superthick {
-    @apply bg-glass-thick/[.92] backdrop-blur-3xl;
+    @apply bg-glass-thick/[.40] backdrop-blur-xl;
   }
 
   .glass-semithick-base {

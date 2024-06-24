@@ -21,8 +21,8 @@ const chaiMetadata: CardProps[] = [
 
 <template>
   <SlamTransition>
-    <div>
-      <h1 class="title text-center">
+    <div class="w-full mb-5">
+      <h1 class="hero-title text-center">
         Chai
       </h1>
 
@@ -32,12 +32,14 @@ const chaiMetadata: CardProps[] = [
     </div>
 
     <!-- Holds the information cards about the bot -->
-    <div class="flex flex-row flex-wrap content-around gap-5 items-stretch justify-around mb-5 p-5">
+    <div class="flex flex-row flex-wrap content-around items-stretch justify-around mb-5 gap-2">
       <Card :title="meta.title" :body="meta.body" :backgroundColor="meta.backgroundColor" :textColor="meta.textColor"
         v-for="meta in chaiMetadata" :id="meta" />
     </div>
 
-    <Preview class="mb-5" />
+    <div class="mb-5 w-full h-fit flex flex-row items-center justify-center">
+      <Preview />
+    </div>
     <Nerdy class="mb-5" />
   </SlamTransition>
 </template>

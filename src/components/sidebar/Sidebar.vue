@@ -16,6 +16,12 @@ function toggleHamburger() {
   isHamburgerOpen.value = !isHamburgerOpen.value;
 }
 
+/// A function that closes the hamburger. This is used so that if the user
+/// clicks on the main content *not* in the sidebar then the sidebar will close.
+function closeHamburger() {
+  isHamburgerOpen.value = false;
+}
+
 // When the active component changes, we need to ensure that after they click
 // the hamburger is going to be closed again.
 watch(
@@ -45,10 +51,46 @@ watch(
       </Transition>
 
       <!-- Shows the actual sidebar that slides in on click OVER the other content-->
-      <div class="absolute z-10 top-0 left-0 w-fill h-full rounded-[40px]" v-if="isHamburgerOpen">
-        <Content v-model="activeComponent" />
-      </div>
+      <Transition name="slide-in">
+        <div class="absolute z-10 top-0 left-0 w-fill h-full rounded-[40px]" v-if="isHamburgerOpen">
+          <Content v-model="activeComponent" @click="closeHamburger()" />
+        </div>
+      </Transition>
     </div>
   </div>
-
 </template>
+
+<style scoped>
+/* Ensures that the hamburger rotates 90deg every time it's clicked */
+.spin-enter-active {
+  transition: all .5s;
+}
+
+.spin-enter-from {
+  transform: rotate(-90deg);
+}
+
+.spin-enter-to {
+  transform: rotate(0);
+}
+
+/* Ensures that the sidebar slides in smoothly */
+.slide-in-enter-active,
+.slide-in-leave-active {
+  transition: transform .5s, opacity .5s;
+}
+
+.slide-in-enter-from,
+.slide-in-leave-to {
+  /* Initially, the sidebar is fully transparent and slightly to the left */
+  transform: translateX(-10%);
+  opacity: 0;
+}
+
+.slide-in-enter-to,
+.slide-in-leave-from {
+  /* End state: sidebar is fully visible and in its final position */
+  transform: translateX(0);
+  opacity: 1;
+}
+</style>

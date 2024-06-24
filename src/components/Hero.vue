@@ -7,7 +7,7 @@ const activeComponent = ref(shallowRef(HeroProfile));
 </script>
 
 <template>
-  <div class="glass-regular-base rounded-[40px] h-[95%] sm:h-[70%] max-w-[90%] stroke-[#CBCBCB] relative">
+  <div class="glass-regular-base rounded-[40px] h-[95%] sm:h-[80%] max-w-[90%] stroke-[#CBCBCB] relative">
     <div class="w-full flex flex-row items-center h-full rounded-l-[40px]">
       <Sidebar class="h-full" v-model="activeComponent" />
 

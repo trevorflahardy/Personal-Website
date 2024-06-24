@@ -36,7 +36,7 @@ function changeComponent(component: any) {
     <!-- Holds the platform-less sidebar content. This will display the same on mobile and desktop. The only difference
  is that the mobile content is hidden behind the hamburger. -->
     <div
-        class="rounded-[40px] xl:rounded-r-none glass-superthick xl:glass-thick h-full pt-12 p-5 xl:pt-5 w-full min-w-80">
+        class="rounded-[40px] xl:rounded-r-none glass-superthick lg:glass-thick h-full pt-12 p-5 xl:pt-5 w-full min-w-80">
         <div class="mb-5">
             <h4 class="title-4 font-medium mb-0">
                 Projects
@@ -66,7 +66,7 @@ function changeComponent(component: any) {
             </div>
         </button>
 
-        <!-- All other project components handeled under their own component, they are the same essentially -->
+        <!-- All other project components handled under their own component, they are the same essentially -->
         <div class="space-y-1">
             <Project v-for="{ icon, name, component, id } in projects" :key="id" :title="name" class="w-full"
                 :class="{ 'glass-thin shadow-md': activeComponent === component }" @click="changeComponent(component)">

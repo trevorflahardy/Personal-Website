@@ -6,7 +6,7 @@ const highlightedTool = "font-semibold text-chai";
 <template>
     <!-- Holds the "Let's get Nerdy" section of Chai. This describes the internal workings of how Chai works and what's going
      to be upcoming in the near future.-->
-    <div class="p-5 glass-thick rounded-xl">
+    <div class="p-5 glass-thick rounded-xl shadow-xl">
         <!-- Title and caption-->
         <div>
             <h1 class="card-title">
@@ -77,7 +77,7 @@ const highlightedTool = "font-semibold text-chai";
                 Bot Deployment
             </h2>
 
-            <p class="card-caption">
+            <p class="card-body">
                 The bot is managed using <a :class="highlightedTool">Docker</a> containers via Docker Compose. With
                 this, Chai has a dynamic rollout system for new updates that allows new features to gradually rollout to
                 servers, and fall back to stable versions if needed.

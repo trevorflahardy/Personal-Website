@@ -6,7 +6,7 @@ const chaiInviteLink = "https://discord.com/oauth2/authorize?client_id=728115804
 
 <template>
     <!-- Below the cards we'll show a preview of something Chai can do and why this matters-->
-    <div class="rounded-2xl mx-10 md:mx-20 glass-thick max-w-2xl mb-5">
+    <div class="rounded-2xl mx-10 md:mx-20 glass-thick max-w-2xl mb-5 shadow-xl">
         <!-- The image for the ChaiPreview on top of this card. The card will span basically the width of the page-->
         <img src="@/assets/ChaiPreview.png" alt="Chai Preview" class="rounded-xl w-full max-w-2xl object-cover" />
 

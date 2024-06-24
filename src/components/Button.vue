@@ -15,7 +15,7 @@ defineProps<Props>();
       <div class="button-glass text-white">
         <i v-if="icon" :class="`pi ${icon}`"></i>
 
-        <p v-if="content" class="subtitle m-0">
+        <p v-if="content" class="subtitle m-0 font-semibold">
           {{ content }}
         </p>
       </div>
@@ -24,7 +24,7 @@ defineProps<Props>();
 
   <!-- If the props.link is null, we can just render the button -->
   <div v-else class="button-glass text-white subtitle m-0">
-    <p v-if="content">
+    <p v-if="content" class="font-semibold">
       {{ content }}
     </p>
   </div>
