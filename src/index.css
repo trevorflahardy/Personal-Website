@@ -6,7 +6,7 @@
   /* Extends the default base to add some uniformity between elements */
 
   .title {
-    @apply text-3xl md:text-5xl lg:text-7xl xl:text-7xl 2xl:text-8xl font-bold text-white text-pretty mb-1 md:mb-3;
+    @apply text-4xl md:text-5xl lg:text-7xl xl:text-7xl 2xl:text-8xl font-bold text-white text-pretty mb-1 md:mb-3;
   }
 
   .title-2 {
@@ -53,7 +53,7 @@
 
   /* Globally apply that no paragraph should be more than 6xl */
   p {
-    @apply max-w-6xl;
+    @apply max-w-lg sm:max-w-6xl;
   }
 }
 

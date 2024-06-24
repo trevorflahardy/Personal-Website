@@ -20,12 +20,14 @@ import Button from '@/components/Button.vue';
         </div>
       </div>
 
-      <Transition name="slide-up-appear" appear>
-        <p class="caption text-center">
-          Welcome to my personal website! I am a passionate full stack developer
-          with a love for creating beautiful and functional applications. I am
-          currently a student studying Computer Science, Mathematics, and AI.
-        </p>
+      <Transition name="slide-up-appear" appear class="flex flex-row items-center justify-center">
+        <div>
+          <p class="caption text-center mb-3 sm:mb-5">
+            Welcome to my personal website! I am a passionate full stack developer
+            with a love for creating beautiful and functional applications. I am
+            currently a student studying Computer Science, Mathematics, and AI.
+          </p>
+        </div>
       </Transition>
 
       <!-- Holds the links to my pages -->
