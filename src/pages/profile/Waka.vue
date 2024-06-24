@@ -39,9 +39,9 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
 
 <template>
   <div class="glass-thick rounded-xl shadow-xl sm:p-5 p-3">
-    <p class="card-title">
+    <h1 class="card-title">
       My Coding Statistics
-    </p>
+    </h1>
 
     <p class="card-body">
       {{ humanReadableDailyAverage }} daily average.
@@ -50,7 +50,7 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
     <p class="card-body">
       {{ humanReadableTotal }} of total coding time.</p>
 
-    <p class="card-subtitle">
+    <p class="card-title-2">
       My Best Day
     </p>
 

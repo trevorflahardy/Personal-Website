@@ -21,6 +21,7 @@ export default {
           semithick: "#5E5E5E",
           thick: "#403f3f",
         },
+        chai: "#7B85FF"
       },
     },
     fontFamily: {

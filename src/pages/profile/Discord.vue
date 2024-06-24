@@ -38,10 +38,10 @@ const avatarOutline = determineAvatarOutline(data.discord_status);
         <img :src="avatarUrl" alt="Discord Avatar" />
       </div>
 
-      <div>
-        <p class="card-title">
+      <div class="ml-3">
+        <h1 class="card-title">
           {{ data.discord_user.display_name }}
-        </p>
+        </h1>
 
         <p class="card-body">
           {{ data.discord_user.username }} on Discord
@@ -51,7 +51,7 @@ const avatarOutline = determineAvatarOutline(data.discord_status);
 
     <!-- The Discord activities, if any-->
     <div class="space-y-2" v-if="data.activities && data.activities.length != 0">
-      <div class="card-subtitle">Current Activities</div>
+      <p class="card-title-2">Current Activities</p>
 
       <div v-for="activity in data.activities" :key="activity.name + activity.type + activity.created_at"
         class="flex flex-col gap-2">

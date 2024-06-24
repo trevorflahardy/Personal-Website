@@ -5,28 +5,29 @@
 @layer base {
   /* Extends the default base to add some uniformity between elements */
 
+  /* Gives a hero title to only be used in the intro to this page. This is because it's MASSIVE */
+  .hero-title {
+    @apply text-4xl md:text-5xl lg:text-7xl xl:text-7xl 2xl:text-8xl font-bold text-white text-pretty mb-1 md:mb-3 antialiased;
+  }
+
   .title {
-    @apply text-4xl md:text-5xl lg:text-7xl xl:text-7xl 2xl:text-8xl font-bold text-white text-pretty mb-1 md:mb-3;
+    @apply text-xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white text-pretty mb-2 antialiased;
   }
 
   .title-2 {
-    @apply text-xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-semibold text-white text-pretty mb-1 md:mb-2;
+    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-white text-pretty mb-2 antialiased;
   }
 
   .title-3 {
-    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-white text-pretty mb-1 md:mb-2;
+    @apply text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-semibold text-white text-pretty mb-1 antialiased;
   }
 
   .title-4 {
-    @apply text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-semibold text-white text-pretty mb-1 md:mb-2;
+    @apply text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-white text-pretty mb-1 antialiased;
   }
 
   .subtitle {
-    @apply text-base md:text-lg lg:text-xl xl:text-2xl font-medium text-gray-100 text-pretty;
-  }
-
-  .caption {
-    @apply body text-gray-100 sm:mb-1 md:mb-2 lg:mb-3;
+    @apply text-xs md:text-sm xl:text-base text-gray-200 text-pretty antialiased mb-1;
   }
 
   .body {
@@ -36,24 +37,24 @@
 
   /* Info specifically for cards. This ensures that every card has consistent and smaller titles and captions and subtitles than the normal base */
   .card-title {
-    @apply text-lg md:text-xl lg:text-2xl font-semibold text-white text-pretty lg:mb-2;
+    @apply text-lg md:text-xl lg:text-2xl font-semibold text-white text-pretty lg:mb-1;
   }
 
-  .card-subtitle {
-    @apply text-base md:text-lg lg:text-xl font-medium text-gray-100 text-pretty lg:mb-1;
+  .card-title-2 {
+    @apply text-base md:text-lg lg:text-xl text-gray-200 text-pretty lg:mb-1;
   }
 
   .card-caption {
-    @apply text-sm md:text-base lg:text-lg text-gray-100 font-light text-pretty;
+    @apply text-sm md:text-base text-gray-200 text-pretty mb-1;
   }
 
   .card-body {
-    @apply text-sm md:text-base lg:text-lg text-white font-light text-pretty;
+    @apply text-xs md:text-sm lg:text-base text-white font-light text-pretty;
   }
 
   /* Globally apply that no paragraph should be more than 6xl */
-  p {
-    @apply max-w-lg sm:max-w-6xl;
+  p, li {
+    @apply max-w-lg sm:max-w-4xl m-0;
   }
 }
 
@@ -67,7 +68,7 @@
   }
 
   .glass-thin-base {
-    @apply bg-glass-thin/[.49] backdrop-blur-2xl;
+    @apply bg-glass-thin/[.49] backdrop-blur-xl;
   }
 
   .glass-thin {

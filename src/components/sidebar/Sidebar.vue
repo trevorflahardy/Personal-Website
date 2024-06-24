@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import Content from "./Content.vue";
 
 const activeComponent = defineModel({
@@ -15,6 +15,14 @@ const hamburgerRotation = computed(() => {
 function toggleHamburger() {
   isHamburgerOpen.value = !isHamburgerOpen.value;
 }
+
+// When the active component changes, we need to ensure that after they click
+// the hamburger is going to be closed again.
+watch(
+  activeComponent, (_newValue, _oldValue) => {
+    isHamburgerOpen.value = false;
+  }
+)
 
 </script>
 

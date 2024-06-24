@@ -10,7 +10,7 @@ import Button from '@/components/Button.vue';
         <!-- Holds the Hi and my name-->
         <div class="self-end">
           <p class="subtitle mb-0"> Hi, I'm </p>
-          <p class="title">Trevor Flahardy</p>
+          <h1 class="hero-title">Trevor Flahardy</h1>
         </div>
 
         <!-- Holds my PFP alongside it-->
@@ -22,7 +22,7 @@ import Button from '@/components/Button.vue';
 
       <Transition name="slide-up-appear" appear class="flex flex-row items-center justify-center">
         <div>
-          <p class="caption text-center mb-3 sm:mb-5">
+          <p class="subtitle text-center mb-3 sm:mb-5">
             Welcome to my personal website! I am a passionate full stack developer
             with a love for creating beautiful and functional applications. I am
             currently a student studying Computer Science, Mathematics, and AI.

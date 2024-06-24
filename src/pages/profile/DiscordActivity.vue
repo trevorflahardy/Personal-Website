@@ -92,7 +92,7 @@ const data = props.data;
 <template>
   <div class="px-5 py-2 glass-thick shadow-lg rounded-xl space-y-2">
     <div>
-      <div class="card-caption font-semibold text-white">
+      <div class="card-title-2 font-semibold text-white">
         {{ determineHeader(data) }}
       </div>
       <div class="card-body">

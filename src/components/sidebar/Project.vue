@@ -9,8 +9,7 @@ const props = defineProps({
 
 <template>
   <button
-    class="flex flex-row items-center space-x-2 rounded-lg hover:glass-thin transition duration-300 ease-in-out hover:shadow-lg [transform: translateZ(30px)] py-2 px-3"
-  >
+    class="flex flex-row items-center space-x-2 rounded-lg hover:glass-thin transition duration-300 ease-in-out hover:shadow-lg [transform: translateZ(30px)] py-2 px-3 w-full">
     <!-- Grab the image slot, if it exists and insert it in a circle so that it fills the width and height of the button-->
     <div class="w-7 h-7 rounded-full overflow-hidden shadow">
       <slot name="image" class="object-cover" />

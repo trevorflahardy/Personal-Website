@@ -12,11 +12,11 @@ import Button from '@/components/Button.vue';
 
         <!-- Hold the description of the image merger -->
         <div class="w-full glass-thick rounded-r-xl shadow p-5">
-            <p class="title-3">
+            <h3 class="title-3">
                 What is an Image Merger?
-            </p>
+            </h3>
 
-            <p class="caption">
+            <p class="subtitle">
                 Image Merger is a <span class="text-green-400 font-medium">blazingly fast</span> and easy-to-use Rust
                 crate that merges many images into one
                 larger

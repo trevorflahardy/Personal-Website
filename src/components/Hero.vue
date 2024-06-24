@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {  Transition, shallowRef, ref } from "vue";
+import { Transition, shallowRef, ref } from "vue";
 import Sidebar from "./sidebar/Sidebar.vue";
 import HeroProfile from "@/pages/profile/HeroProfile.vue";
 

@@ -4,9 +4,9 @@ import ImageAnimation from "./ImageAnimation.vue";
 
 <template>
     <div class="flex flex-row flex-wrap items-center justify-center pt-5 snap-center">
-        <p class="title text-center flex-none flex-shrink px-5">
+        <h2 class="title-2 text-center flex-none flex-shrink px-5">
             Image Merger
-        </p>
+        </h2>
 
         <ImageAnimation />
     </div>
