@@ -21,7 +21,7 @@ const activeComponent = ref(shallowRef(HeroProfile));
   </div>
 </template>
 
-<style>
+<style scoped>
 .fade-leave-active {
   transition: opacity 0.3s;
 }
