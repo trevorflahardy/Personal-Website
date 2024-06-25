@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import { Transition, shallowRef, ref } from "vue";
+import { Transition } from "vue";
 import Sidebar from "./sidebar/Sidebar.vue";
-import HeroProfile from "@/pages/profile/HeroProfile.vue";
-
-const activeComponent = ref(shallowRef(HeroProfile));
 </script>
 
 <template>
   <div class="glass-regular-base rounded-[40px] h-[95%] sm:h-[80%] max-w-[90%] stroke-[#CBCBCB] relative">
     <div class="w-full flex flex-row items-center h-full rounded-l-[40px]">
-      <Sidebar class="h-full" v-model="activeComponent" />
+      <Sidebar class="h-full" />
 
       <div
         class="h-full overflow-y-scroll no-scrollbar scroll-smooth snap-y sm:p-5 sm:px-2 py-12 sm:py-12 md:py-16 xl:py-5 px-3">
-        <Transition name="fade">
-          <component :is="activeComponent" />
-        </Transition>
+        <router-view v-slot="{ Component }">
+          <Transition name="fade">
+            <component :is="Component" />
+          </Transition>
+        </router-view>
       </div>
     </div>
   </div>

@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed } from "vue";
 import Content from "./Content.vue";
-
-const activeComponent = defineModel({
-  required: true
-});
 
 // Holds if the hamburger is open or not on mobile
 const isHamburgerOpen = ref(false);
@@ -16,27 +12,13 @@ function toggleHamburger() {
   isHamburgerOpen.value = !isHamburgerOpen.value;
 }
 
-/// A function that closes the hamburger. This is used so that if the user
-/// clicks on the main content *not* in the sidebar then the sidebar will close.
-function closeHamburger() {
-  isHamburgerOpen.value = false;
-}
-
-// When the active component changes, we need to ensure that after they click
-// the hamburger is going to be closed again.
-watch(
-  activeComponent, (_newValue, _oldValue) => {
-    isHamburgerOpen.value = false;
-  }
-)
-
 </script>
 
 <template>
   <div>
     <!-- Represents the desktop sidebar. This sidebar is always visible on desktop-->
     <div class="hidden xl:flex h-full w-full">
-      <Content v-model="activeComponent" />
+      <Content />
     </div>
 
     <!-- Represents a mobile sidebar. This is a hamburger shown in the top left that then opens a desktop-like menu but
@@ -53,7 +35,7 @@ watch(
       <!-- Shows the actual sidebar that slides in on click OVER the other content-->
       <Transition name="slide-in">
         <div class="absolute z-10 top-0 left-0 w-fill h-full rounded-[40px]" v-if="isHamburgerOpen">
-          <Content v-model="activeComponent" @click="closeHamburger()" />
+          <Content />
         </div>
       </Transition>
     </div>
