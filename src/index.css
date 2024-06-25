@@ -83,7 +83,7 @@
     @apply bg-glass-thick/[.60];
   }
 
-  .glass-superthick {
+  .glass-super-thick {
     @apply bg-glass-thick/[.40] backdrop-blur-xl;
   }
 
