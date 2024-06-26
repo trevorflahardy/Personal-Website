@@ -38,7 +38,9 @@ const ProfileDiscord = defineAsyncComponent(
       </Suspense>
 
       <div class="w-full p-5 h-80">
-        <DriftingCarsCanvas />
+        <Suspense>
+          <DriftingCarsCanvas />
+        </Suspense>
       </div>
     </div>
   </SlamTransition>
