@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
     // The main page of the app. Shows my profile.
-    { path: "/", name: 'profile', component: () => import('@/pages/profile/HeroProfile.vue') },
+    { path: "/", name: 'profile', component: () => import('@/pages/profile/Profile.vue') },
     // NOTE: Maybe make these dynamic in the future?
     { path: "/p/chai", name: 'project-chai', component: () => import('@/pages/chai/Chai.vue') },
 

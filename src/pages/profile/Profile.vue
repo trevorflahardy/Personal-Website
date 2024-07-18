@@ -5,7 +5,6 @@ import Intro from "./Intro.vue";
 import SlamTransition from "@/components/SlamTransition.vue";
 import WakaLoading from "./WakaLoading.vue";
 import DiscordLoading from "./DiscordLoading.vue";
-// import DriftingCarsCanvas from "./DriftingCarsCanvas.vue";
 
 const ProfileWaka = defineAsyncComponent(
   () => import("./Waka.vue")
@@ -36,12 +35,6 @@ const ProfileDiscord = defineAsyncComponent(
           <DiscordLoading />
         </template>
       </Suspense>
-
-      <!-- <div class="w-full p-5 h-80">
-        <Suspense>
-          <DriftingCarsCanvas />
-        </Suspense>
-      </div> -->
     </div>
   </SlamTransition>
 </template>
