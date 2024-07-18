@@ -23,7 +23,7 @@ function toggleHamburger() {
 
     <!-- Represents a mobile sidebar. This is a hamburger shown in the top left that then opens a desktop-like menu but
         with some optimizations. -->
-    <div class="flex xl:hidden h-full w-fill">
+    <div class="flex xl:hidden h-full">
       <!-- Shows the hamburger. When disabled it's rotated 0 but when enabled it's rotated 90 -->
       <Transition name="spin">
         <button class="absolute z-20 top-0 left-0 p-5" :key="hamburgerRotation" :class="hamburgerRotation"
@@ -34,7 +34,7 @@ function toggleHamburger() {
 
       <!-- Shows the actual sidebar that slides in on click OVER the other content-->
       <Transition name="fade-in">
-        <div class="absolute z-10 top-0 left-0 w-fill h-full rounded-[40px]" v-if="isHamburgerOpen">
+        <div class="z-10 top-0 left-0 w-fill h-full rounded-[40px]" v-if="isHamburgerOpen">
           <Content />
         </div>
       </Transition>

@@ -3,16 +3,24 @@ import Sidebar from "./sidebar/Sidebar.vue";
 </script>
 
 <template>
-  <div class="glass-regular-base rounded-[40px] h-[95%] sm:h-[80%] max-w-[90%] stroke-[#CBCBCB] relative">
-    <div class="w-full flex flex-row items-center h-full rounded-l-[40px]">
-      <Sidebar class="h-full" />
+  <!-- The main hero element/page for the website. This holds all the main content.
+   On desktop: There appears a side window ("floating in 3d space") next to the hero
+   window, and on mobile, there appears a hamburger in the hero so the user can select it-->
+  <div class="flex items-center justify-center rounded-[40px] sm:h-[80%] w-full overflow-y-scroll no-scrollbar">
+    <!-- The desktop only sidebar element. -->
+    <div class="hidden xl:flex h-full mr-5 basis-0 xl:basis-1/4">
+      <Sidebar />
+    </div>
 
-      <div
-        class="h-full overflow-y-scroll no-scrollbar scroll-smooth snap-y sm:p-5 sm:px-2 py-12 sm:py-12 md:py-16 xl:py-5 px-3">
-        <router-view v-slot="{ Component }">
-          <component :is="Component" />
-        </router-view>
-      </div>
+    <!-- The main content of the page -->
+    <div class="rounded-[40px] w-full h-full relative overflow-y-scroll no-scrollbar">
+      <!-- If on mobile only, display the sidebar inside of the hero element such that
+       the user can press the hamburger to show the sidebar-->
+      <Sidebar class="xl:hidden absolute h-full" />
+
+      <router-view v-slot="{ Component }">
+        <component :is="Component" class="glass-regular-base" />
+      </router-view>
     </div>
   </div>
 </template>
