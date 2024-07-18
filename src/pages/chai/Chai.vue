@@ -26,9 +26,9 @@ const chaiMetadata: CardProps[] = [
         Chai
       </h1>
 
-      <p class="subtitle text-center">
+      <h2 class="subtitle text-center">
         The Python and Rust-powered Fortnite Discord bot.
-      </p>
+      </h2>
     </div>
 
     <!-- Holds the information cards about the bot -->
