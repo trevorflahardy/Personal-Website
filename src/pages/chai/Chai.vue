@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SlamTransition from "@/components/SlamTransition.vue";
+import PageLayoutSpacer from "@/components/PageLayoutSpacer.vue";
 import Card, { CardProps } from "./components/Card.vue";
 import Preview from './Preview.vue';
 import DeepDive from './DeepDive.vue';
@@ -20,8 +20,8 @@ const chaiMetadata: CardProps[] = [
 </script>
 
 <template>
-  <SlamTransition>
-    <div class="w-full mb-5">
+  <PageLayoutSpacer>
+    <div class="w-full">
       <h1 class="hero-title text-center">
         Chai
       </h1>
@@ -32,14 +32,14 @@ const chaiMetadata: CardProps[] = [
     </div>
 
     <!-- Holds the information cards about the bot -->
-    <div class="flex flex-row flex-wrap content-around items-stretch justify-around mb-5 gap-2">
+    <div class="flex flex-row flex-wrap content-around items-stretch justify-around gap-2">
       <Card :title="meta.title" :body="meta.body" :backgroundColor="meta.backgroundColor" :textColor="meta.textColor"
         v-for="meta in chaiMetadata" :id="meta" />
     </div>
 
-    <div class="mb-5 w-full h-fit flex flex-row items-center justify-center">
+    <div class="w-full h-fit flex flex-row items-center justify-center">
       <Preview />
     </div>
-    <DeepDive class="mb-5" />
-  </SlamTransition>
+    <DeepDive />
+  </PageLayoutSpacer>
 </template>

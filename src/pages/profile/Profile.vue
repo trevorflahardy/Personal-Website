@@ -2,7 +2,7 @@
 import { defineAsyncComponent, Suspense } from "vue";
 
 import Intro from "./Intro.vue";
-import SlamTransition from "@/components/SlamTransition.vue";
+import PageLayoutSpacer from "@/components/PageLayoutSpacer.vue";
 import WakaLoading from "./WakaLoading.vue";
 import DiscordLoading from "./DiscordLoading.vue";
 
@@ -16,7 +16,7 @@ const ProfileDiscord = defineAsyncComponent(
 </script>
 
 <template>
-  <SlamTransition class="md:px-5 md:py-7 space-y-5">
+  <PageLayoutSpacer class="md:px-5 md:py-7">
     <Intro class="snap-center" />
 
     <div class="flex flex-row items-center justify-around snap-center flex-wrap gap-5">
@@ -36,5 +36,5 @@ const ProfileDiscord = defineAsyncComponent(
         </template>
       </Suspense>
     </div>
-  </SlamTransition>
+  </PageLayoutSpacer>
 </template>
