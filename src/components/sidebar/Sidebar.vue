@@ -33,7 +33,7 @@ function toggleHamburger() {
       </Transition>
 
       <!-- Shows the actual sidebar that slides in on click OVER the other content-->
-      <Transition name="slide-in">
+      <Transition name="fade-in">
         <div class="absolute z-10 top-0 left-0 w-fill h-full rounded-[40px]" v-if="isHamburgerOpen">
           <Content />
         </div>
@@ -56,23 +56,30 @@ function toggleHamburger() {
   transform: rotate(0);
 }
 
-/* Ensures that the sidebar slides in smoothly */
-.slide-in-enter-active,
-.slide-in-leave-active {
-  transition: transform .5s, opacity .5s;
+/* The fade in transition for the sidebar in mobile view. This will simply
+update the opacity from 0 to 100 over the animation, and gradually add the backdrop
+blur so it isn't harsh when showing the sidebar.*/
+@keyframes fade-in {
+
+  /* Backdrop filter cannot be animated properly yet due to it being
+  a newer item in CSS. Thus, we're going to animate the opacity as
+  we go from->to. */
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px) opacity(0%);
+  }
+
+  to {
+    opacity: 1;
+    backdrop-filter: blur(24px) opacity(100%);
+  }
 }
 
-.slide-in-enter-from,
-.slide-in-leave-to {
-  /* Initially, the sidebar is fully transparent and slightly to the left */
-  transform: translateX(-10%);
-  opacity: 0;
+.fade-in-enter-active {
+  animation: fade-in .5s;
 }
 
-.slide-in-enter-to,
-.slide-in-leave-from {
-  /* End state: sidebar is fully visible and in its final position */
-  transform: translateX(0);
-  opacity: 1;
+.fade-in-leave-active {
+  animation: fade-in .5s reverse;
 }
 </style>
