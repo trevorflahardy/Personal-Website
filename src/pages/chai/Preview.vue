@@ -22,12 +22,12 @@ import Card from './components/Card.vue';
          shows the story.-->
         <div class="flex flex-row items-center justify-around gap-5">
             <!-- TODO: Maybe better branding background gradients-->
-            <Card title="User Managed Accounts"
-                body="The user requested to manage their linked Fortnite accounts. Chai pulled live data from the user's connected Fortnite account and obtained all the accounts the user has linked. Users can manage friends, including sending and receiving friend requests; change Fortnite settings; and more!"
+            <Card title="A user managed their accounts:"
+                body="The user requested to managed their linked Fortnite accounts. Chai pulled live data from the user's connected Fortnite account and obtained all the accounts the user has linked. Users can manage friends, including sending and receiving friend requests; change Fortnite settings; and more!"
                 background-color="bg-gradient-to-tr from-discord-100 to-discord-300"
                 class="max-w-xl transition-all duration-200 ease-in-out hover:scale-[1.03]" />
 
-            <Card title="User Viewed Fortnite Cosmetics"
+            <Card title="The user then viewed their locker:"
                 body="The user requested to see all of their Fortnite locker. Chai pulled live data from the user's connected Fortnite account and obtained all the cosmetics the user owns. Users can filter by type, rarity, and cosmetic set to find the perfect outfit."
                 background-color="bg-gradient-to-br from-discord-100 to-discord-200"
                 class="max-w-xl transition-all duration-200 ease-in-out hover:scale-[1.03]" />
