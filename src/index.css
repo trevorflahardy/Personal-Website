@@ -15,15 +15,15 @@
   }
 
   .title-2 {
-    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-white text-pretty mb-2 antialiased;
+    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-gray-100 text-pretty mb-2 antialiased;
   }
 
   .title-3 {
-    @apply text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-semibold text-white text-pretty mb-1 antialiased;
+    @apply text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-semibold text-gray-200 text-pretty mb-1 antialiased;
   }
 
   .title-4 {
-    @apply text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-white text-pretty mb-1 antialiased;
+    @apply text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-300 text-pretty mb-1 antialiased;
   }
 
   .subtitle {
@@ -31,13 +31,12 @@
   }
 
   .body {
-    @apply text-xs sm:text-sm md:text-base xl:text-lg text-white font-light text-pretty mb-1 lg:mb-2;
+    @apply text-xs sm:text-sm md:text-base text-gray-100 font-light text-pretty mb-1 lg:mb-2;
   }
-
 
   /* Info specifically for cards. This ensures that every card has consistent and smaller titles and captions and subtitles than the normal base */
   .card-title {
-    @apply text-lg md:text-xl lg:text-2xl font-semibold text-white text-pretty lg:mb-1;
+    @apply text-lg md:text-xl lg:text-2xl font-semibold text-white text-pretty lg:mb-1 leading-tight;
   }
 
   .card-title-2 {
@@ -53,50 +52,31 @@
   }
 
   /* Globally apply that no paragraph should be more than 6xl */
-  p, li {
+  p,
+  li {
     @apply max-w-sm sm:max-w-5xl m-0;
   }
 }
 
 @layer components {
-  .glass-regular-base {
-    @apply glass-regular backdrop-blur-3xl;
+  .glass-thin {
+    @apply backdrop-blur-md shadow-md;
   }
 
   .glass-regular {
-    @apply bg-glass-regular/20;
-  }
-
-  .glass-thin-base {
-    @apply bg-glass-thin/[.49] backdrop-blur-xl;
-  }
-
-  .glass-thin {
-    @apply bg-glass-thin/[.18];
-  }
-
-  .glass-thick-base {
-    @apply glass-thick backdrop-blur-[200px];
-  }
-
-  .glass-thick {
-    @apply bg-glass-thick/[.60];
-  }
-
-  .glass-super-thick {
-    @apply bg-glass-thick/[.40] backdrop-blur-xl;
-  }
-
-  .glass-semithick-base {
-    @apply glass-semithick-base backdrop-blur-[100px];
+    @apply backdrop-blur-lg shadow-lg;
   }
 
   .glass-semithick {
-    @apply bg-glass-semithick/[.45];
+    @apply backdrop-blur-xl shadow-xl;
+  }
+
+  .glass-thick {
+    @apply backdrop-blur-2xl shadow-2xl;
   }
 
   .button-glass {
-    @apply glass-thin p-3 rounded-xl shadow flex flex-row items-center justify-center gap-2;
+    @apply glass-thick p-3 rounded-xl shadow flex flex-row items-center justify-center gap-2 bg-gray-300/10;
     transition: transform 0.2s;
   }
 
@@ -108,7 +88,6 @@
 }
 
 @layer utilities {
-
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;

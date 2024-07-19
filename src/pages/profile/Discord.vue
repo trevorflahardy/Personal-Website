@@ -31,7 +31,7 @@ const avatarOutline = determineAvatarOutline(data.discord_status);
 </script>
 
 <template>
-  <div class="glass-thick rounded-xl space-y-3 shadow-xl p-5">
+  <div class="glass-thick bg-gray-300/10 rounded-xl space-y-3 shadow-xl p-5">
     <div class="flex flex-row justify-around items-center">
       <!-- The Discord image -->
       <div class="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2" :class="avatarOutline">

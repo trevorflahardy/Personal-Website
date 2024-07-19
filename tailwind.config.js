@@ -21,7 +21,14 @@ export default {
           semithick: "#5E5E5E",
           thick: "#403f3f",
         },
-        chai: "#7B85FF"
+        chai: "#7B85FF",
+        discord: {
+          100: "#424549",
+          200: "#36393e",
+          300: "#282b30",
+          400: "#1e2124",
+          "blurple": "#7289da",
+        }
       },
     },
     fontFamily: {

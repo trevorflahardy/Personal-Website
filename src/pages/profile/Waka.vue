@@ -38,7 +38,7 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
 </script>
 
 <template>
-  <div class="glass-thick rounded-xl shadow-xl sm:p-5 p-3">
+  <div class="glass-thick bg-gray-300/10 rounded-xl shadow-xl sm:p-5 p-3">
     <h1 class="card-title">
       My Coding Statistics
     </h1>

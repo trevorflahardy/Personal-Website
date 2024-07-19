@@ -16,7 +16,7 @@ const ProfileDiscord = defineAsyncComponent(
 </script>
 
 <template>
-  <PageLayoutSpacer class="md:px-5 md:py-7">
+  <PageLayoutSpacer>
     <Intro class="snap-center" />
 
     <div class="flex flex-row items-center justify-around snap-center flex-wrap gap-5">

@@ -19,7 +19,7 @@ import Sidebar from "./sidebar/Sidebar.vue";
       <Sidebar class="xl:hidden absolute h-full" />
 
       <router-view v-slot="{ Component }">
-        <component :is="Component" class="glass-regular-base" />
+        <component :is="Component" class="glass-semithick" />
       </router-view>
     </div>
   </div>

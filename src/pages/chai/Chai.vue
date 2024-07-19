@@ -1,45 +1,36 @@
 <script setup lang="ts">
 import PageLayoutSpacer from "@/components/PageLayoutSpacer.vue";
-import Card, { CardProps } from "./components/Card.vue";
 import Preview from './Preview.vue';
 import DeepDive from './DeepDive.vue';
+import Button from "@/components/Button.vue";
 
-const chaiMetadata: CardProps[] = [
-  {
-    title: "What is a Chai?",
-    body: "Chai is a Discord bot that is powered by Python. It is designed to help Fortnite players with various tasks such as checking the current item shop, checking their stats, and more.",
-    backgroundColor: `bg-gradient-to-t from-chai via-blue-400 to-emerald-400`,
-    textColor: "text-white"
-  },
-  {
-    title: "How does Chai Work?",
-    body: "Chai uses the undocumented Epic Games API to allow users to link their Fortnite account to Discord. This gives Chai the ability to pull data from the user's Fortnite account and display it in Discord!",
-    backgroundColor: "bg-glass-thick"
-  }
-]
+const chaiInviteLink = "https://discord.com/oauth2/authorize?client_id=728115804826239017&scope=bot&permissions=422964311"
 </script>
 
 <template>
   <PageLayoutSpacer>
-    <div class="w-full">
-      <h1 class="hero-title text-center">
-        Chai
-      </h1>
+    <!-- Holds the intro to Chai. 
+    TODO; Refactor this so that it's:
+    1. in its own component, and
+    2. so that it has "Chai" and stuff on the side of some sort of logo or SVG-icon. Create a modern
+    feel with it, and have the preview below it for separation.-->
+    <div class="w-full flex flex-row items-center justify-around">
+      <!-- Holds the header and "call to action" button(s)-->
+      <div class="flex flex-col items-center justify-center max-w-3xl pt-3">
+        <h1 class="title text-center mb-3 text-pretty">
+          Meet Chai, the Fortnite authentication Discord Bot.
+        </h1>
 
-      <h2 class="subtitle text-center">
-        The Python and Rust-powered Fortnite Discord bot.
-      </h2>
+        <p class="subtitle text-center mb-3">
+          Chai is a Discord bot that allows users to authenticate their Fortnite accounts and manage their in-game data,
+          all within Discord.
+        </p>
+
+        <Button :link="chaiInviteLink" content="Invite Chai" icon="pi-discord" class="w-40 md:w-60" />
+      </div>
     </div>
 
-    <!-- Holds the information cards about the bot -->
-    <div class="flex flex-row flex-wrap content-around items-stretch justify-around gap-2">
-      <Card :title="meta.title" :body="meta.body" :backgroundColor="meta.backgroundColor" :textColor="meta.textColor"
-        v-for="meta in chaiMetadata" :id="meta" />
-    </div>
-
-    <div class="w-full h-fit flex flex-row items-center justify-center">
-      <Preview />
-    </div>
+    <Preview />
     <DeepDive />
   </PageLayoutSpacer>
 </template>

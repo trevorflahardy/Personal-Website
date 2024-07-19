@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 
-import Project from "./Project.vue";
+import Project, { ProjectProps } from "./Project.vue";
 
 const route = useRoute();
 
 // Marked raw so it doesn't get wrapped in a proxy (which causes unessecary performance overhead)
-const projects = [
+const projects: [ProjectProps] = [
     {
         icon: "https://cdn.discordapp.com/avatars/728115804826239017/0747ea1e75a2b294c8a7834bb31cd7ee.png?size=1024",
         displayName: "Chai",
@@ -18,7 +18,7 @@ const projects = [
 <template>
     <!-- Holds the platform-less sidebar content. This will display the same on mobile and desktop. The only difference
  is that the mobile content is hidden behind the hamburger. -->
-    <div class="rounded-[40px] glass-super-thick lg:glass-thick h-full pt-12 p-5 xl:pt-5 w-full min-w-80">
+    <div class="rounded-[40px] glass-thick h-full pt-12 p-5 xl:pt-5 w-full min-w-80">
         <div class="mb-5">
             <h4 class="title-4 font-medium mb-0">
                 Projects
@@ -31,9 +31,9 @@ const projects = [
         <!-- The profile tab. This is separate from the other projects, ie a special component, so it'll be managed manually -->
         <router-link :to="{ name: 'profile' }">
             <button
-                class="flex flex-row hover:bg-glass-thin p-2 w-full rounded-xl gap-3 items-center mb-5 transition duration-300 ease-in-out hover:shadow-lg [transform: translateZ(30px)]"
+                class="flex flex-row p-2 w-full rounded-xl gap-3 items-center mb-5 hover:glass-thin transition duration-300 ease-in-out"
                 :class="{
-                    'glass-thin shadow-md': route.name == 'profile'
+                    'glass-thin shadow-md bg-gray-300/10': route.name == 'profile'
                 }">
                 <!-- Holds the PFP -->
                 <img src="@/assets/ProfilePic.png"
@@ -55,13 +55,7 @@ const projects = [
         <div class="space-y-1">
             <router-link v-for="{ icon, displayName, routerLinkName } in projects" :key="routerLinkName"
                 :to="{ name: routerLinkName }">
-                <Project :title="displayName" :class="{
-                    'glass-thin shadow-md': route.name == routerLinkName
-                }">
-                    <template #image>
-                        <img :src="icon" />
-                    </template>
-                </Project>
+                <Project :icon="icon" :display-name="displayName" :router-link-name="routerLinkName" />
             </router-link>
         </div>
     </div>
