@@ -10,7 +10,7 @@ defineProps<CardProps>()
 </script>
 
 <template>
-    <div class="p-5 rounded-xl max-w-sm flex-auto min-w-20 shadow-xl"
+    <div class="p-5 rounded-xl max-w-sm flex-auto min-w-20 drop-shadow-lg"
         :class="[backgroundColor != null ? backgroundColor : '', textColor != null ? textColor : 'text-white']">
         <h1 class="card-title" v-if="title">
             {{ title }}
