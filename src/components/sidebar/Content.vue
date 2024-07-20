@@ -2,15 +2,16 @@
 import { useRoute } from "vue-router";
 
 import Project, { ProjectProps } from "./Project.vue";
+import { routerLinkName as chaiRouterLink, profilePic as chaiProfilePic } from "@/pages/chai/info";
 
 const route = useRoute();
 
 // Marked raw so it doesn't get wrapped in a proxy (which causes unessecary performance overhead)
 const projects: [ProjectProps] = [
     {
-        icon: "https://cdn.discordapp.com/avatars/728115804826239017/0747ea1e75a2b294c8a7834bb31cd7ee.png?size=1024",
+        icon: chaiProfilePic,
         displayName: "Chai",
-        routerLinkName: 'project-chai',
+        routerLinkName: chaiRouterLink,
     },
 ];
 </script>
@@ -21,7 +22,7 @@ const projects: [ProjectProps] = [
     <div class="rounded-[40px] glass-thick h-full pt-12 p-5 xl:pt-5 w-full min-w-80">
         <div class="mb-5">
             <h4 class="title-4 font-medium mb-0">
-                Projects
+                Personal Website
             </h4>
             <p class="subtitle">
                 View some work
@@ -50,6 +51,11 @@ const projects: [ProjectProps] = [
                 </div>
             </button>
         </router-link>
+
+        <!-- Small title for the projects-->
+        <h2 class="w-full text-sm text-gray-300 font-light mb-1">
+            My Favorite Projects
+        </h2>
 
         <!-- All other project components handled under their own component, they are the same essentially -->
         <div class="space-y-1">
