@@ -1,6 +1,7 @@
 <script setup>
 import axios from "axios";
 import Button from "@/components/Button.vue";
+import InfoCard from "@/components/InfoCard.vue";
 
 const wakaProfileUrl = "https://wakatime.com/@trevorflahardy";
 
@@ -38,7 +39,7 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
 </script>
 
 <template>
-  <div class="glass-thick bg-gray-300/10 rounded-xl shadow-xl sm:p-5 p-3">
+  <InfoCard class="bg-">
     <h1 class="card-title">
       My Coding Statistics
     </h1>
@@ -60,5 +61,5 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
     </p>
 
     <Button class="w-fit" :link="wakaProfileUrl" icon="pi-clock" content="View Waka Profile" />
-  </div>
+  </InfoCard>
 </template>
