@@ -24,7 +24,7 @@ const highlightedTool = "font-semibold text-chai";
         </div>
 
         <!-- Holds all the information about the deep dive into each section.-->
-        <div class="flex flex-row items-start justify-around gap-3">
+        <div class="flex flex-row flex-wrap items-start justify-around gap-3">
             <!-- The Discord bot element of this section -->
             <div class="text-center max-w-md">
                 <h3 class="title-3">Discord Front End</h3>
