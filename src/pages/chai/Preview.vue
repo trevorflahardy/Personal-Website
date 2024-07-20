@@ -20,11 +20,11 @@ import Card from './components/Card.vue';
     <div class="px-5 w-full space-y-5">
         <!-- Holds the cards denoting that happened. The user reads from left to right so this naturally
          shows the story.-->
-        <div class="flex flex-row items-center justify-around gap-5">
+        <div class="flex flex-row items-start justify-around gap-5">
             <!-- TODO: Maybe better branding background gradients-->
             <Card title="A user managed their accounts:"
                 body="The user requested to managed their linked Fortnite accounts. Chai pulled live data from the user's connected Fortnite account and obtained all the accounts the user has linked. Users can manage friends, including sending and receiving friend requests; change Fortnite settings; and more!"
-                background-color="bg-gradient-to-tr from-discord-100 to-discord-300"
+                background-color="bg-gradient-to-br from-discord-100 to-discord-200"
                 class="max-w-xl transition-all duration-200 ease-in-out hover:scale-[1.03]" />
 
             <Card title="The user then viewed their locker:"
