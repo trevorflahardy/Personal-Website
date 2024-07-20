@@ -33,7 +33,7 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
 </script>
 
 <template>
-  <InfoCard class="bg-">
+  <InfoCard>
     <h1 class="card-title">
       My Coding Statistics
     </h1>

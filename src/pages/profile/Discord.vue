@@ -1,6 +1,7 @@
 <script setup>
 import axios from "axios";
 import DiscordActivity from "./DiscordActivity.vue";
+import InfoCard from "@/components/InfoCard.vue";
 
 const userId = "146348630926819328";
 const lanyardUrl = `https://api.lanyard.rest/v1/users/${userId}`;
@@ -31,7 +32,7 @@ const avatarOutline = determineAvatarOutline(data.discord_status);
 </script>
 
 <template>
-  <div class="glass-thick bg-gray-300/10 rounded-xl space-y-3 shadow-xl p-5">
+  <InfoCard>
     <div class="flex flex-row justify-around items-center">
       <!-- The Discord image -->
       <div class="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden border-2" :class="avatarOutline">
@@ -58,5 +59,5 @@ const avatarOutline = determineAvatarOutline(data.discord_status);
         <DiscordActivity :data="activity" />
       </div>
     </div>
-  </div>
+  </InfoCard>
 </template>
