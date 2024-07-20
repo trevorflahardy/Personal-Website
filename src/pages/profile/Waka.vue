@@ -13,12 +13,6 @@ async function fetchData(url) {
   return response.data.data;
 }
 
-function calculateDaysSinceStart(startDate) {
-  const startDateTime = new Date(startDate);
-  const now = new Date();
-  return Math.floor((now - startDateTime) / (1000 * 60 * 60 * 24));
-}
-
 const data = await fetchData(wakaUrl);
 const { grand_total, best_day } = data;
 
