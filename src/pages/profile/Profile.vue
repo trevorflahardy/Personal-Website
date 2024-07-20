@@ -5,6 +5,7 @@ import Intro from "./Intro.vue";
 import PageLayoutSpacer from "@/components/PageLayoutSpacer.vue";
 import WakaLoading from "./WakaLoading.vue";
 import DiscordLoading from "./DiscordLoading.vue";
+import Projects from "./Projects.vue";
 
 const ProfileWaka = defineAsyncComponent(
   () => import("./Waka.vue")
@@ -36,5 +37,7 @@ const ProfileDiscord = defineAsyncComponent(
         </template>
       </Suspense>
     </div>
+
+    <Projects />
   </PageLayoutSpacer>
 </template>
