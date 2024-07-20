@@ -48,7 +48,7 @@
   }
 
   .card-body {
-    @apply text-xs md:text-sm lg:text-base text-white font-light text-pretty;
+    @apply text-xs md:text-sm lg:text-base text-gray-200 font-light text-pretty;
   }
 
   /* Globally apply that no paragraph should be more than 6xl */
@@ -73,11 +73,6 @@
 
   .glass-thick {
     @apply backdrop-blur-2xl shadow-2xl;
-  }
-
-  .button-glass {
-    @apply glass-thick p-3 rounded-xl shadow flex flex-row items-center justify-center gap-2 bg-gray-300/10;
-    transition: transform 0.2s;
   }
 
   .button-glass:hover {
