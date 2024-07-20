@@ -1,6 +1,5 @@
 <script setup lang="ts">
 export interface InfoCardProps {
-    image?: string,
     imagePosition?: "left" | "right" | "top" | "bottom",
 }
 
@@ -31,12 +30,11 @@ function contentOrder(): number {
     }">
         <!-- Holds the image of this card. Takes up as much width as possible on the card
          and has its height auto adjust (unless the user wants to choose otherwise)-->
-        <div v-if="image" class="flex-auto w-full" :class="`order-${imageOrder()}`">
-            <img :src="image" class="rounded-xl w-full" />
-        </div>
+        <slot name="image" :class="`flex-auto w-full h-auto order-${imageOrder()}`" />
 
         <!--Holds the actual content of this card, in the slot-->
         <div class="flex-auto w-full sm:p-5 p-3" :class="`order-${contentOrder()}`">
+            <!-- The default slot that contains the content -->
             <slot />
         </div>
 

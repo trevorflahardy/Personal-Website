@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import Card from './components/Card.vue';
+import InfoCard from '@/components/InfoCard.vue';
 
+const previewCardInfoClass = "bg-gradient-to-br from-discord-100 to-discord-200 max-w-xl transition-all duration-200 ease-in-out hover:scale-[1.03]"
 </script>
 
 <template>
@@ -22,15 +23,27 @@ import Card from './components/Card.vue';
          shows the story.-->
         <div class="flex flex-row items-start justify-around gap-5">
             <!-- TODO: Maybe better branding background gradients-->
-            <Card title="A user managed their accounts:"
-                body="The user requested to managed their linked Fortnite accounts. Chai pulled live data from the user's connected Fortnite account and obtained all the accounts the user has linked. Users can manage friends, including sending and receiving friend requests; change Fortnite settings; and more!"
-                background-color="bg-gradient-to-br from-discord-100 to-discord-200"
-                class="max-w-xl transition-all duration-200 ease-in-out hover:scale-[1.03]" />
+            <InfoCard :class="previewCardInfoClass">
+                <h1 class="card-title">
+                    A user managed their accounts:
+                </h1>
+                <p class="card-body">
+                    The user requested to managed their linked Fortnite accounts. Chai pulled live data from the user's
+                    connected Fortnite account and obtained all the accounts the user has linked. Users can manage
+                    friends, including sending and receiving friend requests; change Fortnite settings; and more!
+                </p>
+            </InfoCard>
 
-            <Card title="The user then viewed their locker:"
-                body="The user requested to see all of their Fortnite locker. Chai pulled live data from the user's connected Fortnite account and obtained all the cosmetics the user owns. Users can filter by type, rarity, and cosmetic set to find the perfect outfit."
-                background-color="bg-gradient-to-br from-discord-100 to-discord-200"
-                class="max-w-xl transition-all duration-200 ease-in-out hover:scale-[1.03]" />
+            <InfoCard :class="previewCardInfoClass">
+                <h1 class="card-title">
+                    The user then viewed their locker:
+                </h1>
+                <p class="card-body">
+                    The user requested to see all of their Fortnite locker. Chai pulled live data from the user's
+                    connected Fortnite account and obtained all the cosmetics the user owns. Users can filter by type,
+                    rarity, and cosmetic set to find the perfect outfit.
+                </p>
+            </InfoCard>
         </div>
 
         <!-- Some exposition below the cards that note Chai can do much more than this, but this is just the tip of the surface-->
