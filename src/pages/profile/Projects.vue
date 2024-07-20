@@ -24,7 +24,7 @@ import Button from "@/components/Button.vue";
                     <img :src="chaiProfilePic" class="rounded-full size-7" />
                 </div>
 
-                <p class="card-body mb-3">
+                <p class="card-body mb-5">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque fugit non laudantium tenetur
                     impedit,
                     ea officia delectus sapiente a cupiditate doloremque facere totam modi mollitia aliquid quaerat
@@ -40,8 +40,6 @@ import Button from "@/components/Button.vue";
                     <Button content="Development Board" background="bg-inherit" class="outline outline-1 outline-chai"
                         link="https://github.com/users/trevorflahardy/projects/11" icon="pi-book" />
                 </div>
-
-
             </InfoCard>
         </div>
     </div>
