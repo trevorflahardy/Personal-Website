@@ -13,7 +13,7 @@ import Button from "@/components/Button.vue";
             My Meaningful Projects
         </h2>
 
-        <div class="flex flex-row gap-5 overflow-x-scroll flex-nowrap">
+        <div class="flex flex-row gap-5">
             <!-- Holds the Chai project card -->
             <InfoCard class="max-w-sm">
                 <!--Title followed by a chai pfp on the other side-->
