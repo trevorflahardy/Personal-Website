@@ -13,9 +13,9 @@ import Button from "@/components/Button.vue";
             My Meaningful Projects
         </h2>
 
-        <div class="flex flex-row gap-5">
+        <div class="flex flex-row flex-wrap gap-5 items-start">
             <!-- Holds the Chai project card -->
-            <InfoCard class="max-w-sm">
+            <InfoCard class="max-w-sm flex justify-between">
                 <!--Title followed by a chai pfp on the other side-->
                 <div class="flex flex-row justify-between mr-1">
                     <h1 class="card-title">
@@ -40,6 +40,28 @@ import Button from "@/components/Button.vue";
                     <Button content="Development Board" background="bg-inherit" class="outline outline-1 outline-chai"
                         link="https://github.com/users/trevorflahardy/projects/11" icon="pi-book" />
                 </div>
+            </InfoCard>
+
+            <InfoCard class="max-w-sm" image-position="top">
+                <template #image>
+                    <img src="/tixte.png" class="rounded-xl" />
+                </template>
+
+                <!-- Shows the title, description, and lin to the project -->
+                <h1 class="card-title">
+                    Tixte Python Wrapper
+                </h1>
+
+                <p class="card-body mb-5">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt eius accusamus ipsum fugiat vero
+                    assumenda adipisci
+                    reiciendis corporis fuga. Nostrum optio minus laborum error maiores ullam nesciunt porro ea
+                    sapiente.
+                </p>
+
+                <!-- The tixte button that shows the user the github-->
+                <Button content="Github" background="bg-yellow-200" class="max-w-32 font-medium" icon="pi-github"
+                    text-color="text-sky-900" link="https://github.com/trevorflahardy/tixte.py" />
             </InfoCard>
         </div>
     </div>
