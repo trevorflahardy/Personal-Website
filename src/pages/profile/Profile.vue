@@ -3,8 +3,6 @@ import { defineAsyncComponent, Suspense } from "vue";
 
 import Intro from "./Intro.vue";
 import PageLayoutSpacer from "@/components/PageLayoutSpacer.vue";
-import WakaLoading from "./WakaLoading.vue";
-import DiscordLoading from "./DiscordLoading.vue";
 import Projects from "./Projects.vue";
 
 const ProfileWaka = defineAsyncComponent(
@@ -24,8 +22,11 @@ const ProfileDiscord = defineAsyncComponent(
       <Suspense>
         <ProfileWaka />
 
+        <!-- If we have to fallback we'll just do a pulsing gray outline with some random padding, let's say 36 -->
         <template #fallback>
-          <WakaLoading />
+          <div
+            class="basis-1/2 w-full h-full rounded-xl animate-pulse bg-inherit outline-gray-600 dark:outline-gray-300 outline-dashed p-36">
+          </div>
         </template>
       </Suspense>
 
@@ -33,7 +34,9 @@ const ProfileDiscord = defineAsyncComponent(
         <ProfileDiscord />
 
         <template #fallback>
-          <DiscordLoading />
+          <div
+            class="basis-1/2 w-full h-full rounded-xl animate-pulse bg-inherit outline-gray-600 dark:outline-gray-300 outline-dashed p-36">
+          </div>
         </template>
       </Suspense>
     </div>
