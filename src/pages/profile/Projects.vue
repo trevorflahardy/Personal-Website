@@ -34,10 +34,11 @@ import Button from "@/components/Button.vue";
                 <!-- Shows the action buttons on this card -->
                 <div class="flex flex-row items-center justify-start gap-2">
                     <router-link :to="{ name: chaiRouterName }">
-                        <Button content="Project" background="bg-chai" class="max-w-32 font-medium" />
+                        <Button content="Project" background="bg-chai-400" class="max-w-32 font-medium" />
                     </router-link>
 
-                    <Button content="Development Board" background="bg-inherit" class="outline outline-1 outline-chai"
+                    <Button content="Development Board" background="bg-inherit"
+                        class="outline outline-1 outline-chai-400"
                         link="https://github.com/users/trevorflahardy/projects/11" icon="pi-book" />
                 </div>
             </InfoCard>

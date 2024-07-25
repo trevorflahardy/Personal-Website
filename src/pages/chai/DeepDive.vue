@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const highlightedTool = "font-semibold text-chai";
+const highlightedTool = "font-semibold text-chai-300";
 </script>
 
 <template>

@@ -8,7 +8,7 @@ export interface ProjectProps {
 }
 
 const route = useRoute();
-const props = defineProps < ProjectProps > ();
+const props = defineProps<ProjectProps>();
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const props = defineProps < ProjectProps > ();
     }">
     <!-- Grab the image slot, if it exists and insert it in a circle so that it fills the width and height of the button-->
     <div class="w-7 h-7 rounded-full overflow-hidden shadow">
-      <img :src="$props.icon" class="object-cover">
+      <img :src="$props.icon" class="object-fill">
     </div>
 
     <p class="text-white text-sm">{{ props.displayName }}</p>
