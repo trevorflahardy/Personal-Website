@@ -12,8 +12,8 @@ import Background from './components/Background.vue';
     <!-- The background for the app -->
     <Background class="z-10 absolute" />
 
-    <div data-tilt data-tilt-max="0.4" data-tilt-perspective="1000" data-tilt-speed="500" data-tilt-reverse="true"
-      class="z-20 h-screen w-screen relative flex flex-col items-center justify-start content-center [transform-style: preserve-3d] [transform: perspective(1000px)] pt-10 px-5 overflow-hidden">
+    <div
+      class="z-20 h-screen w-screen relative flex flex-col items-center justify-start content-center [transform-style: preserve-3d] [transform: perspective(1000px)] pt-10 px-5 xl:pt-[5%] xl:pb-[13%] xl:px-[5%] overflow-hidden">
       <!-- We're using Vue Router here. Thus, to ensure that we always have a proper footer and sidebar, we're going to embed the router view in the Hero. -->
       <Hero />
       <Footer />

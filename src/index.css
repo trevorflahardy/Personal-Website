@@ -7,27 +7,27 @@
 
   /* Gives a hero title to only be used in the intro to this page. This is because it's MASSIVE */
   .hero-title {
-    @apply text-4xl md:text-5xl lg:text-7xl xl:text-7xl 2xl:text-8xl font-bold text-white text-pretty mb-1 md:mb-3 antialiased;
+    @apply text-4xl md:text-5xl lg:text-7xl xl:text-7xl 2xl:text-8xl font-bold text-white text-pretty mb-1 md:mb-3;
   }
 
   .title {
-    @apply text-xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white text-pretty mb-2 antialiased;
+    @apply text-xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white text-pretty mb-2;
   }
 
   .title-2 {
-    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-white text-pretty mb-2 antialiased;
+    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-white text-pretty mb-3;
   }
 
   .title-3 {
-    @apply text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-semibold text-gray-100 text-pretty mb-1 antialiased;
+    @apply text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-semibold text-gray-100 text-pretty mb-1;
   }
 
   .title-4 {
-    @apply text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-200 text-pretty mb-1 antialiased;
+    @apply text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-200 text-pretty mb-1;
   }
 
   .subtitle {
-    @apply text-xs md:text-sm xl:text-base text-gray-200 text-pretty antialiased mb-1;
+    @apply text-xs md:text-sm xl:text-base text-gray-200 text-pretty  mb-1;
   }
 
   .body {
@@ -36,7 +36,7 @@
 
   /* Info specifically for cards. This ensures that every card has consistent and smaller titles and captions and subtitles than the normal base */
   .card-title {
-    @apply text-lg md:text-xl lg:text-2xl font-semibold text-white text-pretty lg:mb-1 leading-tight;
+    @apply text-lg md:text-xl lg:text-2xl font-semibold text-white text-pretty lg:mb-2 leading-tight;
   }
 
   .card-title-2 {

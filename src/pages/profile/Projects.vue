@@ -15,7 +15,13 @@ import Button from "@/components/Button.vue";
 
         <div class="flex flex-row flex-wrap gap-5 items-start">
             <!-- Holds the Chai project card -->
-            <InfoCard class="max-w-sm flex justify-between">
+            <InfoCard class="max-w-sm flex justify-between" image-position="top">
+                <template #image>
+                    <!-- We do not have an image for Chai right now, so we'll just do a banner
+                     that is the chai background color. -->
+                    <div class="w-full h-10 bg-chai-400 rounded-t-xl"></div>
+                </template>
+
                 <!--Title followed by a chai pfp on the other side-->
                 <div class="flex flex-row justify-between mr-1">
                     <h1 class="card-title">
@@ -25,10 +31,10 @@ import Button from "@/components/Button.vue";
                 </div>
 
                 <p class="card-body mb-5">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque fugit non laudantium tenetur
-                    impedit,
-                    ea officia delectus sapiente a cupiditate doloremque facere totam modi mollitia aliquid quaerat
-                    obcaecati? Fuga, quam.
+                    A highly advanced Discord bot centered around Epic Games' popular game, Fortnite. Chai is a labor of
+                    love for me,
+                    and although I've been working on it for years,
+                    I'm always looking for ways to improve it.
                 </p>
 
                 <!-- Shows the action buttons on this card -->
@@ -54,10 +60,9 @@ import Button from "@/components/Button.vue";
                 </h1>
 
                 <p class="card-body mb-5">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt eius accusamus ipsum fugiat vero
-                    assumenda adipisci
-                    reiciendis corporis fuga. Nostrum optio minus laborum error maiores ullam nesciunt porro ea
-                    sapiente.
+                    <strong>tixte.py</strong> is a Python wrapper for the Tixte API. It allows developers to easily
+                    create and
+                    manage files on the Tixte platform.
                 </p>
 
                 <!-- The tixte button that shows the user the github-->

@@ -54,6 +54,6 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
       {{ humanReadableBestDayTime }} of coding!
     </p>
 
-    <Button class="w-fit" :link="wakaProfileUrl" icon="pi-clock" content="View Waka Profile" />
+    <Button class="w-fit z-30" :link="wakaProfileUrl" icon="pi-clock" content="View Waka Profile" />
   </InfoCard>
 </template>

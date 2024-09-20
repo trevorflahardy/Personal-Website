@@ -3,39 +3,50 @@ import { useRoute } from "vue-router";
 
 import Project, { ProjectProps } from "./Project.vue";
 import { routerLinkName as chaiRouterLink, profilePic as chaiProfilePic } from "@/pages/chai/info";
+import { routerLinkName as docuflowRouterLink } from "@/pages/docuflow/info";
 
+const isHamburgerOpen = defineModel();
 const route = useRoute();
 
 // Marked raw so it doesn't get wrapped in a proxy (which causes unessecary performance overhead)
-const projects: [ProjectProps] = [
+const projects: ProjectProps[] = [
     {
         icon: chaiProfilePic,
         displayName: "Chai",
         routerLinkName: chaiRouterLink,
     },
+    {
+        icon: './docuflow-logo.svg',
+        displayName: 'Docuflow',
+        routerLinkName: docuflowRouterLink,
+    }
 ];
+
+function toggleHamburger() {
+    isHamburgerOpen.value = !isHamburgerOpen.value;
+}
 </script>
 
 <template>
     <!-- Holds the platform-less sidebar content. This will display the same on mobile and desktop. The only difference
  is that the mobile content is hidden behind the hamburger. -->
-    <div class="rounded-[40px] glass-thick h-full pt-12 p-5 xl:pt-5 w-full min-w-80">
-        <div class="mb-5">
+    <div class="rounded-[40px] glass-thick h-full pt-12 p-5 xl:pt-5 w-full min-w-72">
+        <div class="mb-5 mt-4">
             <h4 class="title-4 font-medium mb-0">
-                Personal Website
+                Hello,
             </h4>
             <p class="subtitle">
-                View some work
+                View some of my work!
             </p>
         </div>
 
         <!-- The profile tab. This is separate from the other projects, ie a special component, so it'll be managed manually -->
         <router-link :to="{ name: 'profile' }">
             <button
-                class="flex flex-row p-2 w-full rounded-xl gap-3 items-center mb-5 hover:glass-thin transition duration-300 ease-in-out"
+                class="flex flex-row p-2 w-full rounded-xl gap-3 items-center mb-5 hover:glass-thin hover:bg-gray-300/10 transition duration-300 ease-in-out"
                 :class="{
                     'glass-thin shadow-md bg-gray-300/10': route.name == 'profile'
-                }">
+                }" @click="toggleHamburger()">
                 <!-- Holds the PFP -->
                 <img src="@/assets/ProfilePic.png"
                     class="w-10 h-10 xl:w-14 xl:h-14 rounded-full object-cover flex-none" />
@@ -53,7 +64,7 @@ const projects: [ProjectProps] = [
         </router-link>
 
         <!-- Small title for the projects-->
-        <h2 class="w-full text-sm text-gray-300 font-light mb-1">
+        <h2 class="w-full text-sm text-white font-light mb-1">
             My Favorite Projects
         </h2>
 
@@ -61,7 +72,8 @@ const projects: [ProjectProps] = [
         <div class="space-y-1">
             <router-link v-for="{ icon, displayName, routerLinkName } in projects" :key="routerLinkName"
                 :to="{ name: routerLinkName }">
-                <Project :icon="icon" :display-name="displayName" :router-link-name="routerLinkName" />
+                <Project :icon="icon" :display-name="displayName" :router-link-name="routerLinkName"
+                    @click="toggleHamburger()" />
             </router-link>
         </div>
     </div>

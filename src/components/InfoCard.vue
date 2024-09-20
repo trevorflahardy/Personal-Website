@@ -24,7 +24,7 @@ function contentOrder(): number {
 </script>
 
 <template>
-    <div class="flex glass-regular bg-gray-800/40 dark:bg-gray-200/5 transition-all duration-500 ease-in-out rounded-xl drop-shadow-md overflow-clip"
+    <div class="flex glass-regular bg-gray-800/40 dark:bg-gray-200/5 transition-all duration-500 ease-in-out rounded-xl drop-shadow-md overflow-clip z-10 transform hover:translate-z-10"
         :class="{
             'flex-row': shouldFlexRow(),
             'flex-col': shouldFlexCol()

@@ -17,8 +17,10 @@ function toggleHamburger() {
 <template>
   <div>
     <!-- Represents the desktop sidebar. This sidebar is always visible on desktop-->
-    <div class="hidden xl:flex h-full w-full">
-      <Content />
+    <div
+      class="hidden xl:flex h-full w-full transform-gpu outline outline-1 outline-gray-300 dark:outline-gray-500 rounded-[40px]"
+      data-tilt data-tilt-glare="true" data-tilt-max-glare="0.05" data-tilt-max="3" data-tilt-reverse="true">
+      <Content v-model="isHamburgerOpen" />
     </div>
 
     <!-- Represents a mobile sidebar. This is a hamburger shown in the top left that then opens a desktop-like menu but
@@ -35,7 +37,7 @@ function toggleHamburger() {
       <!-- Shows the actual sidebar that slides in on click OVER the other content-->
       <Transition name="fade-in">
         <div class="z-10 top-0 left-0 w-fill h-full rounded-[40px]" v-if="isHamburgerOpen">
-          <Content />
+          <Content v-model="isHamburgerOpen" />
         </div>
       </Transition>
     </div>

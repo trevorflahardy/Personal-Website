@@ -40,6 +40,10 @@ export default {
           300: "#282b30",
           400: "#1e2124",
           "blurple": "#7289da",
+        },
+        docuflow: {
+          light: "#FF381F",
+          dark: "#FF381F",
         }
       },
     },
