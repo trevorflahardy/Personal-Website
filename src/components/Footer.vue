@@ -17,7 +17,7 @@ const toggleThemeIcon = computed(() => {
 
 <template>
 	<div
-		class="w-96 h-14 glass-thick bg-gray-300/50 rounded-full relative -top-6 shadow-xl flex-row items-center justify-start p-4 flex">
+		class="w-96 h-14 glass-thick bg-gray-300/50 rounded-full relative -top-6 shadow-xl flex-row items-center justify-start p-4 flex xl:ml-[30%]">
 		<!-- Lightswitch for light and dark mode -->
 
 		<button
