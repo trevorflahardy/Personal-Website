@@ -16,7 +16,7 @@ import Button from '@/components/Button.vue';
 				<!-- Holds my PFP alongside it-->
 				<div
 					class="rounded-full overflow-hidden bg-gray-800/40 dark:bg-gray-200/5 p-1 shadow-xl shrink-0 md:block hidden">
-					<img src="@/assets/ProfilePicNoBG.png"
+					<img src="/ProfilePicNoBG.png"
 						class="md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-40 xl:h-40 2xl:w-48 2xl:h-48 w-14 h-14" />
 				</div>
 			</div>
