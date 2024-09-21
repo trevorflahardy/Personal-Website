@@ -25,14 +25,14 @@ const docuflowInfoCards = [
 <template>
     <PageLayoutSpacer>
         <!-- The standard-type intro to the page. -->
-        <div class="py-5 px-2 bg-gray-950/30 dark:bg-gray-200/5 shadow-md rounded-[40px] space-y-5">
+        <div class="py-5 px-2 bg-gray-950/30 dark:bg-gray-200/5 shadow-md rounded-[40px]">
             <p class="title text-center">
                 Build <span class="text-docuflow-light dark:text-docuflow-dark">quick</span>, lightweight <span
                     class="text-docuflow-light dark:text-docuflow-dark">documentation</span>, don't get bogged down
                 by the process.
             </p>
 
-            <div class="flex w-full items-center justify-around">
+            <div class="flex w-full items-center justify-around mt-5">
                 <Button content="Github" icon="pi-github" background="bg-docuflow-light dark:bg-docuflow-dark"
                     class="font-medium" />
             </div>

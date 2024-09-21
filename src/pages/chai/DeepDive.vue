@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-const highlightedTool = "font-semibold text-chai-300";
+const highlightedTool = "font-semibold text-chai-200";
 </script>
 
 <template>
@@ -12,19 +12,21 @@ const highlightedTool = "font-semibold text-chai-300";
     <div class="w-full px-5">
         <!-- The heading for this section-->
         <div class="mb-5 flex flex-col items-center justify-center">
-            <div class="flex flex-row items-baseline gap-2">
+            <div class="flex flex-row items-center gap-2">
                 <i class="pi pi-arrow-down text-white" />
-                <h2 class="title-2 mb-0">
-                    Chai Deep Dive
+
+                <h2 class="title-2 mb-1">
+                    Deep Dive
                 </h2>
             </div>
+
             <p class="subtitle">
-                Let's dive deep into the inner workings of Chai.
+                So, how does Chai work? And what is the Image Generation API?
             </p>
         </div>
 
         <!-- Holds all the information about the deep dive into each section.-->
-        <div class="flex flex-row flex-wrap items-start justify-around gap-3">
+        <div class="grid grid-cols-3 gap-3">
             <!-- The Discord bot element of this section -->
             <div class="text-center max-w-md">
                 <h3 class="title-3">Discord Front End</h3>

@@ -27,7 +27,7 @@
   }
 
   .subtitle {
-    @apply text-xs md:text-sm text-gray-100 text-pretty  mb-1;
+    @apply text-sm md:text-base text-gray-100 text-pretty mb-1;
   }
 
   .body {
@@ -40,7 +40,7 @@
   }
 
   .card-title-2 {
-    @apply text-base md:text-lg lg:text-xl text-gray-100 text-pretty lg:mb-1;
+    @apply text-base md:text-lg lg:text-xl font-medium text-gray-100 text-pretty lg:mb-1;
   }
 
   .card-caption {

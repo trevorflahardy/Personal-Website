@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { routerLinkName as chaiRouterName, profilePic as chaiProfilePic } from "@/pages/chai/info";
+import { routerLinkName as chaiRouterName, icon as chaiProfilePic } from "@/pages/chai/info";
+import { textGradient as docuflowTextGradient, routerLinkName as docuflowRouterName } from "../docuflow/info";
 import InfoCard from "@/components/InfoCard.vue";
 import Button from "@/components/Button.vue";
 </script>
@@ -9,17 +10,18 @@ import Button from "@/components/Button.vue";
      users to specific projects or lets them click on the project to view a more in-depth 
      page on it.-->
     <div class="px-5 w-full">
-        <h2 class="title-2 text-left">
-            My Meaningful Projects
+        <h2 class="title-2 text-center mb-5">
+            Some Meaningful Projects
         </h2>
 
-        <div class="flex flex-row flex-wrap gap-5 items-start">
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 grid-rows-auto gap-5 items-start justify-center place-items-center">
             <!-- Holds the Chai project card -->
             <InfoCard class="max-w-sm flex justify-between" image-position="top">
                 <template #image>
                     <!-- We do not have an image for Chai right now, so we'll just do a banner
                      that is the chai background color. -->
-                    <div class="w-full h-10 bg-chai-400 rounded-t-xl"></div>
+                    <div class="w-full h-full min-h-12 md:min-h-20 bg-chai-400 rounded-t-xl"></div>
                 </template>
 
                 <!--Title followed by a chai pfp on the other side-->
@@ -38,9 +40,9 @@ import Button from "@/components/Button.vue";
                 </p>
 
                 <!-- Shows the action buttons on this card -->
-                <div class="flex flex-row items-center justify-start gap-2">
+                <div class="flex flex-row flex-wrap items-center justify-start gap-3">
                     <router-link :to="{ name: chaiRouterName }">
-                        <Button content="Project" background="bg-chai-400" class="max-w-32 font-medium" />
+                        <Button content="See More" background="bg-chai-400" class="max-w-32 font-medium" />
                     </router-link>
 
                     <Button content="Development Board" background="bg-inherit"
@@ -68,6 +70,29 @@ import Button from "@/components/Button.vue";
                 <!-- The tixte button that shows the user the github-->
                 <Button content="Github" background="bg-yellow-200" class="max-w-32 font-medium" icon="pi-github"
                     text-color="text-sky-900" link="https://github.com/trevorflahardy/tixte.py" />
+            </InfoCard>
+
+            <!-- The docuflow card -->
+            <InfoCard class="max-w-sm min-w-64" image-position="top">
+                <template #image>
+                    <img :src="docuflowTextGradient" class="bg-white p-5">
+                </template>
+
+                <h1 class="card-title">
+                    Docuflow
+                </h1>
+
+                <p class="card-body mb-5">
+                    A simple documentation generator from MDX, Markdown + JSX, files. Built for people who want
+                    to focus on what's important, their work.
+                </p>
+
+                <!-- Shows the action buttons on this card -->
+                <router-link :to="{ name: docuflowRouterName }">
+                    <Button content="See More" background="bg-docuflow-light dark:bg-docuflow-dark"
+                        text-color="text-white" class="max-w-32" />
+                </router-link>
+
             </InfoCard>
         </div>
     </div>

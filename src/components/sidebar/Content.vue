@@ -2,8 +2,8 @@
 import { useRoute } from "vue-router";
 
 import Project, { ProjectProps } from "./Project.vue";
-import { routerLinkName as chaiRouterLink, profilePic as chaiProfilePic } from "@/pages/chai/info";
-import { routerLinkName as docuflowRouterLink } from "@/pages/docuflow/info";
+import { routerLinkName as chaiRouterLink, icon as chaiIcon } from "@/pages/chai/info";
+import { routerLinkName as docuflowRouterLink, icon as docuflowIcon } from "@/pages/docuflow/info";
 
 const isHamburgerOpen = defineModel();
 const route = useRoute();
@@ -11,12 +11,12 @@ const route = useRoute();
 // Marked raw so it doesn't get wrapped in a proxy (which causes unessecary performance overhead)
 const projects: ProjectProps[] = [
     {
-        icon: chaiProfilePic,
+        icon: chaiIcon,
         displayName: "Chai",
         routerLinkName: chaiRouterLink,
     },
     {
-        icon: './docuflow-logo.svg',
+        icon: docuflowIcon,
         displayName: 'Docuflow',
         routerLinkName: docuflowRouterLink,
     }
@@ -36,7 +36,7 @@ function toggleHamburger() {
                 Welcome,
             </h4>
             <p class="subtitle">
-                Come view some of my work:
+                View some of my work!
             </p>
         </div>
 

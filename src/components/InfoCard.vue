@@ -7,7 +7,6 @@ export interface InfoCardProps {
 }
 
 const props = defineProps<InfoCardProps>();
-const hasCustomBackground = props.background !== undefined;
 
 function shouldFlexRow() {
 	return props.imagePosition === 'left' || props.imagePosition === 'right';
@@ -40,7 +39,7 @@ const backgroundClass = computed(() => {
 		<slot name="image" :class="`flex-auto w-full h-auto order-${imageOrder()}`" />
 
 		<!--Holds the actual content of this card, in the slot-->
-		<div class="flex-auto w-full p-3" :class="`order-${contentOrder()}`">
+		<div class="flex-auto w-full p-3 md:pb-5" :class="`order-${contentOrder()}`">
 			<!-- The default slot that contains the content -->
 			<slot />
 		</div>

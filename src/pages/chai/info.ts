@@ -1,4 +1,4 @@
-import chaiProfilePic from "@/assets/Chai.svg?url";
+import chaiIcon from "@/assets/Chai.svg?url";
 
 export const routerLinkName = 'project-chai';
-export const profilePic = chaiProfilePic;
+export const icon = chaiIcon;

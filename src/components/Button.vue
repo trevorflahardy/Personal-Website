@@ -13,11 +13,11 @@ interface Props {
 const props = defineProps<Props>();
 
 const buttonBackground = computed(() => {
-  return props.background || "bg-gray-800/40 dark:bg-gray-200/5 hover:bg-gray-800/50 dark:hover:bg-gray-200/10";
+  return props.background || "bg-gray-950/30 dark:bg-gray-200/5 hover:bg-gray-800/50 dark:hover:bg-gray-200/10";
 });
 
 const buttonClass = computed(() => {
-  return `py-3 px-5 rounded-xl shadow transition-all duration-500 hover:scale-105 ease-in-out ${buttonBackground.value}`;
+  return `py-3 px-5 rounded-xl shadow font-medium transition-all duration-500 hover:scale-105 ease-in-out ${buttonBackground.value}`;
 });
 
 // Want the default behavior to open in a new tab
