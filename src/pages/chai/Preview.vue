@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InfoCard from '@/components/InfoCard.vue';
 
-const previewCardInfoClass = "bg-gradient-to-br from-discord-100 to-discord-200 max-w-xl transition-all duration-200 ease-in-out hover:scale-[1.03]"
+const previewCardInfoClass = "bg-gradient-to-br from-discord-100 to-discord-200 transition-all duration-200 ease-in-out hover:scale-[1.03]"
 </script>
 
 <template>

@@ -11,7 +11,7 @@
   }
 
   .title {
-    @apply text-xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white text-pretty mb-2;
+    @apply text-lg md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white text-pretty mb-2;
   }
 
   .title-2 {
@@ -27,7 +27,7 @@
   }
 
   .subtitle {
-    @apply text-xs md:text-sm xl:text-base text-gray-200 text-pretty  mb-1;
+    @apply text-xs md:text-sm text-gray-100 text-pretty  mb-1;
   }
 
   .body {
@@ -48,13 +48,13 @@
   }
 
   .card-body {
-    @apply text-xs md:text-sm lg:text-base text-gray-200 font-light text-pretty;
+    @apply text-xs md:text-sm lg:text-base text-gray-100 font-light text-pretty;
   }
 
   /* Globally apply that no paragraph should be more than 6xl */
   p,
   li {
-    @apply max-w-sm sm:max-w-5xl m-0;
+    @apply max-w-xl sm:max-w-5xl m-0;
   }
 }
 

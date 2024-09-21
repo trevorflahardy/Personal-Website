@@ -11,7 +11,7 @@ const isDark = computed(() => theme.value === "dark");
     <!-- This Background component represents the "toggle-able" background on the app. It gives
      gradual shifting between light and dark. Additionally, the z-index of this item is below
      the other app (hero) content so that the glass background-blur is a real glass feel.-->
-    <transition name="fade" class="absolute">
+    <transition name="fade" class="absolute" mode="in-out">
         <div v-if="isDark" class="h-screen w-screen bg-center bg-clip-border bg-cover bg-apt-night" />
         <div v-else class="h-screen w-screen bg-center bg-clip-border bg-cover bg-apt-day" />
     </transition>
@@ -21,11 +21,11 @@ const isDark = computed(() => theme.value === "dark");
 /* Denotes the fade transition between the backgrounds */
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 1.5s;
+    transition: opacity 0.5s;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-    opacity: 0.1;
+    opacity: 0.01;
 }
 </style>

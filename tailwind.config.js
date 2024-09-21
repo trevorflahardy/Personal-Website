@@ -42,7 +42,7 @@ export default {
           "blurple": "#7289da",
         },
         docuflow: {
-          light: "#FF381F",
+          light: "#FF4A33",
           dark: "#FF381F",
         }
       },

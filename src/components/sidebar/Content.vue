@@ -33,10 +33,10 @@ function toggleHamburger() {
     <div class="rounded-[40px] glass-thick h-full pt-12 p-5 xl:pt-5 w-full md:min-w-72 xl:min-w-80">
         <div class="mb-5 mt-4">
             <h4 class="title-4 font-medium mb-0">
-                Hello,
+                Welcome,
             </h4>
             <p class="subtitle">
-                View some of my work!
+                Come view some of my work:
             </p>
         </div>
 
@@ -69,12 +69,13 @@ function toggleHamburger() {
         </h2>
 
         <!-- All other project components handled under their own component, they are the same essentially -->
-        <div class="space-y-1">
-            <router-link v-for="{ icon, displayName, routerLinkName } in projects" :key="routerLinkName"
-                :to="{ name: routerLinkName }">
-                <Project :icon="icon" :display-name="displayName" :router-link-name="routerLinkName"
-                    @click="toggleHamburger()" />
-            </router-link>
+        <div class="flex flex-col gap-2">
+            <button v-for="{ icon, displayName, routerLinkName } in projects" :key="routerLinkName">
+                <router-link :to="{ name: routerLinkName }">
+                    <Project :icon="icon" :display-name="displayName" :router-link-name="routerLinkName"
+                        @click="toggleHamburger()" />
+                </router-link>
+            </button>
         </div>
     </div>
 
