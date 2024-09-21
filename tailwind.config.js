@@ -51,5 +51,5 @@ export default {
       "sf-pro-display": ["SF Pro Display", "Helvetica Neue", "sans-serif"],
     },
   },
-  plugins: [require("tailwindcss-3d")],
+  plugins: [require("tailwindcss-3d"), require('tailwindcss-animated'), require('tailwindcss-intersect')],
 };
