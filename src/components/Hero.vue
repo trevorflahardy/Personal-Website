@@ -21,7 +21,7 @@ import Sidebar from './sidebar/Sidebar.vue';
 
 			<!-- The main content of the page. We place the background on the component itself because, if not done otherwise, the transition duration would apply to the tilt, which we do not want.  -->
 			<router-view v-slot="{ Component }">
-				<div class="w-fit h-fit glass-thick">
+				<div class="w-full glass-thick">
 					<component :is="Component" class="transition-all duration-500 ease-in-out" />
 				</div>
 			</router-view>
