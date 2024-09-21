@@ -44,8 +44,8 @@ I'm keeping track of my progress as I continue to work on my website. Here are s
 September 21st, 2024: I'm dubbing Version 3 of this project; I feel it's changed enough to constitute a progress update. I still have hopes for the following, which I plan to address in the coming update
 - [ ] More content on the profile page, like hobbies, education, achievements, and _why_ my personal website looks as it does.
 - [ ] A cleaner Docuflow page which has the name of "Docuflow" in the title perhaps
-- [ ] A cleaner Chai introduction which has some better branding elements
-- [ ] Updating some inconsistencies that are bothering me, specifically the glass on light mode being way too dark.
+- [x] A cleaner Chai introduction which has some better branding elements
+- [x] Updating some inconsistencies that are bothering me, specifically the glass on light mode being way too dark.
 
 <img width="1512" alt="image" src="https://github.com/user-attachments/assets/121912df-a28c-4c89-9951-d31d5032433d">
 <img width="1512" alt="image" src="https://github.com/user-attachments/assets/17edefdd-a5c4-4a77-a90e-bcea2fefb6c6">
