@@ -8,8 +8,8 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        "apt-day": "url('./assets/AptDay.png')",
-        "apt-night": "url('./assets/AptNight.png')",
+        "apt-day": "url('/AptDay.png')",
+        "apt-night": "url('/AptNight.png')",
       },
       fontSize: {
         xss: ["10px", "12px"],
