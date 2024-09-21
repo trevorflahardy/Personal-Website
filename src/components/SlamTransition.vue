@@ -1,28 +1,15 @@
-<script setup>
-const props = defineProps({
-  class: {
-    type: String,
-    default: "",
-  },
-  tag: {
-    type: String,
-    default: "div",
-  },
-  opacityDuration: {
-    type: String,
-    default: "0.6s",
-    required: false,
-  },
-  transformDuration: {
-    type: String,
-    default: "600ms",
-    required: false,
-  },
-});
+<script setup lang="ts">
+export interface SlamTransitionProps {
+  tag: string;
+  opacityDuration: string;
+  transformDuration: string;
+}
+
+const props = defineProps<SlamTransitionProps>();
 </script>
 
 <template>
-  <TransitionGroup name="slam" appear :tag="props.tag" :class="props.class"
+  <TransitionGroup name="slam" appear :tag="props.tag"
     class="animate-fade-up animate-once animate-duration-[1200ms] animate-delay-0 animate-ease-in-out">
     <!-- Walk through the slots and give a key to each one -->
     <slot v-for="(slot, index) in $slots" :key="`slot-${index}`">
@@ -34,7 +21,7 @@ const props = defineProps({
 <style>
 .slam-enter-active {
   transition:
-    transform v-bind("props.transformDuration") ease-in-out;
+    transform v-bind("props.transformDuration || '600ms'") ease-in-out;
 }
 
 .slam-enter-from {

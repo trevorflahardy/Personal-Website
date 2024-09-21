@@ -16,9 +16,9 @@ const ProfileDiscord = defineAsyncComponent(
 
 <template>
   <PageLayoutSpacer>
-    <Intro class="snap-center" />
+    <Intro />
 
-    <div class="flex flex-row items-center justify-around snap-center flex-wrap gap-5">
+    <div class="flex flex-row items-center justify-around flex-wrap gap-5">
       <Suspense>
         <ProfileWaka />
 
