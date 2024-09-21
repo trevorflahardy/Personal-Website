@@ -30,7 +30,7 @@ const backgroundClass = computed(() => {
 </script>
 
 <template>
-	<div class="flex glass-regular transition-all duration-500 ease-in-out rounded-xl shadow-md overflow-clip" :class="[
+	<div class="flex transition-all duration-500 ease-in-out rounded-xl shadow-md overflow-clip" :class="[
 		backgroundClass,
 		{ ['flex-row']: shouldFlexRow(), ['flex-col']: shouldFlexCol() }
 	]">
