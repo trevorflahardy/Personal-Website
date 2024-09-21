@@ -13,6 +13,7 @@
     "@tresjs/cientos": "^3.9.0",
     "@tresjs/core": "^4.0.2",
     "axios": "^1.6.8",
+    "personal-website": "file:",
     "primeicons": "^7.0.0",
     "vue": "^3.4.15",
     "vue-router": "^4.4.0"
