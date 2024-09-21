@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+
 export interface InfoCardProps {
 	imagePosition?: 'left' | 'right' | 'top' | 'bottom',
 	background?: string,
@@ -23,15 +25,16 @@ function contentOrder(): number {
 	return props.imagePosition === 'left' || props.imagePosition === 'top' ? 2 : 1;
 }
 
-const background = props.background || 'bg-gray-800/40 dark:bg-gray-200/5';
+const backgroundClass = computed(() => {
+	return props.background || 'bg-gray-950/30 dark:bg-gray-200/5';
+}) 
 </script>
 
 <template>
-	<div class="flex glass-regular transition-all duration-500 ease-in-out rounded-xl shadow-md overflow-clip" :class="{
-		'flex-row': shouldFlexRow(),
-		'flex-col': shouldFlexCol(),
-		background: true
-	}">
+	<div class="flex glass-regular transition-all duration-500 ease-in-out rounded-xl shadow-md overflow-clip" :class="[
+		backgroundClass,
+		{ ['flex-row']: shouldFlexRow(), ['flex-col']: shouldFlexCol() }
+	]">
 		<!-- Holds the image of this card. Takes up as much width as possible on the card
          and has its height auto adjust (unless the user wants to choose otherwise)-->
 		<slot name="image" :class="`flex-auto w-full h-auto order-${imageOrder()}`" />

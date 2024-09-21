@@ -25,7 +25,7 @@ const docuflowInfoCards = [
 <template>
     <PageLayoutSpacer>
         <!-- The standard-type intro to the page. -->
-        <div class="py-5 px-2 bg-gray-100/10 shadow-md rounded-[40px] space-y-5">
+        <div class="py-5 px-2 bg-gray-950/30 dark:bg-gray-200/5 shadow-md rounded-[40px] space-y-5">
             <p class="title text-center">
                 Build <span class="text-docuflow-light dark:text-docuflow-dark">quick</span>, lightweight <span
                     class="text-docuflow-light dark:text-docuflow-dark">documentation</span>, don't get bogged down
@@ -41,10 +41,10 @@ const docuflowInfoCards = [
         <!-- Below it denotes some selling points for why docuflow is nifty. These are basically
          info cards without backgrounds. -->
         <div class="flex flex-row flex-wrap items-stretch justify-center gap-5 h-fit">
-            <InfoCard imagePosition="top" background="bg-slate-300/20" class="text-center shadow-lg max-w-sm"
+            <InfoCard imagePosition="top" class="text-center shadow-lg max-w-sm"
                 v-for="{ title, body, icon } in docuflowInfoCards" :key="title">
                 <slot name="image">
-                    <i class="pi text-white text-5xl w-full text-center mb-3" :class="icon" />
+                    <i class="pi text-white text-4xl w-full text-center mb-3" :class="icon" />
                 </slot>
 
                 <h1 class="card-title">
