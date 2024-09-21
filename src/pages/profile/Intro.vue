@@ -3,14 +3,19 @@ import Button from '@/components/Button.vue';
 </script>
 
 <template>
-	<div class="w-full">
+	<div>
 		<!--Holds the intro section-->
 		<div class="snap-center flex-shrink">
 			<div class="flex flex-row justify-around items-center sm:mb-2 mb-0">
 				<!-- Holds the Hi and my name-->
 				<div class="inner self-end">
 					<p class="subtitle mb-0">Hi, I'm</p>
-					<h1 class="hero-title">Trevor Flahardy</h1>
+					<h1 class="hero-title mb-1 xl:mb-2">Trevor Flahardy</h1>
+					<Transition name="slide-up-appear" appear>
+						<p class="subtitle mb-3 sm:mb-5 text-right">
+							A full stack developer working to change lives.
+						</p>
+					</Transition>
 				</div>
 
 				<!-- Holds my PFP alongside it-->
@@ -20,14 +25,6 @@ import Button from '@/components/Button.vue';
 						class="md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-40 xl:h-40 2xl:w-48 2xl:h-48 w-14 h-14" />
 				</div>
 			</div>
-
-			<Transition name="slide-up-appear" appear class="w-full">
-				<p class="subtitle text-center mb-3 sm:mb-5">
-					Welcome to my personal website! I am a passionate full stack developer with a love for creating
-					beautiful and functional applications. I am currently a student studying Computer Science,
-					Mathematics, and AI.
-				</p>
-			</Transition>
 
 			<!-- Holds the links to my pages -->
 			<div class="flex flex-row gap-5 justify-center flex-wrap">
