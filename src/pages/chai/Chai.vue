@@ -16,7 +16,7 @@ const chaiInviteLink = "https://discord.com/oauth2/authorize?client_id=728115804
     feel with it, and have the preview below it for separation.-->
     <div class="w-full flex flex-row items-center justify-around">
       <!-- Holds the header and "call to action" button(s)-->
-      <div class="flex flex-col items-center justify-center max-w-3xl pt-3">
+      <div class="flex flex-col items-center justify-center max-w-6xl pt-3">
         <h1 class="title text-center mb-3 text-pretty">
           Meet <a class="text-chai-400">Chai</a>, the Fortnite authentication Discord Bot.
         </h1>
