@@ -1,4 +1,4 @@
-import chaiIcon from "@/assets/Chai.svg?url";
+import chaiIcon from "/Chai.svg?url";
 
 export const routerLinkName = 'project-chai';
 export const icon = chaiIcon;
