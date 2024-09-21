@@ -27,7 +27,7 @@
   }
 
   .subtitle {
-    @apply text-sm md:text-base text-gray-100 text-pretty mb-1;
+    @apply text-sm md:text-base text-gray-200 text-pretty mb-1;
   }
 
   .body {
