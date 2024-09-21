@@ -43,9 +43,9 @@ const docuflowInfoCards = [
         <div class="flex flex-row flex-wrap items-stretch justify-center gap-5 h-fit">
             <InfoCard imagePosition="top" class="text-center shadow-lg max-w-sm"
                 v-for="{ title, body, icon } in docuflowInfoCards" :key="title">
-                <slot name="image">
+                <template name="image">
                     <i class="pi text-white text-4xl w-full text-center mb-3" :class="icon" />
-                </slot>
+                </template>
 
                 <h1 class="card-title">
                     {{ title }}

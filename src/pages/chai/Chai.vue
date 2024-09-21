@@ -10,11 +10,6 @@ const chaiInviteLink = "https://discord.com/oauth2/authorize?client_id=728115804
 
 <template>
   <PageLayoutSpacer>
-    <!-- Holds the intro to Chai. 
-    TODO; Refactor this so that it's:
-    1. in its own component, ands
-    2. so that it has "Chai" and stuff on the side of some sort of logo or SVG-icon. Create a modern
-    feel with it, and have the preview below it for separation.-->
     <div class="w-full flex flex-row items-center justify-around">
       <!-- Holds the header and "call to action" button(s)-->
       <div

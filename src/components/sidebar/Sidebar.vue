@@ -19,7 +19,7 @@ function toggleHamburger() {
     <!-- Represents the desktop sidebar. This sidebar is always visible on desktop-->
     <div
       class="hidden xl:flex h-full w-full transform-gpu outline outline-1 outline-gray-300 dark:outline-gray-500 rounded-[40px]"
-      data-tilt data-tilt-glare="true" data-tilt-max-glare="0.05" data-tilt-max="3" data-tilt-reverse="true">
+      data-tilt data-tilt-max="3" data-tilt-reverse="true">
       <Content v-model="isHamburgerOpen" />
     </div>
 
