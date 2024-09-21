@@ -30,7 +30,7 @@ function toggleHamburger() {
 <template>
     <!-- Holds the platform-less sidebar content. This will display the same on mobile and desktop. The only difference
  is that the mobile content is hidden behind the hamburger. -->
-    <div class="rounded-[40px] glass-thick h-full pt-12 p-5 xl:pt-5 w-full min-w-72">
+    <div class="rounded-[40px] glass-thick h-full pt-12 p-5 xl:pt-5 w-full md:min-w-72 xl:min-w-80">
         <div class="mb-5 mt-4">
             <h4 class="title-4 font-medium mb-0">
                 Hello,
