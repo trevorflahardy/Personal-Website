@@ -39,9 +39,15 @@ const backgroundClass = computed(() => {
 		<slot name="image" :class="`flex-auto w-full order-${imageOrder()}`" />
 
 		<!--Holds the actual content of this card, in the slot-->
-		<div class="flex-auto w-full p-3 md:pb-5" :class="`order-${contentOrder()}`">
+		<div class="flex-auto w-full p-3 md:pb-5 flex flex-col items-start justify-between"
+			:class="`order-${contentOrder()}`">
 			<!-- The default slot that contains the content -->
 			<slot />
+
+			<!-- A special slot for buttons -->
+			<div class="mt-5 flex flex-row items-center justify-start flex-wrap gap-2">
+				<slot name="buttons" />
+			</div>
 		</div>
 	</div>
 </template>
