@@ -7,7 +7,7 @@ const actionDescription = [
     },
     {
         id: 2,
-        title: "The user requested to see their Fortnite locker",
+        title: "The user requested to see their Fortnite locker.",
         content: "The user invoked a command to visualize their Fortnite locker."
     },
     {
