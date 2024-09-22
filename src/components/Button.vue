@@ -17,7 +17,7 @@ const buttonBackground = computed(() => {
 });
 
 const buttonClass = computed(() => {
-  return `py-3 px-5 rounded-xl shadow font-medium transition-all duration-500 hover:scale-105 ease-in-out ${buttonBackground.value}`;
+  return `py-2 sm:py-3 px-4 sm:px-5 rounded-xl shadow font-medium transition-all duration-500 hover:scale-105 ease-in-out ${buttonBackground.value}`;
 });
 
 // Want the default behavior to open in a new tab
