@@ -48,7 +48,7 @@ import Button from '@/components/Button.vue';
 		</div>
 
 		<!-- More information about who I am, outside of the coding (down to earth) -->
-		<div class="w-full px-5 py-2 animate-fade-up animate-duration-700 animate-delay-[3000ms]">
+		<div class="w-full px-5 py-2 animate-fade-up animate-duration-700 animate-delay-[2400ms]">
 			<h1 class="title-4">
 				What makes me tick,
 			</h1>
