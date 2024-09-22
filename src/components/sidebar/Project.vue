@@ -25,6 +25,6 @@ const props = defineProps<ProjectProps>();
       <img :src="$props.icon" alt="Project preview icon" class="object-fill">
     </div>
 
-    <p class="text-white text-sm">{{ props.displayName }}</p>
+    <span class="text-white text-sm">{{ props.displayName }}</span>
   </button>
 </template>

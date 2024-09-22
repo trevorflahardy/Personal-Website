@@ -30,11 +30,11 @@ const _shouldOpenInNewTab = props.openInNewTab || true;
     <a v-if="link" :href="link" :target="_shouldOpenInNewTab ? '_blank' : ''"
       class="subtitle m-0 flex flex-row items-center justify-center gap-2" :class="textExtra">
       <i v-if="icon" :class="`pi ${icon}`"></i>
-      <p v-if="content">{{ content }}</p>
+      <span v-if="content">{{ content }}</span>
     </a>
     <div v-else class="subtitle m-0 flex flex-row items-center justify-center gap-2" :class="textExtra">
       <i v-if="icon" :class="`pi ${icon}`"></i>
-      <p v-if="content">{{ content }}</p>
+      <span v-if="content">{{ content }}</span>
     </div>
   </button>
 </template>
