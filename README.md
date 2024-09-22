@@ -4,12 +4,11 @@ View the website on [Github Pages](https://trevorflahardy.github.io/Personal-Web
 
 This is a background project of mine to get a personal website running for internship applications in the near future. This is a work in progress, basically everything is subject to change - but the main idea is that the website is going to be centered around mimicking Apple's VisionOS within a web application, which I thought was a nifty idea.
 
-<img width="1512" alt="image" src="https://github.com/user-attachments/assets/382f147a-631d-4024-8018-ccbcdcfdbcfc">
-<img width="1512" alt="image" src="https://github.com/user-attachments/assets/05153ca1-7dda-46e3-9078-f45569bb98da">
+<img width="1492" alt="image" src="https://github.com/user-attachments/assets/40c76167-7849-454c-bccd-d6702e0754d8">
+
 
 ## Mobile Tablets and Phones
-<img width="859" alt="image" src="https://github.com/user-attachments/assets/4a13a704-9e88-4390-a27b-3e1c49650bb5">
-<img width="562" alt="image" src="https://github.com/user-attachments/assets/49caaca2-b85e-4aa1-b166-2bb7ba72d38f">
+<img width="557" alt="image" src="https://github.com/user-attachments/assets/c3826e78-b001-401e-81c5-87b84266f54b">
 
 
 ## Installing
