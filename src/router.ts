@@ -18,5 +18,14 @@ export const router = createRouter({
     routes,
     scrollBehavior(to, from, savedPosition) {
         return { top: 0 }
+    },
+});
+
+router.beforeEach((to, from, next) => {
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+        mainContent.scrollTop = 0;
     }
+
+    next();
 });
