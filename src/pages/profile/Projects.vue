@@ -19,13 +19,13 @@ import Button from "@/components/Button.vue";
                 class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 grid-rows-auto gap-5 items-start justify-between place-items-baseline">
                 <InfoCard class="max-w-sm min-w-64" image-position="top">
                     <template #image>
-                        <img src="/tixte.png" class="rounded-xl" />
+                        <img src="/tixte.png" alt="Tixte.py logo" class="rounded-xl" />
                     </template>
 
                     <!--NOTE: Placed in DIV here so that the shorter card does not have weird formatting/-->
-                    <h1 class="card-title">
+                    <h2 class="card-title">
                         Tixte Python Wrapper
-                    </h1>
+                    </h2>
 
                     <p class="card-body">
                         <strong>tixte.py</strong> is an asynchronous Python library for the Tixte API. It allows
@@ -44,12 +44,13 @@ import Button from "@/components/Button.vue";
                 <!-- The docuflow card -->
                 <InfoCard class="max-w-sm min-w-64" image-position="top">
                     <template #image>
-                        <img :src="docuflowTextGradient" class="bg-white px-5 py-3 rounded-xl">
+                        <img :src="docuflowTextGradient" alt="Docuflow text gradient logo banner"
+                            class="bg-white px-5 py-3 rounded-xl">
                     </template>
 
-                    <h1 class="card-title">
+                    <h2 class="card-title">
                         Docuflow
-                    </h1>
+                    </h2>
 
                     <p class="card-body">
                         A simple documentation generator from MDX, Markdown + JSX, files. Built for people who want
@@ -68,10 +69,10 @@ import Button from "@/components/Button.vue";
                 <InfoCard class="max-w-sm min-w-64" image-position="left">
                     <!--Title followed by a chai pfp on the other side-->
                     <div class="flex flex-row justify-between mr-1 mb-1 w-full">
-                        <h1 class="card-title">
+                        <h2 class="card-title">
                             Chai
-                        </h1>
-                        <img :src="chaiProfilePic" class="rounded-full size-5 md:size-7" />
+                        </h2>
+                        <img :src="chaiProfilePic" alt="Chai PFP icon" class="rounded-full size-5 md:size-7" />
                     </div>
 
                     <p class="card-body">
@@ -96,12 +97,12 @@ import Button from "@/components/Button.vue";
 
                 <InfoCard image-position="top" class="max-w-sm min-w-64">
                     <template #image>
-                        <img src="/image-merger-banner.png" class="rounded-xl" />
+                        <img src="/image-merger-banner.png" alt="Image merger banner" class="rounded-xl" />
                     </template>
 
-                    <h1 class="card-title">
+                    <h2 class="card-title">
                         Image Merger
-                    </h1>
+                    </h2>
 
                     <p class="card-body">
                         Image Merger is a Rust crate that provides blazing-fast functionality for "merging" many images.

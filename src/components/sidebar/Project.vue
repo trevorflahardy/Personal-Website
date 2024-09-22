@@ -22,7 +22,7 @@ const props = defineProps<ProjectProps>();
     <!-- Grab the image slot, if it exists and insert it in a circle so that it fills the width and height of the button-->
     <div class="w-7 h-7 rounded-full overflow-hidden shadow">
       <!-- Use the icon type passed from the props -->
-      <img :src="$props.icon" class="object-fill">
+      <img :src="$props.icon" alt="Project preview icon" class="object-fill">
     </div>
 
     <p class="text-white text-sm">{{ props.displayName }}</p>

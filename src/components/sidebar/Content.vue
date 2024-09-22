@@ -48,7 +48,8 @@ function toggleHamburger() {
                     'glass-thin shadow-md bg-gray-300/10': route.name == 'profile'
                 }" @click="toggleHamburger()">
                 <!-- Holds the PFP -->
-                <img src="/ProfilePic.png" class="w-10 h-10 xl:w-14 xl:h-14 rounded-full object-cover flex-none" />
+                <img src="/ProfilePic.png" alt="Trevor PFP"
+                    class="w-10 h-10 xl:w-14 xl:h-14 rounded-full object-cover flex-none" />
 
                 <!-- Holds my name and title -->
                 <div>

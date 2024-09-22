@@ -34,9 +34,9 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
 
 <template>
   <InfoCard>
-    <h1 class="card-title">
+    <h2 class="card-title">
       My Coding Statistics
-    </h1>
+    </h2>
 
     <p class="card-body">
       {{ humanReadableDailyAverage }} daily average.

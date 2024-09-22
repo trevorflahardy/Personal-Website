@@ -18,7 +18,7 @@ import Button from '@/components/Button.vue';
 			<!-- Holds my PFP alongside it-->
 			<div
 				class="rounded-full overflow-hidden bg-gray-950/20 dark:bg-gray-200/5 p-1 shadow-md shrink-0 w-1/5 h-auto animate-fade-left animate-duration-700">
-				<img src="/ProfilePicNoBG.png" class="w-full h-full" />
+				<img src="/ProfilePicNoBG.png" alt="Trevor PFP." class="w-full h-full" />
 			</div>
 		</div>
 
@@ -34,9 +34,9 @@ import Button from '@/components/Button.vue';
 
 		<!--Next shows the "About Me" section. This holds a bit of a backstory about how my mission came to be.-->
 		<div class="w-full px-5 py-2 animate-fade-up animate-duration-700 animate-delay-[1600ms]">
-			<h1 class="title-3">
+			<h2 class="title-3">
 				It's nice to meet you,
-			</h1>
+			</h2>
 			<p class="body">
 				I'm currently a student at the <span
 					class="text-emerald-200 dark:text-emerald-400 font-medium">University of South
@@ -49,9 +49,9 @@ import Button from '@/components/Button.vue';
 
 		<!-- More information about who I am, outside of the coding (down to earth) -->
 		<div class="w-full px-5 py-2 animate-fade-up animate-duration-700 animate-delay-[2400ms]">
-			<h1 class="title-4">
+			<h3 class="title-4">
 				What makes me tick,
-			</h1>
+			</h3>
 			<div class="body">
 				When I'm not buried in a project or deep in academics, I'm probably under the hood of a car, playing
 				pickleball, or pushing myself at the gym. Growing up, I was always drawn to helping others, and

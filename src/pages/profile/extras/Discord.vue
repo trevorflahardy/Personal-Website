@@ -40,9 +40,9 @@ const avatarOutline = determineAvatarOutline(data.discord_status);
       </div>
 
       <div class="ml-3">
-        <h1 class="card-title">
+        <h2 class="card-title">
           {{ data.discord_user.display_name }}
-        </h1>
+        </h2>
 
         <p class="card-body">
           {{ data.discord_user.username }} on Discord

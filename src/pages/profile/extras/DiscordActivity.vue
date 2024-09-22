@@ -103,10 +103,12 @@ const data = props.data;
     <div class="flex flex-row gap-3 items-center">
       <div v-if="data.assets">
         <div v-if="data.assets.large_image" class="relative">
-          <img :src="parseImage(data.application_id, data.assets.large_image)" class="w-12 h-12 rounded-lg" />
+          <img :src="parseImage(data.application_id, data.assets.large_image)" alt="Discord app large image"
+            class="w-12 h-12 rounded-lg" />
 
           <div v-if="data.assets.small_image" class="absolute -right-2 -bottom-2">
-            <img :src="parseImage(data.application_id, data.assets.small_image)" class="w-6 h-6 rounded-lg" />
+            <img :src="parseImage(data.application_id, data.assets.small_image)" alt="Discord app small image"
+              class="w-6 h-6 rounded-lg" />
           </div>
         </div>
       </div>

@@ -47,9 +47,9 @@ const docuflowInfoCards = [
                     <i class="pi text-white text-4xl w-full text-center mb-3" :class="icon" />
                 </template>
 
-                <h1 class="card-title">
+                <h2 class="card-title">
                     {{ title }}
-                </h1>
+                </h2>
 
                 <p class="card-body max-w-md">
                     {{ body }}
@@ -60,8 +60,8 @@ const docuflowInfoCards = [
         <!-- Below it we see some previews of docuflow. This has two images: (1) the documentation
          part of it in the back, and the home page stacked on the front of it. -->
         <div class="w-full h-fit space-y-5 md:px-5 lg:px-10 relative xl:!mb-16">
-            <img src="/docuflow-home.png" class="xl:w-[85%] z-10 rounded-xl xl:rounded-[40px]" />
-            <img src="/docuflow-docs.png"
+            <img src="/docuflow-home.png" alt="Docuflow home page preview." class="xl:w-[85%] z-10 rounded-xl xl:rounded-[40px]" />
+            <img src="/docuflow-docs.png" alt="Docuflow documentation page preview."
                 class="xl:absolute xl:w-[65%] z-20 rounded-xl xl:rounded-[40px] xl:-bottom-[15%] xl:right-[5%] xl:shadow-md" />
         </div>
 

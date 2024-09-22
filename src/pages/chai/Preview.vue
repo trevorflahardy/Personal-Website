@@ -55,9 +55,9 @@ const actionDescription = [
                 <!-- And to the right, the title + description combo. The arrow is lined with the title and the 
                  description is inline with the title-->
                 <div>
-                    <h1 class="title-4 mb-0">
+                    <h2 class="title-4 mb-0">
                         {{ entry.title }}
-                    </h1>
+                    </h2>
 
                     <p class="body">
                         {{ entry.content }}
