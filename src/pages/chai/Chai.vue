@@ -30,7 +30,7 @@ const chaiInviteLink = "https://discord.com/oauth2/authorize?client_id=728115804
         </p>
 
         <!-- Some action buttons -->
-        <div class="flex flex-row gap-5">
+        <div class="flex flex-row gap-5 flex-wrap items-center justify-center">
           <Button :link="chaiInviteLink" content="Invite Chai" icon="pi-discord" />
           <Button link="https://github.com/users/trevorflahardy/projects/11" content="Development Board"
             icon="pi-book" />
