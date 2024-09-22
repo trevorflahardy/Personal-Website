@@ -14,7 +14,7 @@ const props = defineProps<ProjectProps>();
 </script>
 
 <template>
-  <button
+  <button type="button"
     class="flex flex-row items-center space-x-2 rounded-lg hover:glass-thin hover:bg-gray-300/10 transition duration-300 ease-in-out py-2 px-3 w-full !shadow-none"
     :class="{
       'glass-thin bg-gray-300/10': route.name == props.routerLinkName

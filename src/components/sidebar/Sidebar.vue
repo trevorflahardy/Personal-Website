@@ -28,7 +28,7 @@ function toggleHamburger() {
     <div class="flex xl:hidden h-full">
       <!-- Shows the hamburger. When disabled it's rotated 0 but when enabled it's rotated 90 -->
       <Transition name="spin">
-        <button class="absolute z-20 top-0 left-0 p-5" :key="hamburgerRotation" :class="hamburgerRotation"
+        <button type="button" class="absolute z-20 top-0 left-0 p-5" :key="hamburgerRotation" :class="hamburgerRotation"
           @click="toggleHamburger()">
           <i class="pi pi-bars text-white" />
         </button>

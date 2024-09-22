@@ -42,7 +42,7 @@ function toggleHamburger() {
 
         <!-- The profile tab. This is separate from the other projects, ie a special component, so it'll be managed manually -->
         <router-link :to="{ name: 'profile' }">
-            <button
+            <button type="button"
                 class="flex flex-row p-2 w-full rounded-xl gap-3 items-center mb-5 hover:glass-thin hover:bg-gray-300/10 transition duration-300 ease-in-out"
                 :class="{
                     'glass-thin shadow-md bg-gray-300/10': route.name == 'profile'
@@ -70,7 +70,7 @@ function toggleHamburger() {
 
         <!-- All other project components handled under their own component, they are the same essentially -->
         <div class="flex flex-col gap-2">
-            <button v-for="{ icon, displayName, routerLinkName } in projects" :key="routerLinkName">
+            <button type="button" v-for="{ icon, displayName, routerLinkName } in projects" :key="routerLinkName">
                 <router-link :to="{ name: routerLinkName }">
                     <Project :icon="icon" :display-name="displayName" :router-link-name="routerLinkName"
                         @click="toggleHamburger()" />

@@ -36,8 +36,9 @@ import Button from "@/components/Button.vue";
                     </p>
 
                     <template #buttons>
-                        <Button content="Github" background="bg-yellow-200" class="max-w-32" icon="pi-github"
-                            text-extra="text-sky-900" link="https://github.com/trevorflahardy/tixte.py" />
+                        <Button content="Github" background="bg-yellow-200" class="max-w-32"
+                            icon="pi-github" text-extra="text-sky-900"
+                            link="https://github.com/trevorflahardy/tixte.py" />
                     </template>
                 </InfoCard>
 

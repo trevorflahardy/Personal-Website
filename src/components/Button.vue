@@ -26,7 +26,7 @@ const _shouldOpenInNewTab = props.openInNewTab || true;
 
 <template>
   <!-- If the props.link is not null, we can wrap the button in it -->
-  <button :class="buttonClass">
+  <button :class="buttonClass" type="button">
     <a v-if="link" :href="link" :target="_shouldOpenInNewTab ? '_blank' : ''"
       class="subtitle m-0 flex flex-row items-center justify-center gap-2" :class="textExtra">
       <i v-if="icon" :class="`pi ${icon}`"></i>
