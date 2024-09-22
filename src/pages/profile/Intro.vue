@@ -1,27 +1,35 @@
 <script setup lang="ts">
 import Button from '@/components/Button.vue';
-import InfoCard from '@/components/InfoCard.vue';
 </script>
 
 <template>
 	<!-- The main intro to the website. Holds my name in large bold text, caption below it, and an image of myself next to it. -->
 	<div class="w-full">
-		<div class="w-full flex flex-row justify-around items-center mb-0">
+		<div class="w-full flex flex-row justify-evenly items-center mb-0 px-5 md:px-0">
 			<!-- Holds the Hi and my name-->
-			<div class="inner self-end">
+			<div class="self-end mb-3 sm:mb-5">
 				<p class="subtitle mb-0 animate-fade-down duration-700 animate-delay-0">Hi, I'm</p>
-				<h1 class="hero-title mb-1 lg:mb-5 animate-fade-right">Trevor Flahardy</h1>
-				<p class="subtitle mb-3 sm:mb-5 text-right animate-fade-up animate-delay-[800ms]">
+				<h1 class="hero-title mb-1 lg:mb-3 2xl:mb-5 animate-fade-right">Trevor Flahardy</h1>
+				<p class="subtitle text-right animate-fade-up animate-delay-[800ms]">
 					A full stack developer working to change lives.
 				</p>
 			</div>
 
 			<!-- Holds my PFP alongside it-->
 			<div
-				class="rounded-full overflow-hidden bg-gray-950/20 dark:bg-gray-200/5 p-1 shadow-md shrink-0 md:block hidden">
-				<img src="/ProfilePicNoBG.png"
-					class="md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-40 xl:h-40 2xl:w-48 2xl:h-48 w-14 h-14" />
+				class="rounded-full overflow-hidden bg-gray-950/20 dark:bg-gray-200/5 p-1 shadow-md shrink-0 w-1/5 h-auto">
+				<img src="/ProfilePicNoBG.png" class="w-full h-full" />
 			</div>
+		</div>
+
+		<!-- Holds some main link buttons for the user to easily see.-->
+		<div class="relative flex items-center mt-3 px-5">
+			<div class="flex-grow border-t border-gray-300"></div>
+			<div class="flex-shrink mx-4 space-x-2">
+				<Button link="https://github.com/trevorflahardy" icon="pi-github" />
+				<Button link="https://www.linkedin.com/in/trevorflahardy/" icon="pi-linkedin" />
+			</div>
+			<div class="flex-grow border-t border-gray-300"></div>
 		</div>
 
 		<!--Next shows the "About Me" section. This holds a bit of a backstory about how my mission came to be.-->
