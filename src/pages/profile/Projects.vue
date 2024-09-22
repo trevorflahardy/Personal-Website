@@ -47,7 +47,7 @@ import Button from "@/components/Button.vue";
                     Docuflow
                 </h1>
 
-                <p class="card-body mb-5">
+                <p class="card-body">
                     A simple documentation generator from MDX, Markdown + JSX, files. Built for people who want
                     to focus on what's important, their work.
                 </p>
@@ -55,7 +55,7 @@ import Button from "@/components/Button.vue";
                 <!-- Shows the action buttons on this card -->
                 <router-link :to="{ name: docuflowRouterName }">
                     <Button content="See More" background="bg-docuflow-light dark:bg-docuflow-dark"
-                        text-color="text-white" class="max-w-32" />
+                        text-color="text-white" class="max-w-32 mt-5" />
                 </router-link>
             </InfoCard>
 
@@ -68,7 +68,7 @@ import Button from "@/components/Button.vue";
                     <img :src="chaiProfilePic" class="rounded-full size-5 md:size-7" />
                 </div>
 
-                <p class="card-body mb-5">
+                <p class="card-body">
                     A highly advanced Discord bot centered around Epic Games' popular game, Fortnite. Although I've been
                     working on Chai
                     for many years,
@@ -76,7 +76,7 @@ import Button from "@/components/Button.vue";
                 </p>
 
                 <!-- Shows the action buttons on this card -->
-                <div class="flex flex-row flex-wrap items-center justify-start gap-3">
+                <div class="flex flex-row flex-wrap items-center justify-start gap-3 mt-5">
                     <router-link :to="{ name: chaiRouterName }">
                         <Button content="See More" background="bg-chai-400" class="max-w-32 font-medium" />
                     </router-link>
@@ -84,6 +84,32 @@ import Button from "@/components/Button.vue";
                     <Button content="Development Board" background="bg-inherit"
                         class="outline outline-1 outline-chai-400"
                         link="https://github.com/users/trevorflahardy/projects/11" icon="pi-book" />
+                </div>
+            </InfoCard>
+
+            <InfoCard image-position="top" class="max-w-sm min-w-64">
+                <template #image>
+                    <img src="/image-merger-banner.png" class="rounded-xl" />
+                </template>
+
+                <h1 class="card-title">
+                    Image Merger
+                </h1>
+
+                <p class="card-body">
+                    Image Merger is a Rust crate that provides blazing-fast functionality for "merging" many images.
+                    It's built on top of the image crate and designed to take advantage
+                    of multi-threading and close attention to memory management.
+                </p>
+
+                <div class="mt-5 flex flex-row items-center justify-center flex-wrap gap-2">
+                    <Button content="Github" background="bg-orange-500" class="max-w-32" icon="pi-github"
+                        text-extra="text-white" link="https://github.com/trevorflahardy/image-merger" />
+
+                    <Button content="Crates.io" background="bg-none"
+                        class="max-w-32 outline outline-1 outline-orange-500" icon="pi-book"
+                        text-extra="text-orange-400 dark:text-orange-500"
+                        link="https://crates.io/crates/image-merger" />
                 </div>
             </InfoCard>
         </div>
