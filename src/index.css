@@ -31,7 +31,7 @@
   }
 
   .body {
-    @apply text-xs sm:text-sm md:text-base text-gray-100 font-light text-pretty mb-1 lg:mb-2;
+    @apply text-xs sm:text-sm md:text-base text-gray-100 font-light text-pretty mb-1;
   }
 
   /* Info specifically for cards. This ensures that every card has consistent and smaller titles and captions and subtitles than the normal base */
@@ -48,7 +48,7 @@
   }
 
   .card-body {
-    @apply text-xs md:text-sm lg:text-base text-gray-100 font-light text-pretty;
+    @apply text-xs md:text-sm text-gray-100 font-light text-pretty;
   }
 
   /* Globally apply that no paragraph should be more than 6xl */

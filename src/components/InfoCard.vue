@@ -36,7 +36,7 @@ const backgroundClass = computed(() => {
 	]">
 		<!-- Holds the image of this card. Takes up as much width as possible on the card
          and has its height auto adjust (unless the user wants to choose otherwise)-->
-		<slot name="image" :class="`flex-auto w-full h-auto order-${imageOrder()}`" />
+		<slot name="image" :class="`flex-auto w-full order-${imageOrder()}`" />
 
 		<!--Holds the actual content of this card, in the slot-->
 		<div class="flex-auto w-full p-3 md:pb-5" :class="`order-${contentOrder()}`">

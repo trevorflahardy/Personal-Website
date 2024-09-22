@@ -17,8 +17,9 @@ const ProfileDiscord = defineAsyncComponent(
 <template>
   <PageLayoutSpacer>
     <Intro />
+    <Projects />
 
-    <div class="flex flex-row items-center justify-around flex-wrap gap-5">
+    <div class="flex flex-row items-center justify-around flex-wrap gap-3">
       <Suspense>
         <ProfileWaka />
 
@@ -40,7 +41,5 @@ const ProfileDiscord = defineAsyncComponent(
         </template>
       </Suspense>
     </div>
-
-    <Projects />
   </PageLayoutSpacer>
 </template>

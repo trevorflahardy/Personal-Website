@@ -6,7 +6,7 @@ interface Props {
   content?: string | null,
   icon?: string | null,
   background?: string | null,
-  textColor?: string | null,
+  textExtra?: string,
   openInNewTab?: boolean | null
 }
 
@@ -28,11 +28,11 @@ const _shouldOpenInNewTab = props.openInNewTab || true;
   <!-- If the props.link is not null, we can wrap the button in it -->
   <button :class="buttonClass">
     <a v-if="link" :href="link" :target="_shouldOpenInNewTab ? '_blank' : ''"
-      class="subtitle m-0 flex flex-row items-center justify-center gap-2" :class="textColor">
+      class="subtitle m-0 flex flex-row items-center justify-center gap-2" :class="textExtra">
       <i v-if="icon" :class="`pi ${icon}`"></i>
       <p v-if="content">{{ content }}</p>
     </a>
-    <div v-else class="subtitle m-0 flex flex-row items-center justify-center gap-2" :class="textColor">
+    <div v-else class="subtitle m-0 flex flex-row items-center justify-center gap-2" :class="textExtra">
       <i v-if="icon" :class="`pi ${icon}`"></i>
       <p v-if="content">{{ content }}</p>
     </div>

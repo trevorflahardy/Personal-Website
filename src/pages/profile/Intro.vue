@@ -25,20 +25,36 @@ import InfoCard from '@/components/InfoCard.vue';
 		</div>
 
 		<!--Next shows the "About Me" section. This holds a bit of a backstory about how my mission came to be.-->
-		<div class="w-full px-5 py-2 rounded-lg shadow-sm">
-			<h1 class="title-2 animate-fade-up animate-duration-700 animate-delay-[1600ms]">
-				It's nice to meet you.
+		<div class="w-full px-5 py-2 animate-fade-up animate-duration-700 animate-delay-[1600ms]">
+			<h1 class="title-3">
+				It's nice to meet you,
 			</h1>
-			<p class="body animate-fade-up animate-duration-700 animate-delay-[2200ms]">
-				I'm currently a student at the <span class="text-emerald-400">University of South
-					Florida</span> for my Bachelor's in Computer Science. I've always been into tech, but
-				as I grew into who I am today I now see the remarkable difference I can have in peoples lives through
-				what I
-				love. For me, it's
-				not about users—it's about people. Every person who interacts with what I
-				build has a story, and I create with that in mind. I'm driven by the idea that tech should serve, not
-				just function, because technology without people is meaningless.
+			<p class="body">
+				I'm currently a student at the <span class="text-emerald-200 dark:text-emerald-400">University of South
+					Florida</span> for my Bachelor's in Computer Science. Tech has always been a part of my life, but as
+				I've grown, I've come to realize the meaningful impact it can have on people's lives. For me, it's not
+				just about users—it's about real people with real stories. I create with that in mind, driven by the
+				idea that tech should serve, not just function. After all, technology without people is meaningless.
 			</p>
+		</div>
+
+		<!-- More information about who I am, outside of the coding (down to earth) -->
+		<div class="w-full px-5 py-2 animate-fade-up animate-duration-700 animate-delay-[3000ms]">
+			<h1 class="title-4">
+				What makes me tick,
+			</h1>
+			<div class="body">
+				When I'm not buried in a project or deep in academics, I'm probably under the hood of a car, playing
+				pickleball, or pushing myself at the gym. Growing up, I was always drawn to helping others, and
+				discovering programming felt like a natural way to extend that. I know it sounds cliché, but this isn't
+				just a hobby—it's woven into who I am. Programming is my way of life, a labor of love, and I'm
+				constantly looking for ways to use it to make a real impact.
+				<br>
+				<br>
+				One day, I hope to work at Apple, particularly on the Apple Watch team. Their approach to creating tech
+				that genuinely enhances lives aligns with my values, and I see it as the ultimate intersection of
+				technology and human connection.
+			</div>
 		</div>
 	</div>
 </template>
