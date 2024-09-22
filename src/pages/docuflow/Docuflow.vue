@@ -25,8 +25,8 @@ const docuflowInfoCards = [
 <template>
     <PageLayoutSpacer>
         <!-- The standard-type intro to the page. -->
-        <div class="py-5 px-2 bg-gray-950/30 dark:bg-gray-200/5 shadow-md rounded-[40px]">
-            <p class="title text-center">
+        <div class="py-5 px-2 bg-gray-950/30 dark:bg-gray-200/5 shadow-md rounded-[40px] w-full">
+            <p class="title text-center w-full">
                 Build <span class="text-docuflow-light dark:text-docuflow-dark">quick</span>, lightweight <span
                     class="text-docuflow-light dark:text-docuflow-dark">documentation</span>, don't get bogged down
                 by the process.
@@ -59,10 +59,10 @@ const docuflowInfoCards = [
 
         <!-- Below it we see some previews of docuflow. This has two images: (1) the documentation
          part of it in the back, and the home page stacked on the front of it. -->
-        <div class="w-full h-fit space-y-5 px-10 relative xl:!mb-16">
-            <img src="/docuflow-home.png" class="xl:w-[85%] z-10 rounded-[40px]" />
+        <div class="w-full h-fit space-y-5 md:px-5 lg:px-10 relative xl:!mb-16">
+            <img src="/docuflow-home.png" class="xl:w-[85%] z-10 rounded-xl xl:rounded-[40px]" />
             <img src="/docuflow-docs.png"
-                class="xl:absolute xl:w-[65%] z-20 rounded-[40px] xl:-bottom-[15%] xl:right-[5%] xl:shadow-md" />
+                class="xl:absolute xl:w-[65%] z-20 rounded-xl xl:rounded-[40px] xl:-bottom-[15%] xl:right-[5%] xl:shadow-md" />
         </div>
 
         <!-- Kind of a disclaimer noting that this project is still in early development -->

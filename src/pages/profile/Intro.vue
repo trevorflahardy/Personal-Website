@@ -10,7 +10,7 @@ import InfoCard from '@/components/InfoCard.vue';
 			<!-- Holds the Hi and my name-->
 			<div class="inner self-end">
 				<p class="subtitle mb-0 animate-fade-down duration-700 animate-delay-0">Hi, I'm</p>
-				<h1 class="hero-title mb-1 xl:mb-2 animate-fade-right">Trevor Flahardy</h1>
+				<h1 class="hero-title mb-1 lg:mb-5 animate-fade-right">Trevor Flahardy</h1>
 				<p class="subtitle mb-3 sm:mb-5 text-right animate-fade-up animate-delay-[800ms]">
 					A full stack developer working to change lives.
 				</p>

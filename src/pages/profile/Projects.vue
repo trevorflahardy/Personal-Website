@@ -15,7 +15,7 @@ import Button from "@/components/Button.vue";
         </h2>
 
         <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2 grid-rows-auto gap-5 items-start justify-between place-items-center">
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-auto gap-5 items-start justify-between place-items-center">
             <InfoCard class="max-w-sm min-w-64" image-position="top">
                 <template #image>
                     <img src="/tixte.png" class="rounded-xl" />

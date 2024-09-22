@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import SlamTransition from "./SlamTransition.vue";
-
 export interface PageLayoutSpacerProps {
-    tag: string;
-    opacityDuration: string;
-    transformDuration: string;
+    tag?: string;
+    opacityDuration?: string;
+    transformDuration?: string;
 }
 
 const props = defineProps<PageLayoutSpacerProps>();

@@ -18,7 +18,7 @@ const chaiInviteLink = "https://discord.com/oauth2/authorize?client_id=728115804
         <!-- The introduction-->
         <h1 class="title text-center mb-3 text-pretty max-w-[80%]">
           Meet <span class="text-chai-200">Chai</span> <span
-            class="inline-block w-4 md:w-5 lg:w-7 h-4 md:h-5 lg:h-7 align-baseline"><img :src="chaiIcon" /></span>,
+            class="inline-block w-4 md:w-5 lg:w-7 2xl:w-10 h-4 md:h-5 lg:h-7 2xl:h-10 align-baseline"><img :src="chaiIcon" /></span>,
           the
           Fortnite authentication Discord Bot.
         </h1>

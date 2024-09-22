@@ -6,9 +6,9 @@ import Sidebar from './sidebar/Sidebar.vue';
 	<!-- The main hero element/page for the website. This holds all the main content.
    On desktop: There appears a side window ("floating in 3d space") next to the hero
    window, and on mobile, there appears a hamburger in the hero so the user can select it-->
-	<div class="flex items-center justify-center rounded-[40px] sm:h-[80%] min-h-full w-full no-scrollbar">
+	<div class="flex items-center justify-center rounded-[40px] sm:h-[80%] min-h-full w-full no-scrollbar gap-5 2xl:gap-10">
 		<!-- The desktop only sidebar element. -->
-		<div class="hidden xl:flex h-full mr-5 basis-0 xl:basis-1/4">
+		<div class="hidden xl:flex h-full basis-0 md:basis-[%15] xl:basis-1/4">
 			<Sidebar />
 		</div>
 

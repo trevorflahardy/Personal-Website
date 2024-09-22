@@ -50,12 +50,6 @@
   .card-body {
     @apply text-xs md:text-sm text-gray-100 font-light text-pretty;
   }
-
-  /* Globally apply that no paragraph should be more than 6xl */
-  p,
-  li {
-    @apply max-w-xl sm:max-w-5xl m-0;
-  }
 }
 
 @layer components {

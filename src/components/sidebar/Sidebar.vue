@@ -15,7 +15,7 @@ function toggleHamburger() {
 </script>
 
 <template>
-  <div>
+  <div class="w-full">
     <!-- Represents the desktop sidebar. This sidebar is always visible on desktop-->
     <div
       class="hidden xl:flex h-full w-full transform-gpu outline outline-1 outline-gray-300 dark:outline-gray-500 rounded-[40px]"
