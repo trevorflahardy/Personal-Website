@@ -45,7 +45,7 @@ const backgroundClass = computed(() => {
 			<slot />
 
 			<!-- A special slot for buttons -->
-			<div class="mt-5 flex flex-row items-center justify-start flex-wrap gap-2">
+			<div v-if="$slots.buttons" class="mt-3 flex flex-row items-center justify-start flex-wrap gap-2">
 				<slot name="buttons" />
 			</div>
 		</div>
