@@ -11,7 +11,7 @@
   }
 
   .title {
-    @apply text-lg md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white text-pretty mb-2;
+    @apply text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white text-pretty mb-2;
   }
 
   .title-2 {
