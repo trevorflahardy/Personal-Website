@@ -47,11 +47,11 @@ const docuflowInfoCards = [
                     <i class="pi text-white text-4xl w-full text-center mb-3" :class="icon" />
                 </template>
 
-                <h2 class="card-title">
+                <h2 class="card-title text-center w-full">
                     {{ title }}
                 </h2>
 
-                <p class="card-body max-w-md">
+                <p class="card-body max-w-md w-full text-center">
                     {{ body }}
                 </p>
             </InfoCard>
