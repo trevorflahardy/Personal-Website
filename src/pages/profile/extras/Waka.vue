@@ -43,7 +43,8 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
     </p>
 
     <p class="card-body">
-      {{ humanReadableTotal }} of total coding time.</p>
+      {{ humanReadableTotal }} of total coding time.
+    </p>
 
     <p class="card-title-2 mt-1">
       My Best Day
@@ -54,7 +55,8 @@ const humanReadableBestDay = bestDayDate.toLocaleDateString("en-US", {
       {{ humanReadableBestDayTime }} of coding!
     </p>
 
-    <Button class="w-fit z-30 mt-1" :link="wakaProfileUrl" icon="pi-clock" content="View Waka Profile"
-      textExtra="text-sm" />
+    <template #buttons>
+      <Button :link="wakaProfileUrl" icon="pi-clock" content="View Waka Profile" textExtra="text-sm" />
+    </template>
   </InfoCard>
 </template>
