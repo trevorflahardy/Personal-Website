@@ -16,8 +16,8 @@ import Button from "@/components/Button.vue";
 
         <div class="flex items-center justify-center">
             <div
-                class="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 grid-rows-auto gap-5 items-start justify-between place-items-baseline">
-                <InfoCard class="max-w-sm min-w-32 md:min-w-64" image-position="top">
+                class="flex flex-row flex-wrap gap-2 lg:gap-4 2xl:gap-5 items-start justify-evenly place-items-baseline">
+                <InfoCard class="max-w-sm flex-auto" image-position="top">
                     <template #image>
                         <img src="/tixte.png" alt="Tixte.py logo" class="rounded-xl" />
                     </template>
@@ -42,7 +42,7 @@ import Button from "@/components/Button.vue";
                 </InfoCard>
 
                 <!-- The docuflow card -->
-                <InfoCard class="max-w-sm min-w-32 md:min-w-64" image-position="top">
+                <InfoCard class="max-w-sm flex-auto" image-position="top">
                     <template #image>
                         <img :src="docuflowTextGradient" alt="Docuflow text gradient logo banner"
                             class="bg-white px-5 py-3 rounded-xl">
@@ -66,7 +66,7 @@ import Button from "@/components/Button.vue";
                     </template>
                 </InfoCard>
 
-                <InfoCard class="max-w-sm min-w-32 md:min-w-64" image-position="left">
+                <InfoCard class="max-w-sm flex-auto" image-position="left">
                     <!--Title followed by a chai pfp on the other side-->
                     <div class="flex flex-row justify-between mr-1 mb-1 w-full">
                         <h2 class="card-title">
@@ -95,7 +95,7 @@ import Button from "@/components/Button.vue";
                     </template>
                 </InfoCard>
 
-                <InfoCard image-position="top" class="max-w-sm min-w-32 md:min-w-64">
+                <InfoCard image-position="top" class="max-w-sm flex-auto">
                     <template #image>
                         <img src="/image-merger-banner.png" alt="Image merger banner" class="rounded-xl" />
                     </template>
