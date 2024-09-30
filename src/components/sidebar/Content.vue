@@ -4,6 +4,8 @@ import { useRoute } from "vue-router";
 import Project, { ProjectProps } from "./Project.vue";
 import { routerLinkName as chaiRouterLink, icon as chaiIcon } from "@/pages/chai/info";
 import { routerLinkName as docuflowRouterLink, icon as docuflowIcon } from "@/pages/docuflow/info";
+import { routerLinkName as furyRouterLink, icon as furyIcon } from "@/pages/fury/info";
+
 
 const isHamburgerOpen = defineModel();
 const route = useRoute();
@@ -19,6 +21,11 @@ const projects: ProjectProps[] = [
         icon: docuflowIcon,
         displayName: 'Docuflow',
         routerLinkName: docuflowRouterLink,
+    },
+    {
+        icon: furyIcon,
+        displayName: 'Fury',
+        routerLinkName: furyRouterLink,
     }
 ];
 

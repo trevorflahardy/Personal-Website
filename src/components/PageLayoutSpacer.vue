@@ -14,8 +14,7 @@ const props = defineProps<PageLayoutSpacerProps>();
      2. Giving a nice "fade-in" animation to all slots within this page -->
     <div
         class="flex items-center flex-col flex-nowrap space-y-7 px-3 sm:p-5 md:p-7 xl:p-10 sm:px-2 py-12 sm:py-12 md:py-16 xl:py-5 min-h-full w-full">
-        <TransitionGroup name="slam" appear :tag="props.tag"
-            class="animate-fade-up animate-once animate-duration-[1200ms] animate-delay-0 animate-ease-in-out">
+        <TransitionGroup name="slam" appear :tag="props.tag">
             <!-- Insert any slots from the page into the slam transition. -->
             <slot v-for="(slot, index) in $slots" :key="`slot-${index}`">
                 <slot :name="slot" />

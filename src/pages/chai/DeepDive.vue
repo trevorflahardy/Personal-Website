@@ -26,7 +26,8 @@ const highlightedTool = "font-semibold text-chai-200";
         </div>
 
         <!-- Holds all the information about the deep dive into each section.-->
-        <div class="grid grid-cols-2 xl:grid-cols-3 gap-3 items-start justify-evenly">
+        <div class="grid grid-cols-2 xl:grid-cols-3 gap-3 items-start justify-evenly"
+            v-motion-slide-visible-once-bottom>
             <!-- The Discord bot element of this section -->
             <div class="text-center max-w-md">
                 <h3 class="title-3">Discord Front End</h3>

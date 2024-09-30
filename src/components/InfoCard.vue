@@ -30,10 +30,11 @@ const backgroundClass = computed(() => {
 </script>
 
 <template>
-	<div class="flex transition-all duration-500 ease-in-out rounded-xl shadow-md overflow-clip" :class="[
-		backgroundClass,
-		{ ['flex-row']: shouldFlexRow(), ['flex-col']: shouldFlexCol() }
-	]">
+	<div v-motion-slide-visible-once-bottom :delay="0" :duration="50"
+		class="flex transition-all duration-500 ease-in-out rounded-xl shadow-md overflow-clip" :class="[
+			backgroundClass,
+			{ ['flex-row']: shouldFlexRow(), ['flex-col']: shouldFlexCol() }
+		]">
 		<!-- Holds the image of this card. Takes up as much width as possible on the card
          and has its height auto adjust (unless the user wants to choose otherwise)-->
 		<slot name="image" :class="`flex-auto w-full order-${imageOrder()}`" />

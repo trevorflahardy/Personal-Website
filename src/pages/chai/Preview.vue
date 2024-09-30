@@ -44,7 +44,8 @@ const actionDescription = [
     <div class="flex flex-col gap-3 w-full">
         <!-- For each item in the action description, we're going to display an up arrow centered with the title
          on the left, the title to the right of it, and the description below the title-->
-        <div v-for="entry in actionDescription" :key="entry.id" class="flex flex-row items-start justify-start">
+        <div v-for="entry in actionDescription" :key="entry.id" class="flex flex-row items-start justify-start"
+            v-motion-slide-visible-once-left>
             <div class="flex flex-row items-start gap-3">
                 <!-- The actual up arrow itself, on the left -->
                 <div
