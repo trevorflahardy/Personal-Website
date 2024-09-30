@@ -4,6 +4,6 @@ import PageLayoutSpacer from '@/components/PageLayoutSpacer.vue';
 
 <template>
     <PageLayoutSpacer>
-        
+
     </PageLayoutSpacer>
 </template>
