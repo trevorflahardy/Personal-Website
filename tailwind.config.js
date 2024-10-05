@@ -44,7 +44,8 @@ export default {
         docuflow: {
           light: "#FF4A33",
           dark: "#FF381F",
-        }
+        },
+        fury: "#4EDBFC",
       },
     },
     fontFamily: {
