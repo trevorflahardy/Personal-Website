@@ -32,8 +32,8 @@ const actionDescription = [
 <template>
     <!-- Denotes what Chai can do, so some exposition on how the Client works.-->
     <!-- The centered image (preview) of Chai should be right below the "Chai in action" or call to info-->
-    <div class="flex flex-row items-center justify-center w-full md:px-5 lg:px-10">
-        <img src="/chai-preview.png" alt="Chai Preview" class="rounded-lg xl:rounded-[40px] w-full object-cover" />
+    <div class="flex flex-row items-center justify-center w-full md:px-5 lg:px-[15%]">
+        <img src="/chai-preview.png" alt="Chai Preview" class="rounded-lg xl:rounded-lg w-full object-cover" />
     </div>
 
     <div class="flex flex-row items-baseline justify-center w-full gap-2">
