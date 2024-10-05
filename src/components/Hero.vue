@@ -16,7 +16,7 @@ import Sidebar from './sidebar/Sidebar.vue';
 		<!-- The main content of the page -->
 		<div id="main-content"
 			class="rounded-[40px] w-full h-full relative overflow-y-scroll no-scrollbar transform-gpu outline outline-1 outline-slate-300 dark:outline-gray-500"
-			data-tilt data-tilt-max="2" style="transform-style: preserve-3d; transform: perspective(1000px)">
+			data-tilt data-tilt-max="0.4" data-tilt-speed="50" style="transform-style: preserve-3d; transform: perspective(1000px)">
 			<!-- If on mobile only, display the sidebar inside of the hero element such that
        the user can press the hamburger to show the sidebar-->
 			<Sidebar class="xl:hidden absolute h-full" />
