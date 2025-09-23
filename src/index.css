@@ -2,78 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
-  /* Extends the default base to add some uniformity between elements */
-
-  /* Gives a hero title to only be used in the intro to this page. This is because it's MASSIVE */
-  .hero-title {
-    @apply text-4xl md:text-5xl lg:text-7xl xl:text-7xl 2xl:text-8xl font-bold text-white text-pretty mb-1 md:mb-3;
-  }
-
-  .title {
-    @apply text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white text-pretty mb-2;
-  }
-
-  .title-2 {
-    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-white text-pretty mb-2;
-  }
-
-  .title-3 {
-    @apply text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-semibold text-gray-100 text-pretty mb-1;
-  }
-
-  .title-4 {
-    @apply text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-200 text-pretty mb-1;
-  }
-
-  .subtitle {
-    @apply text-sm md:text-base text-gray-200 text-pretty mb-1;
-  }
-
-  .body {
-    @apply text-xs sm:text-sm md:text-base text-gray-100 font-light text-pretty mb-1;
-  }
-
-  /* Info specifically for cards. This ensures that every card has consistent and smaller titles and captions and subtitles than the normal base */
-  .card-title {
-    @apply text-lg md:text-xl lg:text-2xl font-semibold text-white text-pretty lg:mb-1 leading-tight;
-  }
-
-  .card-title-2 {
-    @apply text-base md:text-lg lg:text-xl font-medium text-gray-100 text-pretty lg:mb-1;
-  }
-
-  .card-caption {
-    @apply text-xs md:text-sm text-gray-300 text-pretty mb-1;
-  }
-
-  .card-body {
-    @apply text-xs md:text-sm text-gray-100 font-light text-pretty;
-  }
 }
 
 @layer components {
-  .glass-thin {
-    @apply backdrop-blur-md shadow-md;
-  }
-
-  .glass-regular {
-    @apply backdrop-blur-lg shadow-lg;
-  }
-
-  .glass-semithick {
-    @apply backdrop-blur-xl shadow-xl;
-  }
-
-  .glass-thick {
-    @apply backdrop-blur-2xl shadow-2xl;
-  }
-
-  .button-glass:hover {
-    transform: scale(1.05);
-    transition-timing-function: ease-in-out;
-    @apply shadow-xl;
-  }
 }
 
 @layer utilities {

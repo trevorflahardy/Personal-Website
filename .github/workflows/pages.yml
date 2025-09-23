@@ -29,40 +29,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: "latest"
-          cache: "npm"
+          bun-version: latest
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
-
-      # Grab the npm cache directory for later
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        shell: bash
-        run: echo "dir=$(npm config get cache)" >> ${GITHUB_OUTPUT}
 
       # Restore cache for some faster builds
       - name: Restore Cache
         uses: actions/cache@v4
         with:
-          # Restore npm cache and dist folder
+          # Restore bun cache and dist folder
           path: |
             dist
-            ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-npm-${{ hashFiles('dist') }}
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
           restore-keys: |
-            ${{ runner.os }}-npm-
+            ${{ runner.os }}-bun-
 
       - name: Install Dependencies
         run: |
-          npm install
+          bun install
 
       - name: Build
         run: |
-          npm run build
+          bun run build
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3

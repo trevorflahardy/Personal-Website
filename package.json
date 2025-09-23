@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "vite build",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "dev": "vite",
-    "format": "prettier --write src/",
-    "preview": "vite preview"
+    "build": "bun run vite build",
+    "lint": "bun run eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "dev": "bun run vite",
+    "format": "bun run prettier --write src/",
+    "preview": "bun run vite preview"
   },
   "dependencies": {
     "@vueuse/motion": "^2.2.5",
