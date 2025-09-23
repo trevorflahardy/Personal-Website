@@ -22,7 +22,7 @@ const roundedClass = {
 <template>
   <component
     :is="type"
-    class="w-full h-full bg-gray-50/30 outline-1 outline-gray-50/50 shadow-md backdrop-blur-xl dark:bg-gray-800/30 dark:outline-gray-700/40"
+    class="w-full h-full bg-gray-150/30 outline-1 outline-gray-50/50 shadow-md backdrop-blur-2xl dark:backdrop-blur-xl dark:bg-gray-800/20 dark:outline-gray-700/40"
     :class="[roundedClass]"
   >
     <slot />

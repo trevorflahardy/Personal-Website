@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import Glass from "../ui/Glass.vue";
+import Glass from "@/components/ui/Glass.vue";
+import SidebarWelcome from "./SidebarWelcome.vue";
 </script>
 
 <template>
@@ -7,5 +8,7 @@ import Glass from "../ui/Glass.vue";
 
    The whole goal here is to mimic apple's settings theme here-->
 
-  <Glass class="w-full h-full rounded-xl text-white p-5"> I am sidebar </Glass>
+  <Glass class="w-full h-full rounded-xl text-white p-5">
+    <SidebarWelcome />
+  </Glass>
 </template>

@@ -3,7 +3,7 @@
 import "primeicons/primeicons.css";
 import Background from "@/components/layout/Background.vue";
 import Glass from "./components/ui/Glass.vue";
-import Sidebar from "./components/layout/Sidebar.vue";
+import Sidebar from "./components/layout/sidebar/Sidebar.vue";
 import ToggleThemeButton from "@/components/shared/ThemeToggleButton.vue";
 
 import { RouterView } from "vue-router";
@@ -20,8 +20,11 @@ import { RouterView } from "vue-router";
       <!--Keep a default glass pane + sizebar - the vue router will only point to the content of the selected item.-->
       <Sidebar class="basis-1/3 hidden md:block" />
 
-      <Glass class="basis-full size-full" roundedAmount="xl">
-        <RouterView class="p-5 overflow-y-scroll no-scrollbar" />
+      <Glass
+        class="basis-full size-full overflow-y-scroll no-scrollbar p-10"
+        roundedAmount="2xl"
+      >
+        <RouterView />
       </Glass>
 
       <ToggleThemeButton class="absolute top-0 left-0 w-10 h-10" />

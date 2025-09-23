@@ -7,7 +7,7 @@ const LINKEDIN_LINK = "https://www.linkedin.com/in/trevorflahardy/";
 
 <template>
   <div>
-    <div class="flex gap-5 items-center justify-evenly lg:px-24">
+    <div class="flex gap-5 items-center justify-evenly">
       <!-- Intro content-->
       <div class="w-fit h-fit flex flex-col gap-2 items-start">
         <p class="text-white text-md font-medium w-full leading-none">
