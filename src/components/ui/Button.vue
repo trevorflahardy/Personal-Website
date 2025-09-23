@@ -5,6 +5,7 @@ export interface ButtonProps {
   label?: string;
   link?: string;
   icon?: string;
+  onClick?: () => void;
 }
 
 defineProps<ButtonProps>();
@@ -15,6 +16,7 @@ defineProps<ButtonProps>();
     type="button"
     class="px-4 py-2 rounded-md hover:scale-[1.02] active:scale-95 transition-all duration-150 cursor-pointer select-none flex items-center justify-center text-white font-semibold"
     roundedAmount="md"
+    @click="onClick"
   >
     <component
       :is="link ? 'a' : 'div'"

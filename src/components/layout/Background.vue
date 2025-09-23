@@ -5,6 +5,6 @@
 
 <template>
   <div
-    class="h-screen w-screen bg-apt-day dark:bg-apt-night bg-cover bg-center bg-no-repeat transition-all duration-500"
+    class="h-screen w-screen bg-apt-day dark:bg-apt-night bg-cover bg-center bg-no-repeat transition-all duration-500 ease-in-out"
   />
 </template>

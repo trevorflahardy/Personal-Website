@@ -1,6 +1,6 @@
 <script setup lang="ts">
 export interface GlassProps {
-  type?: "div";
+  type?: "div" | "button";
   roundedAmount?: "none" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "full";
 }
 
