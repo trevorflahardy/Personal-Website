@@ -27,7 +27,7 @@ import { RouterView } from "vue-router";
         <RouterView />
       </Glass>
 
-      <ToggleThemeButton class="absolute top-0 left-0 w-10 h-10" />
+      <ToggleThemeButton class="absolute top-0 left-0 !w-10 !h-10" />
     </div>
   </main>
 </template>

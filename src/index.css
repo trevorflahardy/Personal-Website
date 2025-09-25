@@ -1,22 +1,58 @@
 @import "tailwindcss";
 
-@layer base {
-}
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 
-@layer components {
-}
-
-@layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
   }
+}
 
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
-  }
+/* Edits for font and text sizing */
+@theme {
+  --font-display: "SF Pro Display", "Helvetica Neue", "sans-serif";
+
+  --text-xss: [ "10px", "12px"];
+}
+
+/* Edits for custom background images */
+@theme {
+  --background-image-apt-day: url("/AptDay.png");
+  --background-image-apt-night: url("/AptNight.png");
+
+  --background-size-apt-day: cover;
+  --background-size-apt-night: cover;
+  --background-position-apt-day: center;
+  --background-position-apt-night: center;
+  --background-repeat-apt-day: no-repeat;
+  --background-repeat-apt-night: no-repeat;
+}
+
+/* Colors implementation throughout the application */
+@theme {
+  --color-chai-50: "#f2efff";
+  --color-chai-100: "#d7ccff";
+  --color-chai-200: "#c4b4ff";
+  --color-chai-300: "#a992ff";
+  --color-chai-400: "#997dff";
+  --color-chai-500: "#7f5cff";
+  --color-chai-600: "#7454e8";
+  --color-chai-700: "#5a41b5";
+  --color-chai-800: "#46338c";
+  --color-chai-900: "#35276b";
+  --color-chai-default: "#7f5cff";
+
+  --color-discord-100: "#424549";
+  --color-discord-200: "#36393e";
+  --color-discord-300: "#282b30";
+  --color-discord-400: "#1e2124";
+  --color-discord-blurple: "#7289da";
+
+  --color-docuflow-light: "#FF4A33";
+  --color-docuflow-dark: "#FF381F";
+
+  --color-fury: "#4EDBFC";
 }
