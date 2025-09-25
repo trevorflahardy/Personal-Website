@@ -11,5 +11,9 @@ const currentIcon = computed(() => {
 </script>
 
 <template>
-  <Button :icon="currentIcon" @click="toggleTheme" />
+  <Button
+    :icon="currentIcon"
+    @click="toggleTheme"
+    class="text-white fill-white transition-all duration-300"
+  />
 </template>
