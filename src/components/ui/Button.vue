@@ -20,11 +20,10 @@ defineProps<ButtonProps>();
   >
     <component
       :is="link ? 'a' : 'div'"
-      v-if="link"
       :href="link"
       target="_blank"
       rel="noopener noreferrer"
-      class="flex items-center gap-2"
+      class="flex items-center justify-center gap-2"
     >
       <span v-if="label">{{ label }}</span>
       <slot v-else />
