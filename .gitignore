@@ -29,3 +29,8 @@ bun-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Bun specific
+.bun
+bun.lock
+.buninstall

@@ -6,7 +6,7 @@
     <p class="text-gray-200">
       I'm currently a student at the
       <span
-        class="from-green-500 to-green-300 bg-gradient-to-r bg-clip-text text-transparent font-bold"
+        class="from-green-500 to-green-300 bg-linear-to-r bg-clip-text text-transparent font-bold"
         >University of South Florida</span
       >
       for my Bachelor's in Computer Science. Tech has always been a part of my

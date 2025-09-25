@@ -31,7 +31,7 @@
     "eslint-plugin-vue": "10.5.0",
     "prettier": "^3.0.3",
     "tailwind-scrollbar": "4.0.2",
-    "tailwindcss": "4.1.13",
+    "tailwindcss": "^4.1.13",
     "tailwindcss-3d": "^1.0.5",
     "tailwindcss-animated": "2.0.0",
     "typescript": "5.9.2",

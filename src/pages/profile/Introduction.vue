@@ -36,13 +36,13 @@ const LINKEDIN_LINK = "https://www.linkedin.com/in/trevorflahardy/";
 
     <!-- Below the main introduction is a separation line with buttons in the middle -->
     <div class="w-full h-fit flex items-center justify-center gap-5 mt-5">
-      <div class="flex-grow border-t border-gray-300" />
+      <div class="grow border-t border-gray-300" />
       <!-- buttons to some social media links -->
       <div class="flex gap-3">
         <Button :link="GITHUB_LINK" icon="pi-github"></Button>
         <Button :link="LINKEDIN_LINK" icon="pi-linkedin"></Button>
       </div>
-      <div class="flex-grow border-t border-gray-300" />
+      <div class="grow border-t border-gray-300" />
     </div>
   </div>
 </template>
