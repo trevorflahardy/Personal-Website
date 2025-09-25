@@ -5,8 +5,12 @@ import Background from "@/components/layout/Background.vue";
 import Glass from "./components/ui/Glass.vue";
 import Sidebar from "./components/layout/sidebar/Sidebar.vue";
 import ToggleThemeButton from "@/components/shared/ThemeToggleButton.vue";
+import { useTheme } from "@/composables/useTheme";
 
 import { RouterView } from "vue-router";
+
+// Initialize theme early in the app lifecycle
+useTheme();
 </script>
 
 <template>
