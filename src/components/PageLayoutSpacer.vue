@@ -23,11 +23,9 @@ const props = defineProps<PageLayoutSpacerProps>();
     </div>
 </template>
 
-
 <style>
 .slam-enter-active {
-    transition:
-        transform v-bind("props.transformDuration || '600ms'") ease-in-out;
+    transition: transform v-bind("props.transformDuration || '600ms'") ease-in-out;
 }
 
 .slam-enter-from {

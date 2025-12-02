@@ -17,9 +17,8 @@ function toggleHamburger() {
 <template>
   <nav class="w-full">
     <!-- Represents the desktop sidebar. This sidebar is always visible on desktop-->
-    <div
-      class="hidden xl:flex h-full w-full transform-gpu outline outline-1 outline-gray-300 dark:outline-gray-500 rounded-[40px]"
-      data-tilt data-tilt-max="3" data-tilt-reverse="true">
+    <div class="hidden xl:flex h-full w-full transform-gpu outline-1 outline-gray-300 dark:outline-gray-500 rounded-3xl"
+      data-tilt data-tilt-max="0.5" data-tilt-reverse="true">
       <Content v-model="isHamburgerOpen" />
     </div>
 
@@ -36,7 +35,7 @@ function toggleHamburger() {
 
       <!-- Shows the actual sidebar that slides in on click OVER the other content-->
       <Transition name="fade-in">
-        <div class="z-10 top-0 left-0 w-fill h-full rounded-[40px]" v-if="isHamburgerOpen">
+        <div class="z-10 top-0 left-0 w-fill h-full rounded-3xl" v-if="isHamburgerOpen">
           <Content v-model="isHamburgerOpen" />
         </div>
       </Transition>

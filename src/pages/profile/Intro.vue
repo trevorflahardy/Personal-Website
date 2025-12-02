@@ -16,20 +16,18 @@ import Button from '@/components/Button.vue';
 			</div>
 
 			<!-- Holds my PFP alongside it-->
-			<div
-				class="rounded-full overflow-hidden bg-gray-950/20 dark:bg-gray-200/5 p-1 shadow-md shrink-0 w-1/5 h-auto animate-fade-left animate-duration-700">
-				<img src="/ProfilePicNoBG.png" alt="Trevor PFP." class="w-full h-full" />
-			</div>
+			<img src="/ProfilePic.png" alt="Trevor PFP."
+				class="object-cover w-1/5 h-auto rounded-full animate-fade-left animate-duration-700" />
 		</div>
 
 		<!-- Holds some main link buttons for the user to easily see.-->
 		<div class="relative flex items-center mt-3 px-5">
-			<div class="flex-grow border-t border-gray-300 animate-fade-down duration-700 animate-delay-[800ms]"></div>
-			<div class="flex-shrink mx-4 space-x-2 animate-fade duration-700 animate-delay-[1000ms]">
+			<div class="grow border-t border-gray-300 animate-fade-down duration-700 animate-delay-[800ms]"></div>
+			<div class="shrink mx-4 space-x-2 animate-fade duration-700 animate-delay-[1000ms]">
 				<Button link="https://github.com/trevorflahardy" icon="pi-github" />
 				<Button link="https://www.linkedin.com/in/trevorflahardy/" icon="pi-linkedin" />
 			</div>
-			<div class="flex-grow border-t border-gray-300 animate-fade-down duration-700 animate-delay-[800ms]"></div>
+			<div class="grow border-t border-gray-300 animate-fade-down duration-700 animate-delay-[800ms]"></div>
 		</div>
 
 		<!--Next shows the "About Me" section. This holds a bit of a backstory about how my mission came to be.-->

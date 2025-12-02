@@ -37,7 +37,7 @@ function toggleHamburger() {
 <template>
     <!-- Holds the platform-less sidebar content. This will display the same on mobile and desktop. The only difference
  is that the mobile content is hidden behind the hamburger. -->
-    <div class="rounded-[40px] glass-thick h-full pt-12 p-5 xl:pt-5 w-full md:min-w-72 xl:min-w-80">
+    <div class="rounded-3xl glass-thick h-full pt-12 p-5 xl:pt-5 w-full md:min-w-72 xl:min-w-80">
         <div class="mb-5 mt-4">
             <h4 class="title-4 font-medium mb-0">
                 Welcome,
@@ -72,7 +72,7 @@ function toggleHamburger() {
 
         <!-- Small title for the projects-->
         <h2 class="w-full text-sm text-white font-light mb-1">
-            My Favorite Projects
+            My Favorite Side Quests
         </h2>
 
         <!-- All other project components handled under their own component, they are the same essentially -->

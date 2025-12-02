@@ -25,7 +25,7 @@ const docuflowInfoCards = [
 <template>
     <PageLayoutSpacer>
         <!-- The standard-type intro to the page. -->
-        <div class="py-5 px-2 bg-gray-950/30 dark:bg-gray-200/5 shadow-md rounded-[40px] w-full">
+        <div class="py-5 px-2 bg-gray-950/30 dark:bg-gray-200/5 shadow-md rounded-3xl w-full">
             <p class="title text-center w-full">
                 Build <span class="text-docuflow-light dark:text-docuflow-dark">quick</span>, lightweight <span
                     class="text-docuflow-light dark:text-docuflow-dark">documentation</span>, don't get bogged down
@@ -61,9 +61,9 @@ const docuflowInfoCards = [
          part of it in the back, and the home page stacked on the front of it. -->
         <div class="w-full h-fit space-y-5 md:px-5 lg:px-10 relative xl:!mb-16">
             <img src="/docuflow-home.png" alt="Docuflow home page preview."
-                class="xl:w-[85%] z-10 rounded-xl xl:rounded-[40px]" />
+                class="xl:w-[85%] z-10 rounded-xl xl:rounded-3xl" />
             <img src="/docuflow-docs.png" alt="Docuflow documentation page preview."
-                class="xl:absolute xl:w-[65%] z-20 rounded-xl xl:rounded-[40px] xl:-bottom-[15%] xl:right-[5%] xl:shadow-md" />
+                class="xl:absolute xl:w-[65%] z-20 rounded-xl xl:rounded-3xl xl:-bottom-[15%] xl:right-[5%] xl:shadow-md" />
         </div>
 
         <!-- Kind of a disclaimer noting that this project is still in early development -->
