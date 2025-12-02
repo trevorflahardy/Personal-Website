@@ -1,6 +1,46 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  /* Custom font sizes */
+  --font-size-xss: 10px;
+  --line-height-xss: 12px;
+
+  /* Custom colors */
+  --color-glass-regular: #d9d9d9;
+  --color-glass-thin: #c9c9c9;
+  --color-glass-semithick: #5e5e5e;
+  --color-glass-thick: #403f3f;
+
+  --color-chai-50: #f2efff;
+  --color-chai-100: #d7ccff;
+  --color-chai-200: #c4b4ff;
+  --color-chai-300: #a992ff;
+  --color-chai-400: #997dff;
+  --color-chai-500: #7f5cff;
+  --color-chai-600: #7454e8;
+  --color-chai-700: #5a41b5;
+  --color-chai-800: #46338c;
+  --color-chai-900: #35276b;
+  --color-chai-default: #7f5cff;
+
+  --color-discord-100: #424549;
+  --color-discord-200: #36393e;
+  --color-discord-300: #282b30;
+  --color-discord-400: #1e2124;
+  --color-discord-blurple: #7289da;
+
+  --color-docuflow-light: #ff4a33;
+  --color-docuflow-dark: #ff381f;
+
+  --color-fury: #4edbfc;
+
+  /* Background images */
+  --background-image-apt-day: url("/AptDay.png");
+  --background-image-apt-night: url("/AptNight.png");
+
+  /* Font family */
+  --font-family-sf-pro-display: "SF Pro Display", "Helvetica Neue", sans-serif;
+}
 
 @layer base {
   /* Extends the default base to add some uniformity between elements */
