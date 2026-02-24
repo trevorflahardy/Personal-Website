@@ -13,6 +13,7 @@
     "@vueuse/motion": "^3.0.3",
     "axios": "^1.13.2",
     "primeicons": "^7.0.0",
+    "tailwindcss-animated": "^2.0.0",
     "vue": "3.5.25",
     "vue-router": "^4.6.3"
   },
@@ -24,6 +25,7 @@
     "@vue/cli-plugin-typescript": "^5.0.9",
     "@vue/cli-service": "^5.0.9",
     "@vue/eslint-config-prettier": "^10.2.0",
+    "esbuild": "^0.27.3",
     "eslint": "^9.39.1",
     "eslint-plugin-vue": "^10.6.2",
     "prettier": "^3.7.3",

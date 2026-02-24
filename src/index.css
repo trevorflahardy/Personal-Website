@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@plugin "tailwindcss-animated";
+@variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* Custom font sizes */
