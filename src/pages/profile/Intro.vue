@@ -5,8 +5,8 @@ import Button from '@/components/Button.vue';
 <template>
 	<div class="w-full">
 		<!-- Hero section - name and profile picture -->
-		<div class="w-full flex flex-col sm:flex-row items-center sm:items-center justify-between gap-6 sm:gap-8 mb-10 lg:mb-12">
-			<div class="text-center sm:text-left flex-1">
+		<div class="w-full flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-10 lg:gap-12 mb-10 lg:mb-12">
+			<div class="text-center sm:text-left">
 				<p class="text-sm md:text-base text-white/60 font-light tracking-wide uppercase mb-2 animate-fade-down animate-duration-700">
 					Hi, I'm
 				</p>
@@ -35,8 +35,8 @@ import Button from '@/components/Button.vue';
 		</div>
 
 		<!-- About me sections in glass cards -->
-		<div class="space-y-6 animate-fade-up animate-duration-700 animate-delay-1200">
-			<div class="glass-card p-6 md:p-8 lg:p-10">
+		<div class="animate-fade-up animate-duration-700 animate-delay-1200">
+			<div class="glass-card p-5 md:p-6 lg:p-8">
 				<h2 class="title-3 mb-3">
 					It's Nice to Meet You
 				</h2>
@@ -47,24 +47,6 @@ import Button from '@/components/Button.vue';
 					I've grown, I've come to realize the meaningful impact it can have on people's lives. For me, it's not
 					just about users—it's about real people with real stories. I create with that in mind, driven by the
 					idea that tech should serve, not just function. After all, technology without people is meaningless.
-				</p>
-			</div>
-
-			<div class="glass-card p-6 md:p-8 lg:p-10 animate-fade-up animate-duration-700 animate-delay-1800">
-				<h3 class="title-4 mb-3">
-					What Makes Me Tick
-				</h3>
-				<p class="body mb-0 max-w-4xl">
-					When I'm not buried in a project or deep in academics, I'm probably under the hood of a car, playing
-					pickleball, or pushing myself at the gym. Growing up, I was always drawn to helping others, and
-					discovering programming felt like a natural way to extend that. I know it sounds cliché, but this isn't
-					just a hobby—<span class="font-medium text-white/90">it's woven into who I am</span>. Programming is
-					my way of life, a labor of love, and I'm constantly looking for ways to use it to make a real impact.
-				</p>
-				<p class="body mb-0 mt-4 max-w-4xl">
-					One day, I hope to work at Apple, particularly on the Apple Watch team. Their approach to creating tech
-					that genuinely enhances lives aligns with my values, and I see it as the ultimate intersection of
-					technology and human connection.
 				</p>
 			</div>
 		</div>

@@ -23,7 +23,7 @@ const techTags = {
             v-motion-slide-visible-once-bottom
         >
             <!-- Discord Front End -->
-            <div class="glass-card p-8 md:p-10">
+            <div class="glass-card p-6 md:p-8">
                 <div class="flex items-start gap-5 mb-5">
                     <div class="w-12 h-12 rounded-2xl bg-chai-400/15 border border-chai-400/20 flex items-center justify-center shrink-0">
                         <i class="pi pi-discord text-chai-200 text-xl" />
@@ -51,7 +51,7 @@ const techTags = {
             </div>
 
             <!-- Rust API Backend -->
-            <div class="glass-card p-8 md:p-10">
+            <div class="glass-card p-6 md:p-8">
                 <div class="flex items-start gap-5 mb-5">
                     <div class="w-12 h-12 rounded-2xl bg-orange-500/15 border border-orange-500/20 flex items-center justify-center shrink-0">
                         <i class="pi pi-server text-orange-300 text-xl" />
@@ -81,7 +81,7 @@ const techTags = {
             </div>
 
             <!-- Deployment -->
-            <div class="glass-card p-8 md:p-10">
+            <div class="glass-card p-6 md:p-8">
                 <div class="flex items-start gap-5 mb-5">
                     <div class="w-12 h-12 rounded-2xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center shrink-0">
                         <i class="pi pi-cloud text-blue-300 text-xl" />

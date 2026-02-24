@@ -42,7 +42,7 @@ const howItWorks = [
 <template>
     <PageLayoutSpacer>
         <!-- Hero card -->
-        <div class="glass-card px-8 py-12 md:px-12 md:py-16 w-full text-center">
+        <div class="glass-card px-8 py-8 md:px-12 md:py-10 w-full text-center">
             <p class="text-xs font-medium tracking-widest uppercase text-white/50 mb-4">
                 Open Source Project
             </p>
@@ -74,7 +74,7 @@ const howItWorks = [
             <div
                 v-for="{ title, body, icon } in docuflowFeatures"
                 :key="title"
-                class="glass-card p-7 lg:p-8 flex flex-col items-center text-center gap-4"
+                class="glass-card p-5 lg:p-6 flex flex-col items-center text-center gap-4"
             >
                 <div class="w-14 h-14 rounded-2xl bg-docuflow-light/10 border border-docuflow-light/20 flex items-center justify-center">
                     <i class="pi text-docuflow-light text-2xl" :class="icon" />
@@ -101,7 +101,7 @@ const howItWorks = [
                 <div
                     v-for="{ step, title, body } in howItWorks"
                     :key="step"
-                    class="glass-card p-7 lg:p-8 flex-1 flex flex-col gap-3"
+                    class="glass-card p-5 lg:p-6 flex-1 flex flex-col gap-3"
                 >
                     <span class="text-3xl font-bold text-docuflow-light/40 tracking-tight leading-none">{{ step }}</span>
                     <h3 class="card-title mb-0">{{ title }}</h3>

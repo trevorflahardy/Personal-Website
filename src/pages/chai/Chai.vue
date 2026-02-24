@@ -13,7 +13,7 @@ const glassButton = "bg-white/6 hover:bg-white/10 border border-white/10";
 <template>
   <PageLayoutSpacer>
     <!-- Hero section -->
-    <div class="glass-card w-full px-6 sm:px-10 md:px-14 lg:px-16 py-10 sm:py-14 md:py-16 lg:py-20 text-center">
+    <div class="glass-card w-full px-6 sm:px-10 md:px-14 lg:px-16 py-7 sm:py-10 md:py-12 lg:py-14 text-center">
 
       <!-- Title -->
       <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl 2xl:text-7xl font-bold tracking-tight text-white/90 mb-4 md:mb-6">
