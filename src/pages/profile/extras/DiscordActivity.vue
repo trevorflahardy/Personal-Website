@@ -1,9 +1,28 @@
-<script setup>
-const props = defineProps({
-  data: Object,
-});
+<script setup lang="ts">
+interface DiscordActivity {
+  type: number;
+  name: string;
+  details?: string;
+  state?: string;
+  timestamps?: {
+    start?: number;
+    end?: number;
+  };
+  created_at: number;
+  application_id?: string;
+  assets?: {
+    large_image?: string;
+    small_image?: string;
+    large_text?: string;
+    small_text?: string;
+  };
+}
 
-function determineHeader(data) {
+const props = defineProps<{
+  data: DiscordActivity;
+}>();
+
+function determineHeader(data: DiscordActivity) {
   switch (data.type) {
     case 0:
       return `Playing ${data.name}`;
@@ -21,7 +40,7 @@ function determineHeader(data) {
 }
 
 // Takes in a timestamp and returns its relative time to/from now. So "7 hours ago" or "in 2 hours"
-function relativeTime(timestamp) {
+function relativeTime(timestamp: number | Date) {
   const now = new Date();
   const then = new Date(timestamp);
 
@@ -38,7 +57,7 @@ function relativeTime(timestamp) {
   }
 }
 
-function formatRelativeTime(days, hours, minutes, suffix) {
+function formatRelativeTime(days: number, hours: number, minutes: number, suffix: string) {
   const timeParts = [];
 
   if (days > 0) {
@@ -56,7 +75,7 @@ function formatRelativeTime(days, hours, minutes, suffix) {
   return timeParts.join(", ") + ` ${suffix}`;
 }
 
-function parseImage(applicationId, imageUrl) {
+function parseImage(applicationId: string, imageUrl: string) {
   // If the image starts with "spotify:", it's a Spotify image, so we need to use a different URL
   if (imageUrl.startsWith("spotify:")) {
     return `https://i.scdn.co/image/${imageUrl.split(":")[1]}`;
@@ -65,7 +84,7 @@ function parseImage(applicationId, imageUrl) {
   return `https://cdn.discordapp.com/app-assets/${applicationId}/${imageUrl}.png`;
 }
 
-function determineTimestamps(data) {
+function determineTimestamps(data: DiscordActivity) {
   if (data.timestamps) {
     const startTimestamp = data.timestamps.start;
     const endTimestamp = data.timestamps.end;

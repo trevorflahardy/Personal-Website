@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import axios from "axios";
 import DiscordActivity from "./DiscordActivity.vue";
 import InfoCard from "@/components/InfoCard.vue";
@@ -6,12 +6,12 @@ import InfoCard from "@/components/InfoCard.vue";
 const userId = "146348630926819328";
 const lanyardUrl = `https://api.lanyard.rest/v1/users/${userId}`;
 
-async function fetchData(url) {
+async function fetchData(url: string) {
   const response = await axios.get(url);
   return response.data.data;
 }
 
-function determineAvatarOutline(status) {
+function determineAvatarOutline(status: string) {
   switch (status) {
     case "online":
       return "border-green-500";

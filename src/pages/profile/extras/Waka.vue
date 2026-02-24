@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import axios from "axios";
 import Button from "@/components/Button.vue";
 import InfoCard from "@/components/InfoCard.vue";
@@ -8,7 +8,7 @@ const wakaProfileUrl = "https://wakatime.com/@trevorflahardy";
 const wakaUrl =
   "https://wakatime.com/share/embeddable/trevorflahardy/969ad792-7d1c-4aaf-a45c-8b4b95858fdf.json";
 
-async function fetchData(url) {
+async function fetchData(url: string) {
   const response = await axios.get(url);
   return response.data.data;
 }

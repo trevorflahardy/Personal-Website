@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useLocalStorage } from '@vueuse/core';
 import { computed } from 'vue';
 
@@ -17,11 +17,11 @@ const toggleThemeIcon = computed(() => {
 
 <template>
 	<footer
-		class="w-64 lg:w-96 h-14 glass-thick bg-gray-300/50 rounded-full relative -top-6 shadow-xl flex-row items-center justify-start p-4 flex xl:ml-[30%]">
+		class="w-64 lg:w-96 h-12 backdrop-blur-2xl bg-white/8 dark:bg-white/5 border border-white/10 rounded-full relative -top-4 shadow-xl flex-row items-center justify-start p-3 flex xl:ml-auto xl:mr-auto">
 		<!-- Lightswitch for light and dark mode -->
 
 		<button type="button"
-			class="glass-semithick rounded-full h-9 w-9 flex flex-row items-center justify-center overflow-hidden relative"
+			class="backdrop-blur-xl bg-white/10 rounded-full h-8 w-8 flex flex-row items-center justify-center overflow-hidden relative border border-white/10 hover:bg-white/15 transition-colors"
 			@click="toggleTheme()">
 			<Transition name="slide-up">
 				<i class="pi text-black absolute" :class="toggleThemeIcon" :key="theme" />

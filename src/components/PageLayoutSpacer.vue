@@ -13,7 +13,7 @@ const props = defineProps<PageLayoutSpacerProps>();
      1. Ensuring that page layouts are consistent
      2. Giving a nice "fade-in" animation to all slots within this page -->
     <div
-        class="flex items-center flex-col flex-nowrap space-y-7 px-3 sm:p-5 md:p-7 xl:p-10 sm:px-2 py-12 sm:py-12 md:py-16 xl:py-5 min-h-full w-full">
+        class="flex items-center flex-col flex-nowrap space-y-6 lg:space-y-8 px-5 sm:px-7 md:px-8 lg:px-10 xl:px-10 2xl:px-12 py-5 sm:py-6 md:py-7 lg:py-8 min-h-full w-full">
         <TransitionGroup name="slam" appear :tag="props.tag">
             <!-- Insert any slots from the page into the slam transition. -->
             <slot v-for="(slot, index) in $slots" :key="`slot-${index}`">

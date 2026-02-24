@@ -8,49 +8,31 @@ export interface InfoCardProps {
 
 const props = defineProps<InfoCardProps>();
 
-function shouldFlexRow() {
-    return props.imagePosition === "left" || props.imagePosition === "right";
-}
-
-function shouldFlexCol() {
-    return props.imagePosition === "top" || props.imagePosition === "bottom";
-}
-
-function imageOrder(): number {
-    return props.imagePosition === "left" || props.imagePosition === "top"
-        ? 1
-        : 2;
-}
-
-function contentOrder(): number {
-    return props.imagePosition === "left" || props.imagePosition === "top"
-        ? 2
-        : 1;
-}
+const isRow = computed(() => props.imagePosition === "left" || props.imagePosition === "right");
+const isCol = computed(() => !props.imagePosition || props.imagePosition === "top" || props.imagePosition === "bottom");
+const imageFirst = computed(() => !props.imagePosition || props.imagePosition === "left" || props.imagePosition === "top");
 
 const backgroundClass = computed(() => {
-    return props.background || "bg-gray-950/30 dark:bg-gray-200/5";
+    return props.background || "bg-white/4";
 });
 </script>
 
 <template>
     <div v-motion-slide-visible-once-bottom :delay="0" :duration="50"
-        class="flex transition-all duration-500 ease-in-out rounded-xl shadow-md overflow-clip" :class="[
+        class="flex transition-all duration-500 ease-in-out rounded-2xl border border-white/8 shadow-lg overflow-clip backdrop-blur-xl hover:border-white/15 hover:bg-white/6 hover:shadow-xl"
+        :class="[
             backgroundClass,
-            { ['flex-row']: shouldFlexRow(), ['flex-col']: shouldFlexCol() },
+            isRow ? 'flex-row' : 'flex-col',
         ]">
-        <!-- Holds the image of this card. Takes up as much width as possible on the card
-         and has its height auto adjust (unless the user wants to choose otherwise)-->
-        <slot name="image" :class="`flex-auto w-full order-${imageOrder()}`" />
+        <div :class="imageFirst ? 'order-1' : 'order-2'">
+            <slot name="image" />
+        </div>
 
-        <!--Holds the actual content of this card, in the slot-->
-        <div class="flex-auto w-full p-3 md:pb-5 flex flex-col items-start justify-between"
-            :class="`order-${contentOrder()}`">
-            <!-- The default slot that contains the content -->
+        <div class="flex-auto w-full p-5 md:p-6 lg:p-7 flex flex-col items-start justify-between"
+            :class="imageFirst ? 'order-2' : 'order-1'">
             <slot />
 
-            <!-- A special slot for buttons -->
-            <div v-if="$slots.buttons" class="mt-3 flex flex-row items-center justify-start flex-wrap gap-2">
+            <div v-if="$slots.buttons" class="mt-4 flex flex-row items-center justify-start flex-wrap gap-2">
                 <slot name="buttons" />
             </div>
         </div>

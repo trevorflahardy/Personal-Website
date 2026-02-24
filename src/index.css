@@ -41,94 +41,90 @@
   --background-image-apt-night: url("/AptNight.png");
 
   /* Font family */
-  --font-family-sf-pro-display: "SF Pro Display", "Helvetica Neue", sans-serif;
+  --font-family-sf-pro-display: "SF Pro Display", "Helvetica Neue", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 @layer base {
-  /* Extends the default base to add some uniformity between elements */
-
-  /* Gives a hero title to only be used in the intro to this page. This is because it's MASSIVE */
   .hero-title {
-    @apply text-4xl md:text-5xl lg:text-7xl xl:text-7xl 2xl:text-8xl font-bold text-white text-pretty mb-1 md:mb-3;
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl font-bold text-white text-pretty tracking-tight;
   }
 
   .title {
-    @apply text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white text-pretty mb-2;
+    @apply text-2xl sm:text-3xl lg:text-4xl xl:text-4xl 2xl:text-5xl font-semibold text-white text-pretty tracking-tight mb-2;
   }
 
   .title-2 {
-    @apply text-lg md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-white text-pretty mb-2;
+    @apply text-xl md:text-2xl lg:text-2xl xl:text-3xl 2xl:text-4xl font-semibold text-white text-pretty tracking-tight mb-2;
   }
 
   .title-3 {
-    @apply text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-semibold text-gray-100 text-pretty mb-1;
+    @apply text-lg md:text-xl lg:text-xl xl:text-2xl 2xl:text-3xl font-medium text-white/90 text-pretty tracking-tight mb-1;
   }
 
   .title-4 {
-    @apply text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl font-semibold text-gray-200 text-pretty mb-1;
+    @apply text-base md:text-lg lg:text-lg xl:text-xl 2xl:text-2xl font-medium text-white/85 text-pretty mb-1;
   }
 
   .subtitle {
-    @apply text-sm md:text-base text-gray-200 text-pretty mb-1;
+    @apply text-sm md:text-base lg:text-base text-white/75 text-pretty mb-1 leading-relaxed;
   }
 
   .body {
-    @apply text-xs sm:text-sm md:text-base text-gray-100 font-light text-pretty mb-1;
+    @apply text-sm sm:text-sm md:text-base lg:text-base text-white/80 font-light text-pretty mb-1 leading-relaxed;
   }
 
-  /* Info specifically for cards. This ensures that every card has consistent and smaller titles and captions and subtitles than the normal base */
   .card-title {
-    @apply text-lg md:text-xl lg:text-2xl font-semibold text-white text-pretty lg:mb-1 leading-tight;
+    @apply text-lg md:text-xl lg:text-2xl font-semibold text-white text-pretty lg:mb-1 leading-tight tracking-tight;
   }
 
   .card-title-2 {
-    @apply text-base md:text-lg lg:text-xl font-medium text-gray-100 text-pretty lg:mb-1;
+    @apply text-base md:text-lg lg:text-xl font-medium text-white/80 text-pretty lg:mb-1;
   }
 
   .card-caption {
-    @apply text-xs md:text-sm text-gray-300 text-pretty mb-1;
+    @apply text-xs md:text-sm text-white/65 text-pretty mb-1;
   }
 
   .card-body {
-    @apply text-xs md:text-sm text-gray-100 font-light text-pretty;
+    @apply text-sm md:text-sm lg:text-base text-white/78 font-light text-pretty leading-relaxed;
   }
 }
 
 @layer components {
   .glass-thin {
-    @apply backdrop-blur-md shadow-md;
+    @apply backdrop-blur-md shadow-md border border-white/8;
   }
 
   .glass-regular {
-    @apply backdrop-blur-lg shadow-lg;
+    @apply backdrop-blur-lg shadow-lg border border-white/8;
   }
 
   .glass-semithick {
-    @apply backdrop-blur-xl shadow-xl;
+    @apply backdrop-blur-xl shadow-xl border border-white/6;
   }
 
   .glass-thick {
-    @apply backdrop-blur-2xl shadow-2xl;
+    @apply backdrop-blur-2xl shadow-2xl border border-white/5;
+  }
+
+  .glass-card {
+    @apply bg-white/4 backdrop-blur-xl border border-white/8 rounded-2xl shadow-lg;
   }
 
   .button-glass:hover {
-    transform: scale(1.05);
-    transition-timing-function: ease-in-out;
+    transform: scale(1.03);
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     @apply shadow-xl;
   }
 }
 
 @layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
-  /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
     -ms-overflow-style: none;
-    /* IE and Edge */
     scrollbar-width: none;
-    /* Firefox */
   }
 }

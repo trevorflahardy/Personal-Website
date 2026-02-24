@@ -1,78 +1,142 @@
 <script setup lang="ts">
 import PageLayoutSpacer from "@/components/PageLayoutSpacer.vue";
 import Button from "@/components/Button.vue";
-import InfoCard from "@/components/InfoCard.vue";
 
-const docuflowInfoCards = [
+const docuflowFeatures = [
     {
         title: "Powered by MDX",
-        body: "Write all your documentation in MDX, or Markdown + JSX, files and let Docuflow manage the rest. Import between files, use components, and more.",
+        body: "Write documentation in MDX — Markdown with embedded JSX. Import shared components, add interactive examples, and keep your docs alive alongside your code.",
         icon: "pi-desktop",
     },
     {
         title: "Built on React + Vite",
-        body: "Docuflow is built on React and Vite, allowing for extendability and fine-tuned customizations. Define your own React components, and more.",
+        body: "Docuflow runs on React and Vite under the hood, so you get hot module replacement, fast builds, and the full React ecosystem available when you need it.",
         icon: "pi-cog",
     },
     {
-        title: "Build with a Simple CLI",
-        body: "Docuflow comes with a simple CLI for building and deploying your documentation. No need to worry about the build process.",
+        title: "One-Command CLI",
+        body: "A single CLI command scaffolds, builds, and deploys your documentation site. No webpack configs, no boilerplate — just write and ship.",
         icon: "pi-sync",
     }
-]
+];
+
+const howItWorks = [
+    {
+        step: "01",
+        title: "Write in MDX",
+        body: "Author your docs in .mdx files. Use standard Markdown for text, and drop in React components where static content isn't enough."
+    },
+    {
+        step: "02",
+        title: "Run the CLI",
+        body: "Run `docuflow build` and the CLI scans your MDX files, resolves imports, and compiles the full site — in seconds."
+    },
+    {
+        step: "03",
+        title: "Deploy Anywhere",
+        body: "The output is a standard static site. Drop it on any CDN, GitHub Pages, Vercel, or your own server — Docuflow doesn't lock you in."
+    }
+];
 </script>
 
 <template>
     <PageLayoutSpacer>
-        <!-- The standard-type intro to the page. -->
-        <div class="py-5 px-2 bg-gray-950/30 dark:bg-gray-200/5 shadow-md rounded-3xl w-full">
-            <p class="title text-center w-full">
-                Build <span class="text-docuflow-light dark:text-docuflow-dark">quick</span>, lightweight <span
-                    class="text-docuflow-light dark:text-docuflow-dark">documentation</span>, don't get bogged down
-                by the process.
+        <!-- Hero card -->
+        <div class="glass-card px-8 py-12 md:px-12 md:py-16 w-full text-center">
+            <p class="text-xs font-medium tracking-widest uppercase text-white/50 mb-4">
+                Open Source Project
+            </p>
+            <h1 class="text-xl md:text-2xl lg:text-3xl font-semibold text-white tracking-tight leading-snug mb-4">
+                Build
+                <span class="text-docuflow-light dark:text-docuflow-dark">quick</span>,
+                lightweight
+                <span class="text-docuflow-light dark:text-docuflow-dark">documentation</span>
+                — don't get bogged down by the process.
+            </h1>
+            <p class="text-sm md:text-base text-white/70 max-w-xl mx-auto mb-8 leading-relaxed">
+                Docuflow is a documentation generator built for developers who want to ship great docs without
+                fighting their toolchain. Write MDX, run a command, done.
             </p>
 
-            <div class="flex w-full items-center justify-around mt-5">
-                <Button content="Github" icon="pi-github" background="bg-docuflow-light dark:bg-docuflow-dark"
-                    class="font-medium" />
+            <div class="flex w-full items-center justify-center">
+                <Button
+                    content="View on Github"
+                    icon="pi-github"
+                    link="https://github.com/trevorflahardy/docuflow"
+                    background="bg-docuflow-light/90 hover:bg-docuflow-light dark:bg-docuflow-dark/90 dark:hover:bg-docuflow-dark"
+                    textExtra="text-white"
+                />
             </div>
         </div>
 
-        <!-- Below it denotes some selling points for why docuflow is nifty. These are basically
-         info cards without backgrounds. -->
-        <div class="flex flex-row flex-wrap items-stretch justify-center gap-5 h-fit">
-            <InfoCard imagePosition="top" class="text-center shadow-lg max-w-sm"
-                v-for="{ title, body, icon } in docuflowInfoCards" :key="title">
-                <template name="image">
-                    <i class="pi text-white text-4xl w-full text-center mb-3" :class="icon" />
-                </template>
+        <!-- Features grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 w-full">
+            <div
+                v-for="{ title, body, icon } in docuflowFeatures"
+                :key="title"
+                class="glass-card p-7 lg:p-8 flex flex-col items-center text-center gap-4"
+            >
+                <div class="w-14 h-14 rounded-2xl bg-docuflow-light/10 border border-docuflow-light/20 flex items-center justify-center">
+                    <i class="pi text-docuflow-light text-2xl" :class="icon" />
+                </div>
 
-                <h2 class="card-title text-center w-full">
+                <h3 class="card-title tracking-tight">
                     {{ title }}
-                </h2>
+                </h3>
 
-                <p class="card-body max-w-md w-full text-center">
+                <p class="card-body leading-relaxed">
                     {{ body }}
                 </p>
-            </InfoCard>
+            </div>
         </div>
 
-        <!-- Below it we see some previews of docuflow. This has two images: (1) the documentation
-         part of it in the back, and the home page stacked on the front of it. -->
-        <div class="w-full h-fit space-y-5 md:px-5 lg:px-10 relative xl:!mb-16">
-            <img src="/docuflow-home.png" alt="Docuflow home page preview."
-                class="xl:w-[85%] z-10 rounded-xl xl:rounded-3xl" />
-            <img src="/docuflow-docs.png" alt="Docuflow documentation page preview."
-                class="xl:absolute xl:w-[65%] z-20 rounded-xl xl:rounded-3xl xl:-bottom-[15%] xl:right-[5%] xl:shadow-md" />
+        <!-- How It Works -->
+        <div class="w-full">
+            <div class="text-center mb-8">
+                <h2 class="title-2 mb-2">How It Works</h2>
+                <p class="subtitle">Three steps from blank file to deployed documentation.</p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-5 lg:gap-6 items-stretch">
+                <div
+                    v-for="{ step, title, body } in howItWorks"
+                    :key="step"
+                    class="glass-card p-7 lg:p-8 flex-1 flex flex-col gap-3"
+                >
+                    <span class="text-3xl font-bold text-docuflow-light/40 tracking-tight leading-none">{{ step }}</span>
+                    <h3 class="card-title mb-0">{{ title }}</h3>
+                    <p class="card-body mb-0">{{ body }}</p>
+                </div>
+            </div>
         </div>
 
-        <!-- Kind of a disclaimer noting that this project is still in early development -->
-        <div class="pb-10">
-            <p class="text-center text-white">
-                Note: Docuflow is still in early development. There are many bugs and missing features that are still
-                being developed. This page denotes the planned features for the final project.
+        <!-- Preview images -->
+        <div class="w-full">
+            <div class="text-center mb-6">
+                <h2 class="title-2 mb-2">See It in Action</h2>
+                <p class="subtitle">A preview of the generated documentation site.</p>
+            </div>
+            <div class="glass-card p-4 md:p-6 w-full">
+                <div class="w-full h-fit space-y-5 relative xl:mb-16">
+                    <img
+                        src="/docuflow-home.png"
+                        alt="Docuflow home page preview."
+                        class="xl:w-[85%] z-10 rounded-xl xl:rounded-2xl shadow-lg"
+                    />
+                    <img
+                        src="/docuflow-docs.png"
+                        alt="Docuflow documentation page preview."
+                        class="xl:absolute xl:w-[65%] z-20 rounded-xl xl:rounded-2xl shadow-lg xl:-bottom-[15%] xl:right-[5%]"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div class="pb-6">
+            <p class="text-center text-white/50 text-xs italic leading-relaxed max-w-2xl mx-auto">
+                Docuflow is in early development. The features shown here represent the planned final state of the project — some are still being implemented.
             </p>
         </div>
-
     </PageLayoutSpacer>
 </template>

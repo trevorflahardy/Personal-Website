@@ -30,46 +30,54 @@ const actionDescription = [
 </script>
 
 <template>
-    <!-- Denotes what Chai can do, so some exposition on how the Client works.-->
-    <!-- The centered image (preview) of Chai should be right below the "Chai in action" or call to info-->
-    <div class="flex flex-row items-center justify-center w-full md:px-5 lg:px-10">
-        <img src="/chai-preview.png" alt="Chai Preview" class="rounded-lg xl:rounded-3xl w-full object-cover" />
+    <!-- Preview image with glass treatment -->
+    <div class="w-full">
+        <div class="glass-card p-2 sm:p-3 md:p-4">
+            <img src="/chai-preview.png" alt="Chai Preview" class="rounded-xl w-full object-cover" />
+        </div>
     </div>
 
-    <div class="flex flex-row items-baseline justify-center w-full gap-2">
-        <i class="pi pi-arrow-up text-white" />
-        <h2 class="title-3 text-center">Chai in Action. What Happened?</h2>
+    <!-- Section heading -->
+    <div class="w-full text-center">
+        <h2 class="title-2 mb-2">Chai in Action</h2>
+        <p class="subtitle">What happened in the preview above? Here's the breakdown.</p>
     </div>
 
-    <div class="flex flex-col gap-3 w-full">
-        <!-- For each item in the action description, we're going to display an up arrow centered with the title
-         on the left, the title to the right of it, and the description below the title-->
-        <div v-for="entry in actionDescription" :key="entry.id" class="flex flex-row items-start justify-start"
-            v-motion-slide-visible-once-left>
-            <div class="flex flex-row items-start gap-3">
-                <!-- The actual up arrow itself, on the left -->
+    <!-- Step-by-step breakdown -->
+    <div class="flex flex-col w-full max-w-3xl mx-auto">
+        <div
+            v-for="(entry, index) in actionDescription"
+            :key="entry.id"
+            class="relative flex flex-row items-start gap-4 sm:gap-5 pb-8 last:pb-0"
+            v-motion-slide-visible-once-left
+        >
+            <!-- Step indicator with connecting line -->
+            <div class="flex flex-col items-center flex-none">
+                <!-- Numbered circle -->
+                <div class="w-8 h-8 md:w-9 md:h-9 rounded-full bg-chai-400/15 border border-chai-400/30 flex items-center justify-center">
+                    <span class="text-sm md:text-base font-semibold text-chai-200">{{ entry.id }}</span>
+                </div>
+                <!-- Connecting line -->
                 <div
-                    class="bg-green-500 rounded-full h-4 w-4 md:h-5 md:w-5 flex items-center justify-center flex-none mt-1">
-                    <i class="pi pi-arrow-up text-xss md:text-xs text-gray-600 dark:text-gray-900"></i>
-                </div>
+                    v-if="index < actionDescription.length - 1"
+                    class="w-px flex-1 min-h-6 bg-white/8 mt-2"
+                ></div>
+            </div>
 
-                <!-- And to the right, the title + description combo. The arrow is lined with the title and the
-                 description is inline with the title-->
-                <div>
-                    <h2 class="title-4 mb-0">
-                        {{ entry.title }}
-                    </h2>
-
-                    <p class="body">
-                        {{ entry.content }}
-                    </p>
-                </div>
+            <!-- Step content -->
+            <div class="pt-1">
+                <h3 class="title-4 mb-1">
+                    {{ entry.title }}
+                </h3>
+                <p class="card-body">
+                    {{ entry.content }}
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Some exposition below the cards that note Chai can do much more than this, but this is just the tip of the surface-->
-    <p class="subtitle w-full">
+    <!-- Closing note -->
+    <p class="subtitle w-full text-center max-w-2xl mx-auto">
         Of course, this is just the tip of the iceberg. Chai is capable of so much more, and new features are being
         added all the time!
     </p>
