@@ -2,6 +2,9 @@
 import PageLayoutSpacer from "@/components/PageLayoutSpacer.vue";
 import Button from "@/components/Button.vue";
 
+// Vite base URL — required for public/ assets when base !== "/"
+const base = import.meta.env.BASE_URL;
+
 // Pipeline: two phases tell the story
 const phase1 = [
     {
@@ -64,7 +67,7 @@ const features = [
         title: 'AI Chat',
         subtitle: 'Ask anything about the course.',
         desc: 'The AI assistant has full retrieval access to all 14 pages of Secure Coding notes. Ask about mechanisms, cryptography, access control, or design principles — and get answers grounded in the actual lecture material, not hallucinations.',
-        screenshot: `$cnt_4419_study_hub/homepage.png`,
+        screenshot: `${base}cnt_4419_study_hub/homepage.png`,
         bullets: [
             'RAG pipeline retrieves the most relevant note chunks per query',
             'Answers cite concepts directly from the source material',
@@ -78,7 +81,7 @@ const features = [
         title: 'AI Quiz Generator',
         subtitle: 'Exam prep that knows your notes.',
         desc: 'Generates multi-choice fill-in-the-blank questions pulled directly from the Typst source. Each question includes a difficulty tag, topic label, and quotes from actual lecture content — making every question genuinely relevant.',
-        screenshot: `cnt_4419_study_hub/ai_quiz_gen_question.png`,
+        screenshot: `${base}cnt_4419_study_hub/ai_quiz_gen_question.png`,
         bullets: [
             'Configurable question count with real-time generation progress',
             'Fill-in-the-blank questions with direct note quotes as context',
@@ -92,7 +95,7 @@ const features = [
         title: 'AI Flashcards',
         subtitle: 'Spaced repetition, auto-generated.',
         desc: 'Flashcards generated from key concepts, definitions, and principles in the notes. Rate each card to track recall confidence. The flip animation reveals the full answer with full topic context.',
-        screenshot: `cnt_4419_study_hub/ai_flashcard_answer.png`,
+        screenshot: `${base}cnt_4419_study_hub/ai_flashcard_answer.png`,
         bullets: [
             'Auto-generated from course definitions and key concepts',
             'Recall rating system: Again / Good / Easy',
@@ -112,26 +115,6 @@ const techStack = [
     { name: 'React', icon: 'pi-desktop', desc: 'Frontend web application' },
 ];
 
-const typstLines = [
-    { type: 'heading1', text: '= Access Control Mechanisms' },
-    { type: 'blank', text: '' },
-    { type: 'body', text: 'Access control determines ' },
-    { type: 'body-em', text: '_who_' },
-    { type: 'body', text: ' can access ' },
-    { type: 'body-em', text: '_what_' },
-    { type: 'body', text: ' resources.' },
-    { type: 'blank', text: '' },
-    { type: 'heading2', text: '== Mandatory Access Control (MAC)' },
-    { type: 'body', text: 'The system enforces access policy — users cannot override it.' },
-    { type: 'blank', text: '' },
-    { type: 'func', text: '#definition[' },
-    { type: 'func-body', text: '  *Bell-LaPadula*: "No read up, no write down."' },
-    { type: 'func-body', text: '  Designed to preserve *confidentiality*.' },
-    { type: 'func', text: ']' },
-    { type: 'blank', text: '' },
-    { type: 'list', text: '- Subject label must *dominate* object label to read' },
-    { type: 'list', text: '- Write-down is prohibited to prevent data leakage' },
-];
 </script>
 
 <template>
@@ -151,8 +134,7 @@ const typstLines = [
                 style="background-image: linear-gradient(rgba(52,211,153,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(52,211,153,0.15) 1px, transparent 1px); background-size: 32px 32px;" />
 
             <!-- Glow orbs -->
-            <div
-                class="pointer-events-none absolute -left-32 -top-32 h-[32rem] w-[32rem] rounded-full bg-cnt-400/20 blur-3xl" />
+            <div class="pointer-events-none absolute -left-32 -top-32 h-lg w-lg rounded-full bg-cnt-400/20 blur-3xl" />
             <div class="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-cnt-400/10 blur-3xl" />
 
             <!-- Top edge line -->
@@ -203,7 +185,7 @@ const typstLines = [
         ============================================================ -->
         <div class="grid w-full grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
             <div v-for="stat in [
-                { value: '14', label: 'Pages of Notes', icon: 'pi-file' },
+                { value: '3000+', label: 'Theoretical optimized PDF sizing', icon: 'pi-file' },
                 { value: '3', label: 'AI Study Modes', icon: 'pi-sparkles' },
                 { value: 'RAG', label: 'Retrieval Model', icon: 'pi-chart-scatter' },
                 { value: '100%', label: 'Note Coverage', icon: 'pi-check-circle' },
@@ -249,7 +231,7 @@ const typstLines = [
                 </div>
                 <div class="rounded-xl border border-cnt-400/40 bg-cnt-400/12 p-4">
                     <p class="mb-1 font-mono text-xs text-cnt-400/80 uppercase tracking-widest">After</p>
-                    <p class="text-sm font-medium text-white/90">Ask it anything. Quiz yourself. Ship.</p>
+                    <p class="text-sm font-medium text-white/90">Ask it anything. Quiz yourself.</p>
                 </div>
             </div>
         </div>
@@ -485,7 +467,7 @@ const typstLines = [
                             <div>
                                 <h3 class="card-title mb-0 leading-snug">{{ feature.title }}</h3>
                                 <p class="mt-0.5 text-xs font-medium tracking-wide text-cnt-400/70">{{ feature.subtitle
-                                    }}</p>
+                                }}</p>
                             </div>
                         </div>
                         <p class="card-body mb-5">{{ feature.desc }}</p>
@@ -548,7 +530,7 @@ const typstLines = [
                         { label: 'Embed Query', sub: 'text-embedding-3', icon: 'pi-chart-scatter', glow: false },
                         { label: 'Search Index', sub: 'cosine similarity', icon: 'pi-database', glow: false },
                         { label: 'Top-K Chunks', sub: 'from class notes', icon: 'pi-file', glow: false },
-                        { label: 'GPT-4o', sub: 'with context', icon: 'pi-sparkles', glow: true },
+                        { label: 'Llama 3.2-3B', sub: 'with context', icon: 'pi-sparkles', glow: true },
                     ]" :key="node.label">
                         <div class="flex shrink-0 flex-col items-center rounded-xl px-4 py-3 text-center sm:flex-1 sm:rounded-xl"
                             :class="node.glow ? 'border border-cnt-400/40 bg-cnt-400/12' : 'border border-white/8 bg-white/4'">
@@ -615,8 +597,8 @@ const typstLines = [
                             <div class="h-2 w-2 rounded-full bg-white/15" />
                             <span class="ml-2 font-mono text-xs text-white/20">Quiz Generator</span>
                         </div>
-                        <img :src="`cnt_4419_study_hub/ai_quiz_gen_in_progress.png`" alt="Quiz generation in progress"
-                            class="w-full" />
+                        <img :src="`${base}cnt_4419_study_hub/ai_quiz_gen_in_progress.png`"
+                            alt="Quiz generation in progress" class="w-full" />
                     </div>
                 </div>
             </div>
