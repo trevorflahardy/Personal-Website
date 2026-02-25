@@ -5,6 +5,7 @@ import Project, { ProjectProps } from "./Project.vue";
 import { routerLinkName as chaiRouterLink, icon as chaiIcon } from "@/pages/chai/info";
 import { routerLinkName as docuflowRouterLink, icon as docuflowIcon } from "@/pages/docuflow/info";
 import { routerLinkName as furyRouterLink, icon as furyIcon } from "@/pages/fury/info";
+import { routerLinkName as cntRouterLink, icon as cntIcon } from "@/pages/cnt/info";
 
 const isHamburgerOpen = defineModel();
 const route = useRoute();
@@ -24,6 +25,11 @@ const projects: ProjectProps[] = [
         icon: furyIcon,
         displayName: 'Fury',
         routerLinkName: furyRouterLink,
+    },
+    {
+        icon: cntIcon,
+        displayName: 'Study Hub',
+        routerLinkName: cntRouterLink,
     }
 ];
 

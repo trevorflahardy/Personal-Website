@@ -3,6 +3,7 @@ import { routerLinkName as chaiRouterName } from './pages/chai/info';
 import { routerLinkName as profileRouterName } from './pages/profile/info';
 import { routerLinkName as docuflowRouterName } from './pages/docuflow/info';
 import { routerLinkName as furyRouterName } from './pages/fury/info';
+import { routerLinkName as cntRouterName } from './pages/cnt/info';
 
 const routes = [
     // The main page of the app. Shows my profile.
@@ -11,6 +12,7 @@ const routes = [
     { path: "/p/chai", name: chaiRouterName, component: () => import('@/pages/chai/Chai.vue') },
     { path: "/p/docuflow", name: docuflowRouterName, component: () => import('@/pages/docuflow/Docuflow.vue') },
     { path: '/p/fury', name: furyRouterName, component: () => import('@/pages/fury/Fury.vue') },
+    { path: '/p/cnt-study-hub', name: cntRouterName, component: () => import('@/pages/cnt/CNT.vue') },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/pages/NotFound.vue') },
 ]
 

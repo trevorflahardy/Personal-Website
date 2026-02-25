@@ -36,6 +36,13 @@
 
   --color-fury: #4edbfc;
 
+  --color-cnt-50: #ecfdf5;
+  --color-cnt-100: #d1fae5;
+  --color-cnt-400: #34d399;
+  --color-cnt-500: #10b981;
+  --color-cnt-600: #059669;
+  --color-cnt-default: #34d399;
+
   /* Background images */
   --background-image-apt-day: url("/AptDay.png");
   --background-image-apt-night: url("/AptNight.png");
