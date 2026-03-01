@@ -14,15 +14,8 @@ const routes = [
     { path: "/p/docuflow", name: docuflowRouterName, component: () => import('@/pages/docuflow/Docuflow.vue') },
     { path: '/p/fury', name: furyRouterName, component: () => import('@/pages/fury/Fury.vue') },
     { path: '/p/cnt-study-hub', name: cntRouterName, component: () => import('@/pages/cnt/CNT.vue') },
-    {
-        path: '/p/baro-rs',
-        meta: { projectName: baroRsRouterName },
-        component: () => import('@/pages/baro-rs/BaroRs.vue'),
-        children: [
-            { path: '', name: baroRsRouterName, component: () => import('@/pages/baro-rs/BaroRsHome.vue') },
-            { path: 'drivers/:driverId', name: 'baro-rs-driver', component: () => import('@/pages/baro-rs/drivers/DriverPage.vue'), props: true },
-        ],
-    },
+    { path: '/p/baro-rs', name: baroRsRouterName, component: () => import('@/pages/baro-rs/BaroRs.vue'), meta: { projectName: baroRsRouterName } },
+    { path: '/p/baro-rs/drivers/:driverId', name: 'baro-rs-driver', component: () => import('@/pages/baro-rs/BaroRs.vue'), props: true, meta: { projectName: baroRsRouterName } },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/pages/NotFound.vue') },
 ]
 

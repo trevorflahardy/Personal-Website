@@ -1,24 +1,15 @@
 <script setup lang="ts">
-import { computed, watchEffect } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed } from 'vue';
 import PageLayoutSpacer from '@/components/PageLayoutSpacer.vue';
 import Button from '@/components/Button.vue';
 import { drivers } from './driver-data';
 
 const props = defineProps<{ driverId: string }>();
-const router = useRouter();
 
 const driver = computed(() => drivers[props.driverId]);
 const otherDrivers = computed(() =>
     Object.values(drivers).filter(d => d.id !== props.driverId)
 );
-
-// Redirect if invalid driver (reactive — handles prop changes too)
-watchEffect(() => {
-    if (!driver.value) {
-        router.replace({ name: 'project-baro-rs' });
-    }
-});
 
 // CSS custom property style for theming
 const themeStyle = computed(() => ({

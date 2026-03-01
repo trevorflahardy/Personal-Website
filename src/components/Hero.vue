@@ -39,9 +39,9 @@ const { isCollapsed, toggle } = useSidebar();
 			<Sidebar class="xl:hidden absolute h-full" />
 
 			<!-- The main content of the page. We place the background on the component itself because, if not done otherwise, the transition duration would apply to the tilt, which we do not want.  -->
-			<router-view v-slot="{ Component }">
+			<router-view v-slot="{ Component, route: viewRoute }">
 				<div class="w-full glass-thick">
-					<component :is="Component" class="transition-all duration-500 ease-in-out" />
+					<component :is="Component" :key="viewRoute.path" class="transition-all duration-500 ease-in-out" />
 				</div>
 			</router-view>
 		</div>
