@@ -16,23 +16,44 @@ const themeStyle = computed(() => ({
     '--dc': driver.value?.color ?? '#f59e0b',
 }));
 
-// Simple Rust syntax highlighting (semantic spans)
+// Simple Rust syntax highlighting — tokenize-first approach to avoid nested replacements
 function highlightRust(code: string): string {
-    return code
-        // Comments
-        .replace(/(\/\/.*$)/gm, '<span class="text-white/30 italic">$1</span>')
-        // Strings
-        .replace(/("(?:[^"\\]|\\.)*")/g, '<span class="text-green-400/80">$1</span>')
-        // Keywords
-        .replace(/\b(use|let|mut|if|fn|pub|struct|impl|return|async|await|move|self|true|false)\b/g, '<span class="text-purple-400">$1</span>')
-        // Types / modules (capitalized words)
-        .replace(/\b([A-Z][A-Za-z0-9_]*)\b/g, '<span class="text-amber-300">$1</span>')
-        // Macros
-        .replace(/\b(println|format|vec)!/g, '<span class="text-cyan-300">$1</span>!')
-        // Numbers
-        .replace(/\b(\d+)\b/g, '<span class="text-orange-300">$1</span>')
-        // Punctuation that's meaningful
-        .replace(/(::|\?|&amp;|&)/g, '<span class="text-white/50">$1</span>');
+    const escaped = code
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+    const tokens: { start: number; end: number; html: string }[] = [];
+
+    function scan(regex: RegExp, cls: string) {
+        for (const m of escaped.matchAll(regex)) {
+            const start = m.index!;
+            const end = start + m[0].length;
+            // Skip if overlapping with an already-claimed token
+            if (tokens.some(t => start < t.end && end > t.start)) continue;
+            tokens.push({ start, end, html: `<span class="${cls}">${m[0]}</span>` });
+        }
+    }
+
+    // Order matters: earlier rules claim tokens first
+    scan(/(\/\/.*$)/gm, 'text-white/30 italic');               // Comments
+    scan(/("(?:[^"\\]|\\.)*")/g, 'text-green-400/80');          // Strings
+    scan(/\b(println|format|vec)!/g, 'text-cyan-300');           // Macros (before keywords)
+    scan(/\b(use|let|mut|if|fn|pub|struct|impl|return|async|await|move|self|true|false)\b/g, 'text-purple-400'); // Keywords
+    scan(/\b([A-Z][A-Za-z0-9_]*)\b/g, 'text-amber-300');        // Types / modules
+    scan(/\b(\d+)\b/g, 'text-orange-300');                       // Numbers
+    scan(/(::|\?|&amp;)/g, 'text-white/50');                     // Punctuation
+
+    // Build result from left to right
+    tokens.sort((a, b) => a.start - b.start);
+    let result = '';
+    let cursor = 0;
+    for (const t of tokens) {
+        result += escaped.slice(cursor, t.start) + t.html;
+        cursor = t.end;
+    }
+    result += escaped.slice(cursor);
+    return result;
 }
 </script>
 
@@ -45,7 +66,8 @@ function highlightRust(code: string): string {
         <div class="w-full">
             <router-link :to="{ name: 'project-baro-rs' }"
                 class="group inline-flex items-center gap-2 rounded-lg border border-white/8 bg-white/4 px-3 py-2 text-xs text-white/50 no-underline transition-all duration-300 hover:bg-white/8 hover:text-white/70 hover:border-white/15">
-                <i class="pi pi-arrow-left text-[10px] transition-transform duration-300 group-hover:-translate-x-0.5" />
+                <i
+                    class="pi pi-arrow-left text-[10px] transition-transform duration-300 group-hover:-translate-x-0.5" />
                 <span>Baro-RS</span>
                 <span class="text-white/25">/</span>
                 <span :style="{ color: driver.color }">{{ driver.name }}</span>
@@ -154,7 +176,8 @@ function highlightRust(code: string): string {
         <div class="glass-card w-full p-6 sm:p-8" :style="themeStyle">
             <div class="flex items-center gap-2.5 mb-5">
                 <div class="h-0.5 w-6 rounded-full" :style="{ backgroundColor: driver.color }" />
-                <span class="text-xs font-semibold uppercase tracking-widest" :style="{ color: driver.color }">Features</span>
+                <span class="text-xs font-semibold uppercase tracking-widest"
+                    :style="{ color: driver.color }">Features</span>
             </div>
 
             <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -172,7 +195,8 @@ function highlightRust(code: string): string {
         <div class="w-full">
             <div class="mb-4 flex items-center gap-2.5">
                 <div class="h-0.5 w-6 rounded-full" :style="{ backgroundColor: driver.color }" />
-                <span class="text-xs font-semibold uppercase tracking-widest" :style="{ color: driver.color }">Usage Example</span>
+                <span class="text-xs font-semibold uppercase tracking-widest" :style="{ color: driver.color }">Usage
+                    Example</span>
             </div>
 
             <div class="overflow-hidden rounded-xl border border-white/8 shadow-xl">
@@ -196,7 +220,8 @@ function highlightRust(code: string): string {
 
                 <!-- Code content -->
                 <div class="bg-[#12100c] px-5 py-4 overflow-x-auto">
-                    <pre class="font-mono text-xs sm:text-sm leading-relaxed text-white/75"><code v-html="highlightRust(driver.codeExample)" /></pre>
+                    <pre
+                        class="font-mono text-xs sm:text-sm leading-relaxed text-white/75"><code v-html="highlightRust(driver.codeExample)" /></pre>
                 </div>
             </div>
         </div>
@@ -206,12 +231,14 @@ function highlightRust(code: string): string {
         ============================================================ -->
         <div class="glass-card w-full p-6 sm:p-8">
             <div class="flex items-start gap-5">
-                <div class="mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-baro-default/20 bg-baro-default/10">
+                <div
+                    class="mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-baro-default/20 bg-baro-default/10">
                     <i class="pi pi-microchip text-baro-default text-xl" />
                 </div>
                 <div class="min-w-0 flex-1">
                     <h3 class="card-title mb-0.5">Integration with Baro-RS</h3>
-                    <p class="mb-0 text-xs font-medium tracking-wide text-baro-default/70">How this driver connects to the monitoring station</p>
+                    <p class="mb-0 text-xs font-medium tracking-wide text-baro-default/70">How this driver connects to
+                        the monitoring station</p>
                     <p class="card-body mt-3 mb-0">
                         {{ driver.usedInBaroRs }}
                     </p>
@@ -238,10 +265,13 @@ function highlightRust(code: string): string {
                         <i class="pi text-sm" :class="d.icon" :style="{ color: d.color }" />
                     </div>
                     <div class="min-w-0 flex-1">
-                        <p class="text-sm font-semibold leading-tight text-white/80 group-hover:text-white transition-colors">{{ d.name }}</p>
+                        <p
+                            class="text-sm font-semibold leading-tight text-white/80 group-hover:text-white transition-colors">
+                            {{ d.name }}</p>
                         <p class="mt-0.5 text-[10px] text-white/40 truncate">{{ d.fullName }}</p>
                     </div>
-                    <i class="pi pi-chevron-right text-[10px] text-white/25 transition-all duration-300 group-hover:text-white/50 group-hover:translate-x-0.5" />
+                    <i
+                        class="pi pi-chevron-right text-[10px] text-white/25 transition-all duration-300 group-hover:text-white/50 group-hover:translate-x-0.5" />
                 </router-link>
             </div>
         </div>

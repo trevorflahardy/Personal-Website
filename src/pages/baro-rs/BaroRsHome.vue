@@ -85,18 +85,16 @@ const driverList = Object.values(drivers);
                 style="background-image: linear-gradient(45deg, rgba(184,115,51,0.12) 1px, transparent 1px); background-size: 34px 34px;" />
 
             <!-- Glow orbs -->
-            <div
-                class="pointer-events-none absolute -left-24 -top-24 h-[28rem] w-[28rem] rounded-full bg-baro-default/20 blur-3xl animate-pulse"
+            <div class="pointer-events-none absolute -left-24 -top-24 h-[28rem] w-[28rem] rounded-full bg-baro-default/20 blur-3xl animate-pulse"
                 style="animation-duration: 4s;" />
-            <div
-                class="pointer-events-none absolute -bottom-16 right-16 h-64 w-64 rounded-full bg-baro-copper/15 blur-3xl animate-pulse"
+            <div class="pointer-events-none absolute -bottom-16 right-16 h-64 w-64 rounded-full bg-baro-copper/15 blur-3xl animate-pulse"
                 style="animation-duration: 6s;" />
-            <div
-                class="pointer-events-none absolute top-1/3 right-1/4 h-48 w-48 rounded-full bg-baro-rust/10 blur-3xl animate-pulse"
+            <div class="pointer-events-none absolute top-1/3 right-1/4 h-48 w-48 rounded-full bg-baro-rust/10 blur-3xl animate-pulse"
                 style="animation-duration: 5s;" />
 
             <!-- Top accent line -->
-            <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-baro-default/80 to-transparent" />
+            <div
+                class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-baro-default/80 to-transparent" />
 
             <!-- Animated data stream dots -->
             <div class="absolute inset-0 overflow-hidden pointer-events-none">
@@ -137,7 +135,8 @@ const driverList = Object.values(drivers);
 
                 <!-- Status chips -->
                 <div class="mb-8 flex flex-wrap gap-2">
-                    <span v-for="chip in ['Embassy Async', 'SHT40 Sensor', 'SD Storage', 'Touch LCD', 'Multi-Scale Rollups']"
+                    <span
+                        v-for="chip in ['Embassy Async', 'SHT40 Sensor', 'SD Storage', 'Touch LCD', 'Multi-Scale Rollups']"
                         :key="chip"
                         class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-xs text-white/50 backdrop-blur-sm">
                         <span class="h-1 w-1 rounded-full bg-baro-default/50" />
@@ -154,7 +153,8 @@ const driverList = Object.values(drivers);
                         <span class="text-white text-sm font-medium flex flex-row items-center justify-center gap-2">
                             <i class="pi pi-microchip"></i>
                             <span>View Drivers</span>
-                            <i class="pi pi-arrow-down text-xs transition-transform duration-300 group-hover:translate-y-0.5" />
+                            <i
+                                class="pi pi-arrow-down text-xs transition-transform duration-300 group-hover:translate-y-0.5" />
                         </span>
                     </button>
                 </div>
@@ -171,8 +171,7 @@ const driverList = Object.values(drivers);
                     class="mb-1 flex h-8 w-8 items-center justify-center rounded-xl border border-baro-default/20 bg-baro-default/10">
                     <i class="pi text-baro-default text-sm" :class="stat.icon" />
                 </div>
-                <span
-                    class="text-2xl font-bold leading-none tracking-tight text-baro-default sm:text-3xl font-mono">
+                <span class="text-2xl font-bold leading-none tracking-tight text-baro-default sm:text-3xl font-mono">
                     {{ stat.value }}
                 </span>
                 <span class="text-xs leading-tight text-white/55">{{ stat.label }}</span>
@@ -212,16 +211,19 @@ const driverList = Object.values(drivers);
 
             <div class="flex flex-col gap-8 lg:flex-row lg:gap-10">
                 <!-- Photos — sticky on desktop so they stay visible as you scroll past specs -->
-                <div class="flex flex-col gap-4 sm:flex-row lg:flex-col lg:w-[40%] lg:shrink-0 lg:sticky lg:top-4 lg:self-start">
+                <div
+                    class="flex flex-col gap-4 sm:flex-row lg:flex-col lg:w-[40%] lg:shrink-0 lg:sticky lg:top-4 lg:self-start">
                     <div class="flex-1 overflow-hidden rounded-xl border border-baro-default/15 p-1.5">
                         <img :src="`${base}baro-rs/hardware-1.png`" alt="Baro-RS hardware front view"
                             class="w-full rounded-lg" />
-                        <p class="mt-1.5 text-center text-xs italic text-white/35">Breadboard prototype — detailed view</p>
+                        <p class="mt-1.5 text-center text-xs italic text-white/35">Breadboard prototype — detailed view
+                        </p>
                     </div>
                     <div class="flex-1 overflow-hidden rounded-xl border border-baro-default/15 p-1.5">
                         <img :src="`${base}baro-rs/hardware-2.png`" alt="Baro-RS hardware alternate view"
                             class="w-full rounded-lg" />
-                        <p class="mt-1.5 text-center text-xs italic text-white/35">M5Stack CoreS3 SE — single-room monitor</p>
+                        <p class="mt-1.5 text-center text-xs italic text-white/35">M5Stack CoreS3 SE — single-room
+                            monitor</p>
                     </div>
                 </div>
 
@@ -296,7 +298,8 @@ const driverList = Object.values(drivers);
                     <div class="h-px w-10 rounded-full bg-baro-default/40" />
                 </div>
                 <h2 class="title-2 mb-2">Async from the ground up.</h2>
-                <p class="subtitle">Embassy orchestrates concurrent tasks — sampling, rendering, storage, and touch — all without an OS.</p>
+                <p class="subtitle">Embassy orchestrates concurrent tasks — sampling, rendering, storage, and touch —
+                    all without an OS.</p>
             </div>
 
             <!-- Architecture flow diagram -->
@@ -306,7 +309,8 @@ const driverList = Object.values(drivers);
                     <div class="flex flex-col gap-3 lg:w-[28%]">
                         <div v-for="task in architectureTasks.filter(t => t.position === 'left')" :key="task.name"
                             class="flex items-center gap-3 rounded-xl border border-baro-default/15 bg-baro-default/5 px-4 py-3">
-                            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-baro-default/20 bg-baro-default/10">
+                            <div
+                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-baro-default/20 bg-baro-default/10">
                                 <i class="pi text-baro-default text-sm" :class="task.icon" />
                             </div>
                             <div>
@@ -321,11 +325,13 @@ const driverList = Object.values(drivers);
                         <!-- Desktop: with connecting lines -->
                         <div class="hidden lg:flex items-center w-full justify-center gap-0">
                             <div class="h-px flex-1 bg-linear-to-r from-baro-default/10 to-baro-default/30" />
-                            <div class="relative rounded-2xl border-2 border-baro-default/30 bg-baro-default/8 px-6 py-5 backdrop-blur-sm">
+                            <div
+                                class="relative rounded-2xl border-2 border-baro-default/30 bg-baro-default/8 px-6 py-5 backdrop-blur-sm">
                                 <div class="absolute -inset-1 rounded-2xl bg-baro-default/5 blur-xl" />
                                 <div class="relative text-center">
                                     <div class="mb-2 flex justify-center">
-                                        <div class="flex h-12 w-12 items-center justify-center rounded-2xl border border-baro-default/30 bg-baro-default/15">
+                                        <div
+                                            class="flex h-12 w-12 items-center justify-center rounded-2xl border border-baro-default/30 bg-baro-default/15">
                                             <i class="pi pi-cog text-baro-default text-xl" />
                                         </div>
                                     </div>
@@ -337,9 +343,11 @@ const driverList = Object.values(drivers);
                         </div>
 
                         <!-- Mobile: simple centered card -->
-                        <div class="lg:hidden rounded-2xl border-2 border-baro-default/30 bg-baro-default/8 px-6 py-5 backdrop-blur-sm w-full">
+                        <div
+                            class="lg:hidden rounded-2xl border-2 border-baro-default/30 bg-baro-default/8 px-6 py-5 backdrop-blur-sm w-full">
                             <div class="flex items-center gap-3 justify-center">
-                                <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-baro-default/30 bg-baro-default/15">
+                                <div
+                                    class="flex h-10 w-10 items-center justify-center rounded-xl border border-baro-default/30 bg-baro-default/15">
                                     <i class="pi pi-cog text-baro-default text-lg" />
                                 </div>
                                 <div>
@@ -354,7 +362,8 @@ const driverList = Object.values(drivers);
                     <div class="flex flex-col gap-3 lg:w-[28%]">
                         <div v-for="task in architectureTasks.filter(t => t.position === 'right')" :key="task.name"
                             class="flex items-center gap-3 rounded-xl border border-baro-copper/15 bg-baro-copper/5 px-4 py-3">
-                            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-baro-copper/20 bg-baro-copper/10">
+                            <div
+                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-baro-copper/20 bg-baro-copper/10">
                                 <i class="pi text-baro-copper text-sm" :class="task.icon" />
                             </div>
                             <div>
@@ -375,7 +384,7 @@ const driverList = Object.values(drivers);
                 <div class="h-0.5 w-6 rounded-full bg-baro-default" />
                 <span class="text-xs font-semibold uppercase tracking-widest text-baro-default">Smart Storage</span>
             </div>
-            <h2 class="title-2 mb-0">Months of data on a microSD card.</h2>
+            <h2 class="title-2 mb-0">196 years of data on a single microSD card.</h2>
             <p class="body mt-3">
                 At one sample every 10 seconds, Baro-RS generates over 8,000 readings per day. Raw storage would
                 fill a microSD card in weeks — so the system intelligently compresses history using multi-scale
@@ -398,7 +407,8 @@ const driverList = Object.values(drivers);
                     { label: 'All time', desc: 'Full history' },
                 ]" :key="scale.label"
                     class="group flex flex-col items-center rounded-xl border border-white/6 bg-white/3 px-2 py-3 text-center transition-all duration-300 hover:border-baro-default/20 hover:bg-baro-default/5">
-                    <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-full border border-baro-default/20 bg-baro-default/8 font-mono text-[10px] font-bold text-baro-default transition-transform duration-300 group-hover:scale-110">
+                    <div
+                        class="mb-2 flex h-8 w-8 items-center justify-center rounded-full border border-baro-default/20 bg-baro-default/8 font-mono text-[10px] font-bold text-baro-default transition-transform duration-300 group-hover:scale-110">
                         {{ String(i + 1).padStart(2, '0') }}
                     </div>
                     <p class="text-xs font-semibold text-white/85 mb-0.5">{{ scale.label }}</p>
@@ -420,7 +430,9 @@ const driverList = Object.values(drivers);
                 <h2 class="title-2 mb-2">Every driver, written from scratch.</h2>
                 <p class="subtitle">
                     Most embedded projects lean on C libraries or community crates. Baro-RS doesn't — every sensor,
-                    every power rail, every I&#x00B2;C peripheral is driven by a custom <code class="text-baro-default/80 text-xs bg-baro-default/8 px-1.5 py-0.5 rounded">no_std</code> Rust driver,
+                    every power rail, every I&#x00B2;C peripheral is driven by a custom <code
+                        class="text-baro-default/80 text-xs bg-baro-default/8 px-1.5 py-0.5 rounded">no_std</code> Rust
+                    driver,
                     designed to be portable across any embedded platform. Click any driver to explore it.
                 </p>
             </div>
@@ -445,14 +457,18 @@ const driverList = Object.values(drivers);
                             <i class="pi text-base" :class="driver.icon" :style="{ color: driver.color }" />
                         </div>
                         <div class="min-w-0 flex-1">
-                            <p class="text-sm font-bold text-white/90 group-hover:text-white transition-colors">{{ driver.name }}</p>
-                            <p class="text-[10px] font-mono uppercase tracking-wider" :style="{ color: driver.color + 'aa' }">
+                            <p class="text-sm font-bold text-white/90 group-hover:text-white transition-colors">{{
+                                driver.name }}</p>
+                            <p class="text-[10px] font-mono uppercase tracking-wider"
+                                :style="{ color: driver.color + 'aa' }">
                                 {{ driver.protocol }}
                             </p>
                         </div>
                         <!-- Arrow indicator — always visible -->
-                        <div class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/8 bg-white/4 transition-all duration-300 group-hover:border-white/15 group-hover:bg-white/8">
-                            <i class="pi pi-arrow-right text-[10px] text-white/30 transition-all duration-300 group-hover:text-white/70 group-hover:translate-x-0.5" />
+                        <div
+                            class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/8 bg-white/4 transition-all duration-300 group-hover:border-white/15 group-hover:bg-white/8">
+                            <i
+                                class="pi pi-arrow-right text-[10px] text-white/30 transition-all duration-300 group-hover:text-white/70 group-hover:translate-x-0.5" />
                         </div>
                     </div>
 
@@ -465,7 +481,8 @@ const driverList = Object.values(drivers);
                             :style="{ borderColor: driver.color + '25', backgroundColor: driver.color + '08', color: driver.color + 'cc' }">
                             {{ driver.keyMetric }}
                         </span>
-                        <span class="text-[10px] text-white/25 font-medium uppercase tracking-wider">Explore driver</span>
+                        <span class="text-[10px] text-white/25 font-medium uppercase tracking-wider">Explore
+                            driver</span>
                     </div>
                 </router-link>
             </div>
@@ -491,7 +508,8 @@ const driverList = Object.values(drivers);
                 <div v-for="(phase, i) in futureRoadmap" :key="phase.phase"
                     class="rounded-xl border border-white/6 bg-white/3 p-4">
                     <div class="mb-3 flex items-center gap-2">
-                        <div class="flex h-7 w-7 items-center justify-center rounded-full border border-baro-default/25 bg-baro-default/10 font-mono text-[10px] font-bold text-baro-default">
+                        <div
+                            class="flex h-7 w-7 items-center justify-center rounded-full border border-baro-default/25 bg-baro-default/10 font-mono text-[10px] font-bold text-baro-default">
                             {{ String(i + 1).padStart(2, '0') }}
                         </div>
                         <span class="text-sm font-semibold text-white/90">{{ phase.phase }}</span>
@@ -517,10 +535,11 @@ const driverList = Object.values(drivers);
                 <div class="h-px w-8 rounded-full bg-baro-default/30" />
             </div>
             <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <div v-for="tech in techStack" :key="tech.name"
-                    class="glass-card flex items-center gap-3 p-3.5">
-                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-baro-default/20 bg-baro-default/10">
-                        <span class="font-mono text-xs font-bold text-baro-default">{{ tech.name.substring(0, 2).toUpperCase() }}</span>
+                <div v-for="tech in techStack" :key="tech.name" class="glass-card flex items-center gap-3 p-3.5">
+                    <div
+                        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-baro-default/20 bg-baro-default/10">
+                        <span class="font-mono text-xs font-bold text-baro-default">{{ tech.name.substring(0,
+                            2).toUpperCase() }}</span>
                     </div>
                     <div>
                         <p class="text-sm font-semibold leading-tight text-white/90">{{ tech.name }}</p>
@@ -549,12 +568,15 @@ const driverList = Object.values(drivers);
         left: -2%;
         opacity: 0;
     }
+
     5% {
         opacity: 1;
     }
+
     95% {
         opacity: 1;
     }
+
     100% {
         left: 102%;
         opacity: 0;
@@ -562,9 +584,12 @@ const driverList = Object.values(drivers);
 }
 
 @keyframes driverPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
     }
+
     50% {
         box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.15);
     }
