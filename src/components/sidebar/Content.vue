@@ -6,11 +6,17 @@ import { routerLinkName as chaiRouterLink, icon as chaiIcon } from "@/pages/chai
 import { routerLinkName as docuflowRouterLink, icon as docuflowIcon } from "@/pages/docuflow/info";
 import { routerLinkName as furyRouterLink, icon as furyIcon } from "@/pages/fury/info";
 import { routerLinkName as cntRouterLink, icon as cntIcon } from "@/pages/cnt/info";
+import { routerLinkName as baroRsRouterLink, icon as baroRsIcon } from "@/pages/baro-rs/info";
 
 const isHamburgerOpen = defineModel();
 const route = useRoute();
 
 const projects: ProjectProps[] = [
+    {
+        icon: baroRsIcon,
+        displayName: "Baro-RS",
+        routerLinkName: baroRsRouterLink,
+    },
     {
         icon: chaiIcon,
         displayName: "Chai",

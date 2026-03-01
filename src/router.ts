@@ -4,6 +4,7 @@ import { routerLinkName as profileRouterName } from './pages/profile/info';
 import { routerLinkName as docuflowRouterName } from './pages/docuflow/info';
 import { routerLinkName as furyRouterName } from './pages/fury/info';
 import { routerLinkName as cntRouterName } from './pages/cnt/info';
+import { routerLinkName as baroRsRouterName } from './pages/baro-rs/info';
 
 const routes = [
     // The main page of the app. Shows my profile.
@@ -13,6 +14,15 @@ const routes = [
     { path: "/p/docuflow", name: docuflowRouterName, component: () => import('@/pages/docuflow/Docuflow.vue') },
     { path: '/p/fury', name: furyRouterName, component: () => import('@/pages/fury/Fury.vue') },
     { path: '/p/cnt-study-hub', name: cntRouterName, component: () => import('@/pages/cnt/CNT.vue') },
+    {
+        path: '/p/baro-rs',
+        meta: { projectName: baroRsRouterName },
+        component: () => import('@/pages/baro-rs/BaroRs.vue'),
+        children: [
+            { path: '', name: baroRsRouterName, component: () => import('@/pages/baro-rs/BaroRsHome.vue') },
+            { path: 'drivers/:driverId', name: 'baro-rs-driver', component: () => import('@/pages/baro-rs/drivers/DriverPage.vue'), props: true },
+        ],
+    },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/pages/NotFound.vue') },
 ]
 

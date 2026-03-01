@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1a1206"/>
+      <stop offset="100%" stop-color="#0c0a06"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b87333"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- Circuit traces -->
+  <path d="M8 32h10l4-4h8l4 4h10" stroke="url(#accent)" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+  <path d="M32 8v10l-4 4v8l4 4v10" stroke="url(#accent)" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+  <path d="M16 16l6 6" stroke="url(#accent)" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
+  <path d="M48 48l-6-6" stroke="url(#accent)" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
+  <!-- Central thermometer/sensor motif -->
+  <circle cx="32" cy="28" r="8" stroke="url(#accent)" stroke-width="2" fill="none" opacity="0.8"/>
+  <circle cx="32" cy="28" r="3" fill="#f59e0b" opacity="0.9"/>
+  <!-- Signal waves -->
+  <path d="M42 22c3 3 3 9 0 12" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M46 19c5 5 5 15 0 20" stroke="#f59e0b" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.3"/>
+  <!-- Bottom label area -->
+  <rect x="14" y="42" width="36" height="12" rx="3" fill="#f59e0b" opacity="0.1"/>
+  <text x="32" y="51" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#f59e0b" opacity="0.9">BARO</text>
+  <!-- Corner solder pads -->
+  <circle cx="10" cy="10" r="2" fill="#f59e0b" opacity="0.2"/>
+  <circle cx="54" cy="10" r="2" fill="#f59e0b" opacity="0.2"/>
+  <circle cx="10" cy="54" r="2" fill="#f59e0b" opacity="0.2"/>
+  <circle cx="54" cy="54" r="2" fill="#f59e0b" opacity="0.2"/>
+</svg>

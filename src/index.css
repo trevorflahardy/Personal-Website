@@ -43,6 +43,10 @@
   --color-cnt-600: #059669;
   --color-cnt-default: #34d399;
 
+  --color-baro-default: #f59e0b;
+  --color-baro-rust: #ce422b;
+  --color-baro-copper: #b87333;
+
   /* Background images */
   --background-image-apt-day: url("/AptDay.png");
   --background-image-apt-night: url("/AptNight.png");

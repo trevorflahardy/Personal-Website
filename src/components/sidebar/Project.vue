@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import { useRoute } from "vue-router";
 
 export interface ProjectProps {
@@ -9,13 +10,18 @@ export interface ProjectProps {
 
 const route = useRoute();
 const props = defineProps<ProjectProps>();
+
+const isActive = computed(() => {
+  return route.name === props.routerLinkName ||
+    route.matched.some(r => r.meta?.projectName === props.routerLinkName);
+});
 </script>
 
 <template>
   <button type="button"
     class="flex flex-row items-center gap-3 rounded-xl hover:bg-white/8 transition duration-300 ease-in-out py-2.5 px-3 w-full"
     :class="{
-      'bg-white/8 border border-white/10': route.name == props.routerLinkName
+      'bg-white/8 border border-white/10': isActive
     }">
     <div class="w-8 h-8 rounded-xl overflow-hidden ring-1 ring-white/10">
       <img :src="props.icon" alt="Project preview icon" class="object-fill w-full h-full" />
