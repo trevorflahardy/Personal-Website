@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { defineAsyncComponent, Suspense } from "vue";
-import RoomTransform from "@/components/RoomTransform.vue";
 
-const ProfileWaka = defineAsyncComponent(() => import("./Waka.vue"));
-const ProfileDiscord = defineAsyncComponent(() => import("./Discord.vue"));
+const ProfileWaka = defineAsyncComponent(
+    () => import("./Waka.vue")
+);
+
+const ProfileDiscord = defineAsyncComponent(
+    () => import("./Discord.vue")
+);
 
 const interests = [
     {
@@ -26,37 +30,15 @@ const interests = [
 
 <template>
     <div class="w-full">
-
-        <!-- ── Section header ─────────────────────────────────────────────── -->
-        <div class="mb-2">
-            <h2 class="title-2">Beyond the Code</h2>
-        </div>
-        <p class="subtitle mb-10 max-w-2xl">
-            The space where I live and think reflects who I am — watch it transform.
+        <h2 class="title-2 mb-2">
+            Beyond the Code
+        </h2>
+        <p class="subtitle mb-8">
+            What occupies my time when the laptop closes — interests, habits, and live stats from my day-to-day.
         </p>
 
-        <!-- ── Room transformation scroll animation ───────────────────────── -->
-        <!--
-            RoomTransform breaks out of PageLayoutSpacer's horizontal padding
-            so the animation can run edge-to-edge within the content pane.
-            We use negative margins to counteract the parent's px-10/px-12 padding.
-        -->
-        <div class="-mx-10 2xl:-mx-12 mb-16">
-            <RoomTransform />
-        </div>
-
-        <!-- ── Story expansion — what the room reveals ────────────────────── -->
-        <div class="mb-12">
-            <h3 class="title-3 mb-2">The Space Behind the Screen</h3>
-            <p class="body mb-0 max-w-3xl">
-                That room isn't just aesthetic — it's a reflection of how I approach everything.
-                I care about the environment I'm in, what it's filled with, and what it grows into.
-                The same deliberate, iterative thinking I apply to code, I apply to life.
-            </p>
-        </div>
-
-        <!-- ── Interest cards ─────────────────────────────────────────────── -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5 mb-12">
+        <!-- Personal interest cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-5 mb-6">
             <div
                 v-for="{ icon, title, body } in interests"
                 :key="title"
@@ -72,7 +54,7 @@ const interests = [
             </div>
         </div>
 
-        <!-- ── Live stats ──────────────────────────────────────────────────── -->
+        <!-- Live stats -->
         <h3 class="title-3 mb-2">Live Stats</h3>
         <p class="subtitle mb-5">
             Real-time data from WakaTime and Discord — updated automatically.
