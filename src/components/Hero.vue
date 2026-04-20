@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref, watch, onMounted, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Sidebar from "./sidebar/Sidebar.vue";
 import { useSidebar } from "@/composables/useSidebar";
@@ -8,17 +8,32 @@ const { isCollapsed, toggle } = useSidebar();
 const route = useRoute();
 const router = useRouter();
 
-// Full-bleed "page takeover" routes — the page's own world replaces the
-// glass-card frame entirely.  When active:
-//   - the sidebar is hidden
-//   - the glass-thick inner wrapper is dropped
-//   - the rounded/outline chrome on #main-content dissolves
-//   - the content animates up to fill the whole viewport
 const isFullBleed = computed(() => Boolean(route.meta?.fullBleed));
 
-// "Return to site" from a full-bleed page.  Uses router.back() if there is a
-// history entry, otherwise falls back to the home route so a deep link into a
-// full-bleed page never leaves the user stranded.
+const mainContent = ref<HTMLElement | null>(null);
+
+// Disable the VanillaTilt card-mouse effect on full-bleed pages — those pages
+// paint their own worlds and the perspective distortion fights their layout.
+watch(isFullBleed, async (bleed) => {
+	await nextTick();
+	const el = mainContent.value as any;
+	if (!el) return;
+	if (bleed) {
+		el.vanillaTilt?.destroy();
+		el.style.transform = "";
+	} else {
+		(window as any).VanillaTilt?.init([el], { max: 0.5 });
+	}
+}, { immediate: false });
+
+onMounted(() => {
+	if (isFullBleed.value) {
+		const el = mainContent.value as any;
+		el?.vanillaTilt?.destroy();
+		if (el) el.style.transform = "";
+	}
+});
+
 const exitFullBleed = () => {
 	if (window.history.length > 1) {
 		router.back();
@@ -47,6 +62,7 @@ const exitFullBleed = () => {
 		     glass chrome; `page-shell--bleed` strips it so the page within
 		     can paint its own universe. -->
 		<div id="main-content"
+			ref="mainContent"
 			class="page-shell w-full h-full relative overflow-y-scroll no-scrollbar transform-gpu"
 			:class="isFullBleed ? 'page-shell--bleed' : ''"
 			data-tilt data-tilt-max="0.5" style="transform-style: preserve-3d; transform: perspective(1000px)">

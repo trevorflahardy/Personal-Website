@@ -3,23 +3,25 @@ const jobs = [
     {
         company: 'University of South Florida',
         url: 'https://www.usf.edu',
-        period: '2023 – Present',
         color: '#006747',
         roles: [
             {
-                title: 'Undergraduate Teaching Assistant — Theory of Computation (COT 4210)',
-                period: 'Jan 2025 – Present',
+                title: 'Lead Teaching Assistant — 3D Printing Lab Operations',
+                period: 'Nov 2025 – Present',
                 bullets: [
-                    'Lead weekly office hours and review sessions for 100+ students covering formal languages, automata, and computability.',
-                    'Designed RegViz — a Rust + WASM visualizer that traces the full RE → NFA → DFA → MinDFA pipeline — to give students interactive intuition for the algorithms.',
+                    'Led maintenance, upgrades, and repair operations for 12 course-operated FDM printers — full disassembly, diagnostics, part sourcing, reassembly, and cooling/calibration improvements.',
+                    'Rewrote instructional materials to shift from checklist compliance to conceptual understanding; led full slicer migration to Orca Flashforge across all lab sections.',
+                    'Produced and distributed 500+ durable 3D-printed STEM outreach items for elementary and middle school events.',
+                    'Built SliceGuard — an internal web app to replace email submissions, manual file checks, and ad-hoc filament tracking with a unified request-management system.',
                 ],
             },
             {
-                title: '3D Printing Lab Teaching Assistant',
-                period: 'Aug 2023 – Present',
+                title: 'Student Assistant — Foundations of Engineering Lab',
+                period: 'Jan 2025 – Present',
                 bullets: [
-                    'Manage 12 production FDM printers. Review and approve student print requests, troubleshoot hardware failures, and maintain filament inventory.',
-                    'Identified recurring workflow bottlenecks — email submissions, manual file checks, no filament tracking — and built SliceGuard to fix them.',
+                    'Lead weekly lab sessions covering robotics, programming, circuit construction, and mechanical design for a 200-student engineering course.',
+                    'Developed "The Foundations Resource Hub" — an open-source Sphinx/ReadTheDocs tutorial enabling consistent self-paced learning across all course sections.',
+                    'Refactored Canvas assignments and provided structured feedback on technical presentations and written reports.',
                 ],
             },
         ],
@@ -27,15 +29,15 @@ const jobs = [
     {
         company: 'Pickle Pockets',
         url: 'https://picklepockets.shop',
-        period: '2024 – Present',
         color: '#dfff00',
         roles: [
             {
-                title: 'Founder',
-                period: '2024 – Present',
+                title: 'Founder & Product Designer',
+                period: 'Aug 2025 – Present',
                 bullets: [
-                    'Invented a pickleball with a built-in pocket, filed a provisional patent, and launched a direct-to-consumer Shopify storefront.',
-                    'Handled brand identity, product photography, and everything from manufacturing sourcing to fulfillment.',
+                    'Designed and launched the Tri Pickle Pocket — a lightweight, 3D-printed PETG carabiner holder for pickleballs — from first prototype through manufacturing to retail.',
+                    'Built and managed a Shopify storefront with SEO, collections, and automated fulfillment; ran Meta Ads and Instagram campaigns.',
+                    'Established wholesale partnerships with local pickleball clubs and retail outlets; implemented customer feedback loops to optimize product-market fit.',
                 ],
             },
         ],
@@ -43,31 +45,31 @@ const jobs = [
     {
         company: 'Chai Designs',
         url: null,
-        period: '2022 – 2023',
         color: '#7f5cff',
         roles: [
             {
-                title: 'Founder & Developer',
-                period: '2022 – 2023',
+                title: 'Full Stack Developer',
+                period: 'Aug 2024 – Dec 2025',
                 bullets: [
-                    'Built and operated Chai, a Discord bot that served 250k+ users across 1,500+ servers with moderation, logging, and utility features.',
-                    'Managed a Python + PostgreSQL backend, handled billing integrations, and grew the product organically to a paying user base.',
+                    'Designed and built production websites and web applications using Vue.js and React, leveraging Bun for fast builds and modern tooling.',
+                    'Implemented full-stack architectures with live database-backed data — schema design, API development, and efficient querying.',
+                    'Built and integrated secure user authentication and authorization systems; developed internal Rust tooling for performance-critical workflows.',
                 ],
             },
         ],
     },
     {
-        company: 'Independent — Crypto Trading Systems',
+        company: 'Self-employed — Cryptocurrency & Blockchain',
         url: null,
-        period: '2021 – 2022',
         color: '#f97316',
         roles: [
             {
-                title: 'Algorithm Developer',
-                period: '2021 – 2022',
+                title: 'Full-Stack Software Developer',
+                period: 'Feb 2020 – Jun 2024',
                 bullets: [
-                    'Developed and backtested automated trading strategies using Python. Integrated exchange APIs for live order execution.',
-                    'Built real-time data pipelines and dashboards for monitoring market signals and position performance.',
+                    'Developed custom user panels for NFT project launches — purchase, sale, and management of Solana and Ethereum NFTs — using Vue.js, React, and SQL.',
+                    'Engineered Solana smart contracts in Rust for Discord integration to deliver NFT-gated perks.',
+                    'Collaborated with 223 clients to build and deploy blockchain solutions; reached a community of 1M+ users across all systems.',
                 ],
             },
         ],
@@ -75,14 +77,14 @@ const jobs = [
     {
         company: 'Florida Virtual School',
         url: 'https://www.flvs.net',
-        period: '2020 – 2021',
         color: '#38bdf8',
         roles: [
             {
-                title: 'Student Instructor — Computer Science',
-                period: '2020 – 2021',
+                title: 'Software Engineering Tutor',
+                period: 'Jun 2020 – Jun 2023',
                 bullets: [
-                    "Tutored high school students in AP Computer Science Principles and introductory programming as part of FLVS's peer learning program.",
+                    'Taught software engineering practices including designing, building, testing, and debugging Python programs.',
+                    'Covered Object-Oriented principles — polymorphism, encapsulation, and abstraction — with high school students over 3 years.',
                 ],
             },
         ],
@@ -92,41 +94,38 @@ const jobs = [
 
 <template>
     <div class="w-full">
-        <!-- Header -->
         <div class="mb-8">
             <h2 class="title-2 mb-2">Work &amp; experience</h2>
             <p class="subtitle">Where the projects came from.</p>
         </div>
 
-        <!-- Timeline -->
         <div class="relative flex flex-col gap-0">
-            <!-- Vertical spine -->
             <div class="absolute left-[19px] top-3 bottom-3 w-px bg-white/8 hidden sm:block pointer-events-none" />
 
             <div v-for="(job, ji) in jobs" :key="job.company"
                 class="relative flex flex-col sm:flex-row gap-0 sm:gap-6 mb-8 last:mb-0">
 
-                <!-- Timeline dot -->
                 <div class="hidden sm:flex flex-col items-center flex-none w-10 pt-1">
                     <div class="w-3.5 h-3.5 rounded-full border-2 flex-none z-10"
                         :style="{ backgroundColor: job.color + '40', borderColor: job.color }" />
                 </div>
 
-                <!-- Content card -->
                 <div class="flex-1 rounded-2xl border bg-white/[0.02] overflow-hidden"
                     :style="{ borderColor: job.color + '25' }">
 
-                    <!-- Company header bar -->
+                    <!-- Company header — only shows company-level period if there are multiple roles -->
                     <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 border-b"
                         :style="{ borderColor: job.color + '20', backgroundColor: job.color + '08' }">
                         <div class="flex items-center gap-2.5">
                             <div class="w-2 h-2 rounded-full flex-none" :style="{ backgroundColor: job.color }" />
-                            <span class="font-semibold text-white text-sm">{{ job.company }}</span>
+                            <a v-if="job.url" :href="job.url" target="_blank" rel="noreferrer"
+                                class="font-semibold text-white text-sm hover:underline underline-offset-2">
+                                {{ job.company }}
+                            </a>
+                            <span v-else class="font-semibold text-white text-sm">{{ job.company }}</span>
                         </div>
-                        <span class="text-xs font-mono text-white/40">{{ job.period }}</span>
                     </div>
 
-                    <!-- Roles -->
                     <div>
                         <div v-for="(role, ri) in job.roles" :key="role.title"
                             class="px-5 py-4"
