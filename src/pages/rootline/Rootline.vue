@@ -219,16 +219,18 @@ const habitat = [
         <!-- Primary specimen: the hero screenshot, full-width herbarium mount -->
         <section class="specimen-frame">
             <h2 class="section-head"><i>Plate I</i>, the principal specimen.</h2>
-            <div class="frame-inner">
-                <img src="/rootline/hero.png" alt="Rootline tree view"
-                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
-                <div class="frame-fallback" style="display:none">
-                    <i>plate unavailable — specimen in preparation</i>
+            <figure>
+                <div class="frame-inner">
+                    <img src="/rootline/hero.png" alt="Rootline tree view"
+                        onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+                    <div class="frame-fallback" style="display:none">
+                        <i>plate unavailable — specimen in preparation</i>
+                    </div>
                 </div>
-            </div>
-            <figcaption>
-                <i>collected MMXXV · south florida · screen capture from live instance</i>
-            </figcaption>
+                <figcaption>
+                    <i>collected MMXXV · south florida · screen capture from live instance</i>
+                </figcaption>
+            </figure>
         </section>
 
         <!-- Naturalist's signature footer -->
