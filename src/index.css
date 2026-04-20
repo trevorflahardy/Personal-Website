@@ -60,7 +60,7 @@
   --color-regviz-dim: #4c1d95;
 
   --color-pp-neon: #dfff00;
-  --color-pp-forest: #132D1F;
+  --color-pp-forest: #132d1f;
   --color-pp-deep: #0f392b;
 
   /* Background images */
@@ -68,7 +68,9 @@
   --background-image-apt-night: url("/AptNight.png");
 
   /* Font family */
-  --font-family-sf-pro-display: "SF Pro Display", "Helvetica Neue", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-sf-pro-display:
+    "SF Pro Display", "Helvetica Neue", -apple-system, BlinkMacSystemFont,
+    sans-serif;
 }
 
 @layer base {
@@ -121,14 +123,28 @@
   html:not(.dark) .hero-title,
   html:not(.dark) .title,
   html:not(.dark) .title-2,
-  html:not(.dark) .card-title { color: rgb(15, 23, 42); }
-  html:not(.dark) .title-3 { color: rgba(15, 23, 42, 0.92); }
-  html:not(.dark) .title-4 { color: rgba(15, 23, 42, 0.88); }
-  html:not(.dark) .subtitle { color: rgba(15, 23, 42, 0.72); }
+  html:not(.dark) .card-title {
+    color: rgb(15, 23, 42);
+  }
+  html:not(.dark) .title-3 {
+    color: rgba(15, 23, 42, 0.92);
+  }
+  html:not(.dark) .title-4 {
+    color: rgba(15, 23, 42, 0.88);
+  }
+  html:not(.dark) .subtitle {
+    color: rgba(15, 23, 42, 0.72);
+  }
   html:not(.dark) .body,
-  html:not(.dark) .card-body { color: rgba(15, 23, 42, 0.78); }
-  html:not(.dark) .card-title-2 { color: rgba(15, 23, 42, 0.82); }
-  html:not(.dark) .card-caption { color: rgba(15, 23, 42, 0.62); }
+  html:not(.dark) .card-body {
+    color: rgba(15, 23, 42, 0.78);
+  }
+  html:not(.dark) .card-title-2 {
+    color: rgba(15, 23, 42, 0.82);
+  }
+  html:not(.dark) .card-caption {
+    color: rgba(15, 23, 42, 0.62);
+  }
 }
 
 /* Blanket override (unlayered so it wins over Tailwind's utilities layer) —
@@ -137,27 +153,69 @@
    typography classes above. Use !important because Tailwind utility styles are
    emitted after cascade layers in v4 and the engine often re-emits them per
    route chunk. */
-html:not(.dark) .text-white       { color: rgb(15, 23, 42) !important; }
-html:not(.dark) .text-white\/95   { color: rgb(15 23 42 / 0.95) !important; }
-html:not(.dark) .text-white\/90   { color: rgb(15 23 42 / 0.90) !important; }
-html:not(.dark) .text-white\/85   { color: rgb(15 23 42 / 0.85) !important; }
-html:not(.dark) .text-white\/80   { color: rgb(15 23 42 / 0.80) !important; }
-html:not(.dark) .text-white\/78   { color: rgb(15 23 42 / 0.78) !important; }
-html:not(.dark) .text-white\/75   { color: rgb(15 23 42 / 0.75) !important; }
-html:not(.dark) .text-white\/72   { color: rgb(15 23 42 / 0.72) !important; }
-html:not(.dark) .text-white\/70   { color: rgb(15 23 42 / 0.70) !important; }
-html:not(.dark) .text-white\/65   { color: rgb(15 23 42 / 0.65) !important; }
-html:not(.dark) .text-white\/60   { color: rgb(15 23 42 / 0.60) !important; }
-html:not(.dark) .text-white\/55   { color: rgb(15 23 42 / 0.60) !important; }
-html:not(.dark) .text-white\/50   { color: rgb(15 23 42 / 0.55) !important; }
-html:not(.dark) .text-white\/45   { color: rgb(15 23 42 / 0.55) !important; }
-html:not(.dark) .text-white\/40   { color: rgb(15 23 42 / 0.52) !important; }
-html:not(.dark) .text-white\/35   { color: rgb(15 23 42 / 0.50) !important; }
-html:not(.dark) .text-white\/30   { color: rgb(15 23 42 / 0.48) !important; }
-html:not(.dark) .text-white\/25   { color: rgb(15 23 42 / 0.45) !important; }
-html:not(.dark) .text-white\/20   { color: rgb(15 23 42 / 0.40) !important; }
-html:not(.dark) .text-white\/15   { color: rgb(15 23 42 / 0.38) !important; }
-html:not(.dark) .text-white\/10   { color: rgb(15 23 42 / 0.32) !important; }
+html:not(.dark) .text-white {
+  color: rgb(15, 23, 42) !important;
+}
+html:not(.dark) .text-white\/95 {
+  color: rgb(15 23 42 / 0.95) !important;
+}
+html:not(.dark) .text-white\/90 {
+  color: rgb(15 23 42 / 0.9) !important;
+}
+html:not(.dark) .text-white\/85 {
+  color: rgb(15 23 42 / 0.85) !important;
+}
+html:not(.dark) .text-white\/80 {
+  color: rgb(15 23 42 / 0.8) !important;
+}
+html:not(.dark) .text-white\/78 {
+  color: rgb(15 23 42 / 0.78) !important;
+}
+html:not(.dark) .text-white\/75 {
+  color: rgb(15 23 42 / 0.75) !important;
+}
+html:not(.dark) .text-white\/72 {
+  color: rgb(15 23 42 / 0.72) !important;
+}
+html:not(.dark) .text-white\/70 {
+  color: rgb(15 23 42 / 0.7) !important;
+}
+html:not(.dark) .text-white\/65 {
+  color: rgb(15 23 42 / 0.65) !important;
+}
+html:not(.dark) .text-white\/60 {
+  color: rgb(15 23 42 / 0.6) !important;
+}
+html:not(.dark) .text-white\/55 {
+  color: rgb(15 23 42 / 0.6) !important;
+}
+html:not(.dark) .text-white\/50 {
+  color: rgb(15 23 42 / 0.55) !important;
+}
+html:not(.dark) .text-white\/45 {
+  color: rgb(15 23 42 / 0.55) !important;
+}
+html:not(.dark) .text-white\/40 {
+  color: rgb(15 23 42 / 0.52) !important;
+}
+html:not(.dark) .text-white\/35 {
+  color: rgb(15 23 42 / 0.5) !important;
+}
+html:not(.dark) .text-white\/30 {
+  color: rgb(15 23 42 / 0.48) !important;
+}
+html:not(.dark) .text-white\/25 {
+  color: rgb(15 23 42 / 0.45) !important;
+}
+html:not(.dark) .text-white\/20 {
+  color: rgb(15 23 42 / 0.4) !important;
+}
+html:not(.dark) .text-white\/15 {
+  color: rgb(15 23 42 / 0.38) !important;
+}
+html:not(.dark) .text-white\/10 {
+  color: rgb(15 23 42 / 0.32) !important;
+}
 
 @layer components {
   /* ============================================================
@@ -199,19 +257,55 @@ html:not(.dark) .text-white\/10   { color: rgb(15 23 42 / 0.32) !important; }
   }
 
   /* Dark mode defaults — real-glass feel: smoked neutral, not white haze. */
-  .lg-thin    { --lg-blur: 10px; --lg-tint: rgba(14,16,20,0.28);   --lg-border: rgba(255,255,255,0.06); --lg-highlight: rgba(255,255,255,0.08); }
-  .lg-regular { --lg-blur: 22px; --lg-tint: rgba(14,16,20,0.38);   --lg-border: rgba(255,255,255,0.08); --lg-highlight: rgba(255,255,255,0.12); }
-  .lg-thick   { --lg-blur: 30px; --lg-tint: rgba(14,16,20,0.48);   --lg-border: rgba(255,255,255,0.10); --lg-highlight: rgba(255,255,255,0.16); }
-  .lg-sidebar { --lg-blur: 34px; --lg-tint: rgba(14,16,20,0.55);   --lg-border: rgba(255,255,255,0.12); --lg-highlight: rgba(255,255,255,0.18); }
+  .lg-thin {
+    --lg-blur: 10px;
+    --lg-tint: rgba(14, 16, 20, 0.28);
+    --lg-border: rgba(255, 255, 255, 0.06);
+    --lg-highlight: rgba(255, 255, 255, 0.08);
+  }
+  .lg-regular {
+    --lg-blur: 22px;
+    --lg-tint: rgba(14, 16, 20, 0.38);
+    --lg-border: rgba(255, 255, 255, 0.08);
+    --lg-highlight: rgba(255, 255, 255, 0.12);
+  }
+  .lg-thick {
+    --lg-blur: 30px;
+    --lg-tint: rgba(14, 16, 20, 0.48);
+    --lg-border: rgba(255, 255, 255, 0.1);
+    --lg-highlight: rgba(255, 255, 255, 0.16);
+  }
+  .lg-sidebar {
+    --lg-blur: 34px;
+    --lg-tint: rgba(14, 16, 20, 0.55);
+    --lg-border: rgba(255, 255, 255, 0.12);
+    --lg-highlight: rgba(255, 255, 255, 0.18);
+  }
 
   html:not(.dark) .lg-thin,
-  html:not(.dark).lg-thin    { --lg-tint: rgba(255,255,255,0.50); --lg-border: rgba(0,0,0,0.08);  --lg-highlight: rgba(255,255,255,0.65); }
+  html:not(.dark).lg-thin {
+    --lg-tint: rgba(255, 255, 255, 0.5);
+    --lg-border: rgba(0, 0, 0, 0.08);
+    --lg-highlight: rgba(255, 255, 255, 0.65);
+  }
   html:not(.dark) .lg-regular,
-  html:not(.dark).lg-regular { --lg-tint: rgba(255,255,255,0.62); --lg-border: rgba(0,0,0,0.10);  --lg-highlight: rgba(255,255,255,0.75); }
+  html:not(.dark).lg-regular {
+    --lg-tint: rgba(255, 255, 255, 0.62);
+    --lg-border: rgba(0, 0, 0, 0.1);
+    --lg-highlight: rgba(255, 255, 255, 0.75);
+  }
   html:not(.dark) .lg-thick,
-  html:not(.dark).lg-thick   { --lg-tint: rgba(255,255,255,0.76); --lg-border: rgba(15,23,42,0.12); --lg-highlight: rgba(255,255,255,0.82); }
+  html:not(.dark).lg-thick {
+    --lg-tint: rgba(255, 255, 255, 0.76);
+    --lg-border: rgba(15, 23, 42, 0.12);
+    --lg-highlight: rgba(255, 255, 255, 0.82);
+  }
   html:not(.dark) .lg-sidebar,
-  html:not(.dark).lg-sidebar { --lg-tint: rgba(255,255,255,0.82); --lg-border: rgba(15,23,42,0.14); --lg-highlight: rgba(255,255,255,0.88); }
+  html:not(.dark).lg-sidebar {
+    --lg-tint: rgba(255, 255, 255, 0.82);
+    --lg-border: rgba(15, 23, 42, 0.14);
+    --lg-highlight: rgba(255, 255, 255, 0.88);
+  }
 
   @media (prefers-reduced-transparency: reduce) {
     .lg-surface {
@@ -219,7 +313,9 @@ html:not(.dark) .text-white\/10   { color: rgb(15 23 42 / 0.32) !important; }
       -webkit-backdrop-filter: none;
       background-color: rgba(24, 24, 28, 0.94);
     }
-    html:not(.dark) .lg-surface { background-color: rgba(248, 248, 250, 0.98); }
+    html:not(.dark) .lg-surface {
+      background-color: rgba(248, 248, 250, 0.98);
+    }
   }
 
   /* Legacy glass classes — inherit the Liquid Glass surface treatment. Each sets
@@ -267,18 +363,63 @@ html:not(.dark) .text-white\/10   { color: rgb(15 23 42 / 0.32) !important; }
   }
 
   /* Dark mode — smoked glass, not white haze. Unified alpha between sidebar and main surfaces. */
-  .glass-thin      { --lg-blur: 10px; --lg-tint: rgba(14,16,20,0.28); --lg-border: rgba(255,255,255,0.06); --lg-highlight: rgba(255,255,255,0.08); }
-  .glass-regular   { --lg-blur: 22px; --lg-tint: rgba(14,16,20,0.38); --lg-border: rgba(255,255,255,0.08); --lg-highlight: rgba(255,255,255,0.12); }
-  .glass-semithick { --lg-blur: 26px; --lg-tint: rgba(14,16,20,0.44); --lg-border: rgba(255,255,255,0.09); --lg-highlight: rgba(255,255,255,0.14); }
-  .glass-thick     { --lg-blur: 32px; --lg-tint: rgba(14,16,20,0.50); --lg-border: rgba(255,255,255,0.10); --lg-highlight: rgba(255,255,255,0.16); }
-  .glass-card      { --lg-blur: 28px; --lg-tint: rgba(14,16,20,0.44); --lg-border: rgba(255,255,255,0.09); --lg-highlight: rgba(255,255,255,0.14); }
+  .glass-thin {
+    --lg-blur: 10px;
+    --lg-tint: rgba(14, 16, 20, 0.28);
+    --lg-border: rgba(255, 255, 255, 0.06);
+    --lg-highlight: rgba(255, 255, 255, 0.08);
+  }
+  .glass-regular {
+    --lg-blur: 22px;
+    --lg-tint: rgba(14, 16, 20, 0.38);
+    --lg-border: rgba(255, 255, 255, 0.08);
+    --lg-highlight: rgba(255, 255, 255, 0.12);
+  }
+  .glass-semithick {
+    --lg-blur: 26px;
+    --lg-tint: rgba(14, 16, 20, 0.44);
+    --lg-border: rgba(255, 255, 255, 0.09);
+    --lg-highlight: rgba(255, 255, 255, 0.14);
+  }
+  .glass-thick {
+    --lg-blur: 32px;
+    --lg-tint: rgba(14, 16, 20, 0.5);
+    --lg-border: rgba(255, 255, 255, 0.1);
+    --lg-highlight: rgba(255, 255, 255, 0.16);
+  }
+  .glass-card {
+    --lg-blur: 28px;
+    --lg-tint: rgba(14, 16, 20, 0.44);
+    --lg-border: rgba(255, 255, 255, 0.09);
+    --lg-highlight: rgba(255, 255, 255, 0.14);
+  }
 
   /* Light mode — clean frosted white. Triggered by the `.dark` toggle, not system preference. */
-  html:not(.dark) .glass-thin      { --lg-tint: rgba(255,255,255,0.50); --lg-border: rgba(15,23,42,0.08); --lg-highlight: rgba(255,255,255,0.65); }
-  html:not(.dark) .glass-regular   { --lg-tint: rgba(255,255,255,0.62); --lg-border: rgba(15,23,42,0.10); --lg-highlight: rgba(255,255,255,0.75); }
-  html:not(.dark) .glass-semithick { --lg-tint: rgba(255,255,255,0.70); --lg-border: rgba(15,23,42,0.11); --lg-highlight: rgba(255,255,255,0.80); }
-  html:not(.dark) .glass-thick     { --lg-tint: rgba(255,255,255,0.78); --lg-border: rgba(15,23,42,0.12); --lg-highlight: rgba(255,255,255,0.84); }
-  html:not(.dark) .glass-card      { --lg-tint: rgba(255,255,255,0.72); --lg-border: rgba(15,23,42,0.11); --lg-highlight: rgba(255,255,255,0.80); }
+  html:not(.dark) .glass-thin {
+    --lg-tint: rgba(255, 255, 255, 0.5);
+    --lg-border: rgba(15, 23, 42, 0.08);
+    --lg-highlight: rgba(255, 255, 255, 0.65);
+  }
+  html:not(.dark) .glass-regular {
+    --lg-tint: rgba(255, 255, 255, 0.62);
+    --lg-border: rgba(15, 23, 42, 0.1);
+    --lg-highlight: rgba(255, 255, 255, 0.75);
+  }
+  html:not(.dark) .glass-semithick {
+    --lg-tint: rgba(255, 255, 255, 0.7);
+    --lg-border: rgba(15, 23, 42, 0.11);
+    --lg-highlight: rgba(255, 255, 255, 0.8);
+  }
+  html:not(.dark) .glass-thick {
+    --lg-tint: rgba(255, 255, 255, 0.78);
+    --lg-border: rgba(15, 23, 42, 0.12);
+    --lg-highlight: rgba(255, 255, 255, 0.84);
+  }
+  html:not(.dark) .glass-card {
+    --lg-tint: rgba(255, 255, 255, 0.72);
+    --lg-border: rgba(15, 23, 42, 0.11);
+    --lg-highlight: rgba(255, 255, 255, 0.8);
+  }
 
   /* ============================================================
      NESTED GLASS — the "pocket" treatment.
@@ -290,7 +431,14 @@ html:not(.dark) .text-white\/10   { color: rgb(15 23 42 / 0.32) !important; }
      the parent — hierarchy without extra contrast.
   ============================================================ */
   .glass-pocket,
-  :is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card) :is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card) {
+  :is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card)
+    :is(
+      .glass-thin,
+      .glass-regular,
+      .glass-semithick,
+      .glass-thick,
+      .glass-card
+    ) {
     position: relative;
     border-radius: 0.875rem;
     background-color: rgba(0, 0, 0, 0.22);
@@ -304,17 +452,38 @@ html:not(.dark) .text-white\/10   { color: rgb(15 23 42 / 0.32) !important; }
   }
 
   /* Kill the specular rim on nested cards — the parent already owns the light. */
-  :is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card) :is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card)::before,
+  :is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card)
+    :is(
+      .glass-thin,
+      .glass-regular,
+      .glass-semithick,
+      .glass-thick,
+      .glass-card
+    )::before,
   .glass-pocket::before {
     display: none;
   }
 
   html:not(.dark) .glass-pocket,
-  html:not(.dark) :is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card) :is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card) {
+  html:not(.dark)
+    :is(
+      .glass-thin,
+      .glass-regular,
+      .glass-semithick,
+      .glass-thick,
+      .glass-card
+    )
+    :is(
+      .glass-thin,
+      .glass-regular,
+      .glass-semithick,
+      .glass-thick,
+      .glass-card
+    ) {
     background-color: rgba(15, 23, 42, 0.05);
     border-color: rgba(15, 23, 42, 0.09);
     box-shadow:
-      inset 0 1px 2px rgba(15, 23, 42, 0.10),
+      inset 0 1px 2px rgba(15, 23, 42, 0.1),
       inset 0 -1px 0 rgba(255, 255, 255, 0.6);
   }
 
@@ -323,7 +492,8 @@ html:not(.dark) .text-white\/10   { color: rgb(15 23 42 / 0.32) !important; }
      CampusEvents glassmorphism-ui skill. Respect prefers-reduced-motion.
   ============================================================ */
   .hover-lift {
-    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    transition:
+      transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
       box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
       border-color 0.25s ease;
     will-change: transform;
@@ -337,27 +507,57 @@ html:not(.dark) .text-white\/10   { color: rgb(15 23 42 / 0.32) !important; }
   }
 
   @keyframes rise-in {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0);    }
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   .rise-in {
     animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
-  .rise-1 { animation-delay: 0.06s; }
-  .rise-2 { animation-delay: 0.14s; }
-  .rise-3 { animation-delay: 0.22s; }
-  .rise-4 { animation-delay: 0.30s; }
-  .rise-5 { animation-delay: 0.38s; }
+  .rise-1 {
+    animation-delay: 0.06s;
+  }
+  .rise-2 {
+    animation-delay: 0.14s;
+  }
+  .rise-3 {
+    animation-delay: 0.22s;
+  }
+  .rise-4 {
+    animation-delay: 0.3s;
+  }
+  .rise-5 {
+    animation-delay: 0.38s;
+  }
 
   @keyframes orb-drift {
-    0%,100% { transform: translate3d(0,0,0) scale(1); }
-    50%     { transform: translate3d(6%, -4%, 0) scale(1.08); }
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(6%, -4%, 0) scale(1.08);
+    }
   }
-  .orb-drift { animation: orb-drift 18s ease-in-out infinite; }
+  .orb-drift {
+    animation: orb-drift 18s ease-in-out infinite;
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    .hover-lift:hover { transform: none; }
-    .rise-in, .orb-drift { animation: none; opacity: 1; transform: none; }
+    .hover-lift:hover {
+      transform: none;
+    }
+    .rise-in,
+    .orb-drift {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 
   .button-glass:hover {
@@ -368,11 +568,30 @@ html:not(.dark) .text-white\/10   { color: rgb(15 23 42 / 0.32) !important; }
 
   /* Subtle hover-lift on standalone primary cards. Nested glass (pockets) is
      excluded so the inner panel doesn't "float out" of its parent. */
-  .glass-card:not(:is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card) .glass-card) {
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+  .glass-card:not(
+    :is(
+        .glass-thin,
+        .glass-regular,
+        .glass-semithick,
+        .glass-thick,
+        .glass-card
+      )
+      .glass-card
+  ) {
+    transition:
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
       box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .glass-card:not(:is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card) .glass-card):hover {
+  .glass-card:not(
+      :is(
+          .glass-thin,
+          .glass-regular,
+          .glass-semithick,
+          .glass-thick,
+          .glass-card
+        )
+        .glass-card
+    ):hover {
     transform: translateY(-2px);
   }
 
@@ -392,7 +611,9 @@ html:not(.dark) .text-white\/10   { color: rgb(15 23 42 / 0.32) !important; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .glass-card:hover { transform: none; }
+    .glass-card:hover {
+      transform: none;
+    }
   }
 }
 
