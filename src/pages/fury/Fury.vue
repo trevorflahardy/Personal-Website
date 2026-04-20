@@ -24,11 +24,11 @@ const stats = [
 ];
 
 const features = [
-	{ cmd: "/team manage",           title: "TEAM MANAGEMENT",     body: "Auto-provisions channels, roles, rosters, subs, captains. Restores deleted channels on its own." },
-	{ cmd: "/scrim create",          title: "SCRIM SCHEDULING",    body: "Captain schedules; both rosters vote-confirm; Fury spins up a private channel and fires reminders." },
-	{ cmd: "/infractions manage",    title: "INFRACTION TRACKING", body: "Rides AutoMod. Tally per member, routing config, moderator exemptions, full history dashboard." },
-	{ cmd: "/attachment-request",    title: "ATTACHMENT MODERATION", body: "Every image is classified for NSFW before posting. Approve / approve-silent / deny in one click." },
-	{ cmd: "/practice start",        title: "PRACTICE TRACKING",   body: "Logs voice join/leave for every team member. Rolls up into team leaderboards automatically." },
+	{ cmd: "/team manage",           title: "TEAM MANAGEMENT",       body: "Auto-provisions channels, roles, rosters, subs, captains. Restores deleted channels on its own.",    img: `${base}fury/team_manage.png` },
+	{ cmd: "/scrim create",          title: "SCRIM SCHEDULING",      body: "Captain schedules; both rosters vote-confirm; Fury spins up a private channel and fires reminders.",  img: `${base}fury/scrim_confirm.png` },
+	{ cmd: "/infractions manage",    title: "INFRACTION TRACKING",   body: "Rides AutoMod. Tally per member, routing config, moderator exemptions, full history dashboard.",      img: `${base}fury/infractions_management.png` },
+	{ cmd: "/attachment-request",    title: "ATTACHMENT MODERATION", body: "Every image is classified for NSFW before posting. Approve / approve-silent / deny in one click.",   img: `${base}fury/attachment_requests.png` },
+	{ cmd: "/practice start",        title: "PRACTICE TRACKING",     body: "Logs voice join/leave for every team member. Rolls up into team leaderboards automatically." },
 ];
 
 const credits = [
@@ -107,18 +107,40 @@ const credits = [
 			</div>
 		</section>
 
-		<section class="fury-act" data-act="ACT II — SYSTEMS">
-			<div class="act-inner">
+		<section class="fury-act fury-act--dispatch" data-act="ACT II — SYSTEMS">
+			<div class="act-inner act-inner--full">
 				<h2 class="act-title">CORE SYSTEMS</h2>
-				<div class="system-grid">
-					<article v-for="(f, i) in features" :key="f.cmd" class="system-card" :style="{ '--i': i }">
-						<div class="system-card__rail" />
-						<header class="system-card__head">
-							<span class="system-card__slot">SLOT · {{ String(i + 1).padStart(2, "0") }}</span>
-							<code class="system-card__cmd">{{ f.cmd }}</code>
-						</header>
-						<h3 class="system-card__title">{{ f.title }}</h3>
-						<p class="system-card__body">{{ f.body }}</p>
+				<div class="dispatch-board">
+					<article
+						v-for="(f, i) in features"
+						:key="f.cmd"
+						class="dispatch-panel"
+						:class="{ 'dispatch-panel--flip': i % 2 === 1 }"
+						:style="{ '--i': i }"
+					>
+						<div class="dispatch-meta">
+							<span class="dispatch-num">{{ String(i + 1).padStart(2, "0") }}</span>
+							<div class="dispatch-content">
+								<code class="dispatch-cmd">{{ f.cmd }}</code>
+								<h3 class="dispatch-title">{{ f.title }}</h3>
+								<p class="dispatch-body">{{ f.body }}</p>
+							</div>
+						</div>
+						<div class="dispatch-screen" :class="{ 'dispatch-screen--offline': !f.img }">
+							<template v-if="f.img">
+								<div class="dispatch-crt">
+									<img :src="f.img" :alt="`${f.title} — ${f.cmd} screenshot`" />
+								</div>
+								<span class="dispatch-cap">LIVE FEED · {{ f.cmd }}</span>
+							</template>
+							<template v-else>
+								<div class="dispatch-crt dispatch-crt--offline">
+									<span class="offline-label">NO FEED</span>
+									<span class="offline-sub">AUDIO ONLY</span>
+								</div>
+								<span class="dispatch-cap">CHANNEL ACTIVE · VISUAL UNAVAILABLE</span>
+							</template>
+						</div>
 					</article>
 				</div>
 			</div>
@@ -389,53 +411,180 @@ const credits = [
 	letter-spacing: 0.05em;
 }
 
-.system-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-	gap: 1.25rem;
-}
-.system-card {
-	position: relative;
-	padding: 1.25rem 1.25rem 1.25rem 1.6rem;
-	background: rgba(10, 5, 20, 0.75);
-	border: 1px solid var(--rule);
-	transition: transform 180ms ease, border-color 180ms ease;
-	animation: sys-in 400ms ease-out both;
-	animation-delay: calc(var(--i, 0) * 80ms);
-}
+.act-inner--full { max-width: 1200px; }
+.fury-act--dispatch { padding-left: 0; padding-right: 0; }
+.fury-act--dispatch .act-inner--full { padding: 0 clamp(1.25rem, 4vw, 3rem); max-width: none; }
+.fury-act--dispatch .act-title { padding: 0; }
+
 @keyframes sys-in {
-	from { opacity: 0; transform: translateY(8px); }
+	from { opacity: 0; transform: translateY(10px); }
 	to   { opacity: 1; transform: translateY(0); }
 }
-.system-card:hover {
-	transform: translate(-2px, -2px);
-	border-color: var(--neon);
-	box-shadow: 4px 4px 0 rgba(255, 45, 122, 0.4);
+
+/* Dispatch board — full-width stacked cinematic panels */
+.dispatch-board {
+	margin-top: 2.5rem;
+	border: 1px solid var(--rule);
 }
-.system-card__rail {
-	position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
-	background: linear-gradient(to bottom, var(--neon-2), var(--neon));
+
+.dispatch-panel {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	min-height: 300px;
+	border-bottom: 1px solid var(--rule);
+	animation: sys-in 500ms ease-out both;
+	animation-delay: calc(var(--i, 0) * 100ms);
 }
-.system-card__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
-.system-card__slot { font-size: 0.56rem; letter-spacing: 0.22em; color: var(--faint); }
-.system-card__cmd {
+.dispatch-panel:last-child { border-bottom: none; }
+.dispatch-panel--flip { direction: rtl; }
+.dispatch-panel--flip > * { direction: ltr; }
+
+/* Meta (text) half */
+.dispatch-meta {
+	display: flex;
+	border-right: 1px solid var(--rule);
+}
+.dispatch-panel--flip .dispatch-meta {
+	border-right: none;
+	border-left: 1px solid var(--rule);
+}
+
+.dispatch-num {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 3.25rem;
+	padding: 1.5rem 0;
+	font-size: 2.4rem;
+	color: rgba(78, 219, 252, 0.10);
+	border-right: 1px solid var(--rule);
+	letter-spacing: -0.03em;
+	writing-mode: vertical-rl;
+	text-orientation: mixed;
+	transform: rotate(180deg);
+	user-select: none;
+	flex-shrink: 0;
+}
+.dispatch-panel--flip .dispatch-num {
+	border-right: none;
+	border-left: 1px solid var(--rule);
+}
+
+.dispatch-content {
+	padding: 2rem 2rem 2rem 1.75rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 0.5rem;
+}
+
+.dispatch-cmd {
 	font-family: "VT323", monospace;
-	font-size: 0.95rem;
+	font-size: 1.45rem;
 	color: var(--gold);
-	letter-spacing: 0.04em;
+	letter-spacing: 0.06em;
+	text-shadow: 0 0 8px rgba(255, 212, 71, 0.4);
 }
-.system-card__title {
-	font-size: 0.82rem; letter-spacing: 0.12em;
-	margin: 0 0 0.6rem;
+.dispatch-title {
+	font-size: clamp(0.78rem, 1.3vw, 0.95rem);
+	letter-spacing: 0.12em;
 	color: var(--ink);
+	margin: 0.2rem 0 0.4rem;
+	text-shadow: 0 0 8px rgba(78, 219, 252, 0.3);
 }
-.system-card__body {
+.dispatch-body {
 	font-family: "VT323", monospace;
-	font-size: 1.05rem;
-	line-height: 1.5;
+	font-size: 1.2rem;
+	line-height: 1.55;
 	letter-spacing: 0.02em;
 	color: var(--mute);
 	margin: 0;
+}
+
+/* Screenshot (screen) half */
+.dispatch-screen {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background: #020108;
+	padding: 1.25rem 1.5rem 0.75rem;
+	gap: 0.6rem;
+}
+.dispatch-screen--offline { background: #030210; }
+
+.dispatch-crt {
+	flex: 1;
+	position: relative;
+	border: 1px solid rgba(78, 219, 252, 0.25);
+	background: #020108;
+	overflow: hidden;
+	box-shadow:
+		inset 0 0 24px rgba(78, 219, 252, 0.04),
+		0 0 0 1px rgba(78, 219, 252, 0.06);
+}
+.dispatch-crt::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: repeating-linear-gradient(
+		to bottom,
+		transparent 0 2px,
+		rgba(0, 0, 0, 0.2) 2px 3px
+	);
+	pointer-events: none;
+	z-index: 2;
+}
+.dispatch-crt img {
+	width: 100%;
+	display: block;
+	opacity: 0.9;
+	filter: saturate(0.82) brightness(0.94);
+}
+
+.dispatch-crt--offline {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.6rem;
+	min-height: 200px;
+	background: repeating-linear-gradient(
+		45deg,
+		rgba(78, 219, 252, 0.025) 0px,
+		rgba(78, 219, 252, 0.025) 1px,
+		transparent 1px,
+		transparent 9px
+	);
+}
+.offline-label {
+	font-size: 1.5rem;
+	letter-spacing: 0.2em;
+	color: rgba(78, 219, 252, 0.35);
+	text-shadow: 0 0 12px rgba(78, 219, 252, 0.2);
+}
+.offline-sub {
+	font-family: "VT323", monospace;
+	font-size: 1.1rem;
+	letter-spacing: 0.14em;
+	color: rgba(78, 219, 252, 0.2);
+}
+
+.dispatch-cap {
+	font-family: "VT323", monospace;
+	font-size: 0.82rem;
+	letter-spacing: 0.1em;
+	color: var(--faint);
+	text-align: right;
+	flex-shrink: 0;
+}
+
+@media (max-width: 720px) {
+	.dispatch-panel { grid-template-columns: 1fr; min-height: unset; }
+	.dispatch-panel--flip { direction: ltr; }
+	.dispatch-meta { border-right: none; border-bottom: 1px solid var(--rule); }
+	.dispatch-panel--flip .dispatch-meta { border-left: none; border-bottom: 1px solid var(--rule); }
+	.dispatch-screen { min-height: 220px; }
+	.dispatch-num { writing-mode: horizontal-tb; transform: none; min-width: unset; padding: 0.75rem 1rem; font-size: 1.6rem; border-right: 1px solid var(--rule); border-left: none !important; }
 }
 
 .credits-roll { margin-top: 1.25rem; border-top: 1px dashed var(--rule); }
@@ -472,6 +621,6 @@ const credits = [
 .footer-dot { color: var(--neon); }
 
 @media (prefers-reduced-motion: reduce) {
-	.mt-char, .coin-blink, .coin-btn__pulse, .system-card { animation: none !important; }
+	.mt-char, .coin-blink, .coin-btn__pulse, .dispatch-panel { animation: none !important; }
 }
 </style>
