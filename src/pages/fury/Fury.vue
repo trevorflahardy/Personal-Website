@@ -107,39 +107,39 @@ const credits = [
 			</div>
 		</section>
 
-		<section class="fury-act fury-act--dispatch" data-act="ACT II — SYSTEMS">
-			<div class="act-inner act-inner--full">
+		<section class="fury-act fury-act--stages" data-act="ACT II — SYSTEMS">
+			<div class="act-inner act-inner--wide">
 				<h2 class="act-title">CORE SYSTEMS</h2>
-				<div class="dispatch-board">
-					<article
-						v-for="(f, i) in features"
-						:key="f.cmd"
-						class="dispatch-panel"
-						:class="{ 'dispatch-panel--flip': i % 2 === 1 }"
-						:style="{ '--i': i }"
-					>
-						<div class="dispatch-meta">
-							<span class="dispatch-num">{{ String(i + 1).padStart(2, "0") }}</span>
-							<div class="dispatch-content">
-								<code class="dispatch-cmd">{{ f.cmd }}</code>
-								<h3 class="dispatch-title">{{ f.title }}</h3>
-								<p class="dispatch-body">{{ f.body }}</p>
-							</div>
+				<div class="stage-list">
+					<article v-for="(f, i) in features" :key="f.cmd" class="stage" :style="{ '--i': i }">
+						<div class="stage-rule-row">
+							<span class="stage-num">STAGE {{ String(i + 1).padStart(2, "0") }}</span>
+							<span class="stage-rule" />
+							<span class="stage-title-tag">{{ f.title }}</span>
 						</div>
-						<div class="dispatch-screen" :class="{ 'dispatch-screen--offline': !f.img }">
-							<template v-if="f.img">
-								<div class="dispatch-crt">
-									<img :src="f.img" :alt="`${f.title} — ${f.cmd} screenshot`" />
+						<template v-if="f.img">
+							<div class="stage-crt">
+								<div class="stage-crt__feed-tag">● LIVE</div>
+								<img :src="f.img" :alt="`${f.title} — ${f.cmd}`" class="stage-crt__img" />
+								<div class="stage-crt__scanlines" aria-hidden="true" />
+								<div class="stage-crt__corners" aria-hidden="true"><span /><span /><span /><span /></div>
+							</div>
+						</template>
+						<template v-else>
+							<div class="stage-crt stage-crt--offline">
+								<div class="stage-crt__noise" aria-hidden="true" />
+								<div class="stage-crt__offline-text">
+									<span class="offline-label">SIGNAL LOST</span>
+									<span class="offline-sub">AUDIO CHANNEL ACTIVE</span>
 								</div>
-								<span class="dispatch-cap">LIVE FEED · {{ f.cmd }}</span>
-							</template>
-							<template v-else>
-								<div class="dispatch-crt dispatch-crt--offline">
-									<span class="offline-label">NO FEED</span>
-									<span class="offline-sub">AUDIO ONLY</span>
-								</div>
-								<span class="dispatch-cap">CHANNEL ACTIVE · VISUAL UNAVAILABLE</span>
-							</template>
+								<div class="stage-crt__scanlines" aria-hidden="true" />
+								<div class="stage-crt__corners" aria-hidden="true"><span /><span /><span /><span /></div>
+							</div>
+						</template>
+						<div class="stage-info">
+							<code class="stage-cmd">{{ f.cmd }}</code>
+							<span class="stage-info-sep" />
+							<p class="stage-body">{{ f.body }}</p>
 						</div>
 					</article>
 				</div>
@@ -411,180 +411,192 @@ const credits = [
 	letter-spacing: 0.05em;
 }
 
-.act-inner--full { max-width: 1200px; }
-.fury-act--dispatch { padding-left: 0; padding-right: 0; }
-.fury-act--dispatch .act-inner--full { padding: 0 clamp(1.25rem, 4vw, 3rem); max-width: none; }
-.fury-act--dispatch .act-title { padding: 0; }
-
 @keyframes sys-in {
 	from { opacity: 0; transform: translateY(10px); }
 	to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Dispatch board — full-width stacked cinematic panels */
-.dispatch-board {
-	margin-top: 2.5rem;
-	border: 1px solid var(--rule);
-}
+/* ── Stage showcase ── */
+.act-inner--wide { max-width: 860px; }
 
-.dispatch-panel {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	min-height: 300px;
-	border-bottom: 1px solid var(--rule);
-	animation: sys-in 500ms ease-out both;
-	animation-delay: calc(var(--i, 0) * 100ms);
-}
-.dispatch-panel:last-child { border-bottom: none; }
-.dispatch-panel--flip { direction: rtl; }
-.dispatch-panel--flip > * { direction: ltr; }
-
-/* Meta (text) half */
-.dispatch-meta {
+.stage-list {
+	margin-top: 3rem;
 	display: flex;
-	border-right: 1px solid var(--rule);
-}
-.dispatch-panel--flip .dispatch-meta {
-	border-right: none;
-	border-left: 1px solid var(--rule);
+	flex-direction: column;
+	gap: 4.5rem;
 }
 
-.dispatch-num {
+.stage {
+	animation: sys-in 500ms ease-out both;
+	animation-delay: calc(var(--i, 0) * 120ms);
+}
+
+.stage-rule-row {
+	display: flex;
+	align-items: center;
+	gap: 0.9rem;
+	margin-bottom: 1.25rem;
+}
+.stage-num {
+	font-size: 0.56rem;
+	letter-spacing: 0.28em;
+	color: var(--neon);
+	text-shadow: 0 0 8px rgba(255, 45, 122, 0.6);
+	flex-shrink: 0;
+}
+.stage-rule {
+	flex: 1;
+	height: 1px;
+	background: linear-gradient(to right, rgba(78, 219, 252, 0.5), rgba(78, 219, 252, 0.04));
+}
+.stage-title-tag {
+	font-size: 0.58rem;
+	letter-spacing: 0.22em;
+	color: var(--neon-2);
+	text-shadow: 0 0 8px rgba(78, 219, 252, 0.5);
+	flex-shrink: 0;
+}
+
+/* CRT screen */
+.stage-crt {
+	position: relative;
+	background: #010108;
+	border: 2px solid rgba(78, 219, 252, 0.18);
+	box-shadow:
+		0 0 0 1px rgba(78, 219, 252, 0.05),
+		0 0 48px rgba(78, 219, 252, 0.05),
+		inset 0 0 40px rgba(0, 0, 0, 0.7);
+	overflow: hidden;
+}
+.stage-crt__feed-tag {
+	position: absolute;
+	top: 0.65rem;
+	left: 0.85rem;
+	z-index: 5;
+	font-size: 0.52rem;
+	letter-spacing: 0.18em;
+	color: var(--neon);
+	text-shadow: 0 0 6px rgba(255, 45, 122, 0.9);
+	animation: feed-pulse 2s steps(2, end) infinite;
+}
+@keyframes feed-pulse {
+	0%, 65%  { opacity: 1; }
+	66%, 100% { opacity: 0.25; }
+}
+.stage-crt__img {
+	display: block;
+	width: 100%;
+	height: auto;
+	opacity: 0.92;
+	filter: saturate(0.82) brightness(0.93);
+}
+.stage-crt--offline {
+	min-height: 220px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	min-width: 3.25rem;
-	padding: 1.5rem 0;
-	font-size: 2.4rem;
-	color: rgba(78, 219, 252, 0.10);
-	border-right: 1px solid var(--rule);
-	letter-spacing: -0.03em;
-	writing-mode: vertical-rl;
-	text-orientation: mixed;
-	transform: rotate(180deg);
-	user-select: none;
-	flex-shrink: 0;
 }
-.dispatch-panel--flip .dispatch-num {
-	border-right: none;
-	border-left: 1px solid var(--rule);
+.stage-crt__noise {
+	position: absolute;
+	inset: 0;
+	background-image:
+		repeating-linear-gradient(0deg, rgba(78, 219, 252, 0.03) 0 1px, transparent 1px 3px),
+		repeating-linear-gradient(90deg, rgba(255, 45, 122, 0.02) 0 1px, transparent 1px 5px);
+	animation: noise-shift 0.35s steps(3) infinite;
 }
-
-.dispatch-content {
-	padding: 2rem 2rem 2rem 1.75rem;
+@keyframes noise-shift {
+	0%   { background-position: 0 0, 0 0; }
+	33%  { background-position: 0 -3px, 2px 0; }
+	66%  { background-position: 0 1px, -2px 0; }
+	100% { background-position: 0 0, 0 0; }
+}
+.stage-crt__offline-text {
+	position: relative;
+	z-index: 3;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
-	gap: 0.5rem;
+	align-items: center;
+	gap: 0.6rem;
 }
-
-.dispatch-cmd {
+.offline-label {
+	font-size: 1.2rem;
+	letter-spacing: 0.24em;
+	color: rgba(78, 219, 252, 0.38);
+	text-shadow: 0 0 14px rgba(78, 219, 252, 0.22);
+}
+.offline-sub {
 	font-family: "VT323", monospace;
-	font-size: 1.45rem;
+	font-size: 1.1rem;
+	letter-spacing: 0.12em;
+	color: rgba(78, 219, 252, 0.2);
+}
+.stage-crt__scanlines {
+	position: absolute;
+	inset: 0;
+	background: repeating-linear-gradient(
+		to bottom,
+		transparent 0 2px,
+		rgba(0, 0, 0, 0.18) 2px 3px
+	);
+	pointer-events: none;
+	z-index: 3;
+}
+.stage-crt__corners {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	z-index: 4;
+}
+.stage-crt__corners span {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	border-color: rgba(78, 219, 252, 0.55);
+	border-style: solid;
+}
+.stage-crt__corners span:nth-child(1) { top: 7px;    left: 7px;    border-width: 2px 0 0 2px; }
+.stage-crt__corners span:nth-child(2) { top: 7px;    right: 7px;   border-width: 2px 2px 0 0; }
+.stage-crt__corners span:nth-child(3) { bottom: 7px; left: 7px;    border-width: 0 0 2px 2px; }
+.stage-crt__corners span:nth-child(4) { bottom: 7px; right: 7px;   border-width: 0 2px 2px 0; }
+
+/* Info bar */
+.stage-info {
+	display: flex;
+	align-items: baseline;
+	gap: 1.25rem;
+	padding: 0.85rem 0 0;
+	border-top: 1px dashed var(--rule);
+	margin-top: 0.75rem;
+}
+.stage-cmd {
+	font-family: "VT323", monospace;
+	font-size: 1.3rem;
 	color: var(--gold);
 	letter-spacing: 0.06em;
 	text-shadow: 0 0 8px rgba(255, 212, 71, 0.4);
+	white-space: nowrap;
+	flex-shrink: 0;
 }
-.dispatch-title {
-	font-size: clamp(0.78rem, 1.3vw, 0.95rem);
-	letter-spacing: 0.12em;
-	color: var(--ink);
-	margin: 0.2rem 0 0.4rem;
-	text-shadow: 0 0 8px rgba(78, 219, 252, 0.3);
+.stage-info-sep {
+	width: 1px;
+	height: 1em;
+	background: var(--rule);
+	flex-shrink: 0;
+	align-self: center;
 }
-.dispatch-body {
+.stage-body {
 	font-family: "VT323", monospace;
-	font-size: 1.2rem;
+	font-size: 1.18rem;
 	line-height: 1.55;
 	letter-spacing: 0.02em;
 	color: var(--mute);
 	margin: 0;
 }
 
-/* Screenshot (screen) half */
-.dispatch-screen {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	background: #020108;
-	padding: 1.25rem 1.5rem 0.75rem;
-	gap: 0.6rem;
-}
-.dispatch-screen--offline { background: #030210; }
-
-.dispatch-crt {
-	flex: 1;
-	position: relative;
-	border: 1px solid rgba(78, 219, 252, 0.25);
-	background: #020108;
-	overflow: hidden;
-	box-shadow:
-		inset 0 0 24px rgba(78, 219, 252, 0.04),
-		0 0 0 1px rgba(78, 219, 252, 0.06);
-}
-.dispatch-crt::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	background: repeating-linear-gradient(
-		to bottom,
-		transparent 0 2px,
-		rgba(0, 0, 0, 0.2) 2px 3px
-	);
-	pointer-events: none;
-	z-index: 2;
-}
-.dispatch-crt img {
-	width: 100%;
-	display: block;
-	opacity: 0.9;
-	filter: saturate(0.82) brightness(0.94);
-}
-
-.dispatch-crt--offline {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 0.6rem;
-	min-height: 200px;
-	background: repeating-linear-gradient(
-		45deg,
-		rgba(78, 219, 252, 0.025) 0px,
-		rgba(78, 219, 252, 0.025) 1px,
-		transparent 1px,
-		transparent 9px
-	);
-}
-.offline-label {
-	font-size: 1.5rem;
-	letter-spacing: 0.2em;
-	color: rgba(78, 219, 252, 0.35);
-	text-shadow: 0 0 12px rgba(78, 219, 252, 0.2);
-}
-.offline-sub {
-	font-family: "VT323", monospace;
-	font-size: 1.1rem;
-	letter-spacing: 0.14em;
-	color: rgba(78, 219, 252, 0.2);
-}
-
-.dispatch-cap {
-	font-family: "VT323", monospace;
-	font-size: 0.82rem;
-	letter-spacing: 0.1em;
-	color: var(--faint);
-	text-align: right;
-	flex-shrink: 0;
-}
-
-@media (max-width: 720px) {
-	.dispatch-panel { grid-template-columns: 1fr; min-height: unset; }
-	.dispatch-panel--flip { direction: ltr; }
-	.dispatch-meta { border-right: none; border-bottom: 1px solid var(--rule); }
-	.dispatch-panel--flip .dispatch-meta { border-left: none; border-bottom: 1px solid var(--rule); }
-	.dispatch-screen { min-height: 220px; }
-	.dispatch-num { writing-mode: horizontal-tb; transform: none; min-width: unset; padding: 0.75rem 1rem; font-size: 1.6rem; border-right: 1px solid var(--rule); border-left: none !important; }
+@media (max-width: 560px) {
+	.stage-list { gap: 3rem; }
+	.stage-info { flex-wrap: wrap; gap: 0.6rem; }
+	.stage-info-sep { display: none; }
 }
 
 .credits-roll { margin-top: 1.25rem; border-top: 1px dashed var(--rule); }
@@ -621,6 +633,6 @@ const credits = [
 .footer-dot { color: var(--neon); }
 
 @media (prefers-reduced-motion: reduce) {
-	.mt-char, .coin-blink, .coin-btn__pulse, .dispatch-panel { animation: none !important; }
+	.mt-char, .coin-blink, .coin-btn__pulse, .stage, .stage-crt__noise { animation: none !important; }
 }
 </style>
