@@ -2,6 +2,8 @@
 import { useRoute } from "vue-router";
 
 import Project, { ProjectProps } from "./Project.vue";
+import SidebarGuide from "./SidebarGuide.vue";
+import { useSidebarGuide } from "@/composables/useSidebarGuide";
 import { routerLinkName as chaiRouterLink, icon as chaiIcon } from "@/pages/chai/info";
 import { routerLinkName as docuflowRouterLink } from "@/pages/docuflow/info";
 import { routerLinkName as furyRouterLink } from "@/pages/fury/info";
@@ -15,6 +17,7 @@ import { routerLinkName as ppRouterLink } from "@/pages/pickle-pockets/info";
 
 const isHamburgerOpen = defineModel();
 const route = useRoute();
+const { showGuide, dismiss } = useSidebarGuide();
 
 // Ordered by strength (visual impact, complexity, recency). Baro-RS / kew lead;
 // Fury and Docuflow trail. Only Chai keeps a dedicated icon — the rest use a
@@ -35,6 +38,11 @@ const projects: ProjectProps[] = [
 function toggleHamburger() {
     isHamburgerOpen.value = !isHamburgerOpen.value;
 }
+
+function handleProjectClick() {
+    toggleHamburger();
+    dismiss();
+}
 </script>
 
 <template>
@@ -46,7 +54,7 @@ function toggleHamburger() {
                     class="flex flex-row p-3 w-full rounded-xl gap-3 items-center mb-4 hover:bg-white/8 transition duration-300 ease-in-out"
                     :class="{
                         'bg-white/8 border border-white/10': route.name == 'profile'
-                    }" @click="toggleHamburger()">
+                    }" @click="handleProjectClick()">
                     <img src="/ProfilePic.png" alt="Trevor PFP"
                         class="w-[44px] h-[44px] xl:w-[52px] xl:h-[52px] rounded-full object-cover flex-none ring-1 ring-white/10" />
 
@@ -66,19 +74,37 @@ function toggleHamburger() {
             </h2>
         </div>
 
-        <!-- Scrollable project list -->
+        <!-- Scrollable project list — guide-mode class activates item scan animation -->
         <div class="flex-1 min-h-0 overflow-y-auto sidebar-scroll px-5 xl:px-6 pb-5 xl:pb-6">
-            <div class="flex flex-col gap-1">
+            <div class="flex flex-col gap-1" :class="{ 'guide-mode': showGuide }">
                 <router-link v-for="project in projects" :key="project.routerLinkName"
                     :to="{ name: project.routerLinkName }">
-                    <Project v-bind="project" @click="toggleHamburger()" />
+                    <Project v-bind="project" @click="handleProjectClick()" />
                 </router-link>
             </div>
         </div>
     </div>
+
+    <!-- First-visit navigation guide — teleports to body -->
+    <SidebarGuide />
 </template>
 
 <style scoped>
+/* First-visit scan animation — a shimmer highlight steps down the project list
+   when the guide is active, drawing the eye to the clickable items. */
+.guide-mode :deep(a):nth-child(1) { animation: guide-item-glow 0.7s 2.2s ease-out both; }
+.guide-mode :deep(a):nth-child(2) { animation: guide-item-glow 0.7s 2.5s ease-out both; }
+.guide-mode :deep(a):nth-child(3) { animation: guide-item-glow 0.7s 2.8s ease-out both; }
+.guide-mode :deep(a):nth-child(4) { animation: guide-item-glow 0.7s 3.1s ease-out both; }
+.guide-mode :deep(a):nth-child(5) { animation: guide-item-glow 0.7s 3.4s ease-out both; }
+.guide-mode :deep(a):nth-child(n+6) { animation: guide-item-glow 0.7s 3.7s ease-out both; }
+
+@keyframes guide-item-glow {
+    0%   { background: rgba(255, 255, 255, 0); }
+    30%  { background: rgba(255, 255, 255, 0.07); border-radius: 0.75rem; }
+    100% { background: rgba(255, 255, 255, 0); }
+}
+
 .sidebar-scroll {
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.12) transparent;

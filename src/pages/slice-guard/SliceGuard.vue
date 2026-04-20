@@ -3,8 +3,12 @@ import { computed } from "vue";
 import { beds, specs, revisions } from "./bed-fleet";
 
 // Status glyph — minimal datasheet icons.
-const statusGlyph = (s: string) =>
-    ({ idle: "—", printing: "◉", error: "✕", queue: "▢" } as const)[s as keyof typeof beds[0]["status"]] ?? "—";
+const glyphMap: Record<string, string> = { idle: "—", printing: "◉", error: "✕", queue: "▢" };
+const statusGlyph = (s: string) => glyphMap[s] ?? "—";
+
+// Human-readable context label shown at rest in the cell (one line, monospace).
+const statusLabel = (s: string): string =>
+    ({ idle: "AVAILABLE", printing: "ACTIVE JOB", error: "FAULT", queue: "QUEUED" } as Record<string, string>)[s] ?? s.toUpperCase();
 
 // The fleet is deliberately variable-sized.  Slice Guard is built for N-bed
 // labs — whatever the makerspace has, the UI auto-fits.  The dimension line
@@ -59,19 +63,58 @@ const statusCounts = computed(() => {
         <section class="sg-planview">
             <div class="sg-section-head">
                 <span class="sg-label">PLAN · 01</span>
-                <span class="sg-sublabel">floor layout · {{ bedCount }} beds · live status</span>
+                <span class="sg-sublabel">floor layout · {{ bedCount }} beds · live status · hover to inspect</span>
             </div>
             <div class="sg-beds">
-                <div v-for="bed in beds" :key="bed.id" :class="['bed', 'bed-' + bed.status]">
-                    <div class="bed-top">
-                        <span class="bed-id">{{ bed.id }}</span>
-                        <span class="bed-glyph" :class="'glyph-' + bed.status">{{ statusGlyph(bed.status) }}</span>
+                <div
+                    v-for="bed in beds"
+                    :key="bed.id"
+                    :class="['bed', 'bed-' + bed.status]"
+                >
+                    <!-- REST STATE: only bed ID + glyph + context label -->
+                    <div class="bed-rest">
+                        <div class="bed-rest-top">
+                            <span class="bed-id">{{ bed.id }}</span>
+                            <span class="bed-glyph" :class="'glyph-' + bed.status">{{ statusGlyph(bed.status) }}</span>
+                        </div>
+                        <span class="bed-status-label" :class="'label-' + bed.status">{{ statusLabel(bed.status) }}</span>
                     </div>
-                    <div class="bed-body">
-                        <div v-if="bed.job" class="bed-job">{{ bed.job }}</div>
-                        <div v-if="bed.material" class="bed-material">{{ bed.material }}</div>
-                        <div v-if="bed.elapsed" class="bed-elapsed">{{ bed.elapsed }}</div>
-                        <div v-if="!bed.job" class="bed-idle">— bed available —</div>
+
+                    <!-- HOVER POPUP: full details, slides up from bottom of cell -->
+                    <div class="bed-popup" :class="'popup-' + bed.status">
+                        <!-- Popup header -->
+                        <div class="popup-header">
+                            <span class="popup-bed-id">{{ bed.id }}</span>
+                            <span class="popup-glyph" :class="'glyph-' + bed.status">{{ statusGlyph(bed.status) }}</span>
+                        </div>
+                        <!-- Status tag -->
+                        <span class="popup-status-tag" :class="'tag-' + bed.status">{{ statusLabel(bed.status) }}</span>
+                        <!-- Detail rows — only shown when data exists -->
+                        <div class="popup-details">
+                            <template v-if="bed.job">
+                                <div class="popup-row">
+                                    <span class="popup-key">JOB</span>
+                                    <span class="popup-val">{{ bed.job }}</span>
+                                </div>
+                            </template>
+                            <template v-if="bed.material">
+                                <div class="popup-row">
+                                    <span class="popup-key">MAT</span>
+                                    <span class="popup-val">{{ bed.material }}</span>
+                                </div>
+                            </template>
+                            <template v-if="bed.elapsed">
+                                <div class="popup-row">
+                                    <span class="popup-key">TIME</span>
+                                    <span class="popup-val popup-val-time">{{ bed.elapsed }}</span>
+                                </div>
+                            </template>
+                            <template v-if="!bed.job">
+                                <div class="popup-row popup-row-idle">
+                                    <span class="popup-idle-msg">bed available · no job assigned</span>
+                                </div>
+                            </template>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -179,6 +222,9 @@ const statusCounts = computed(() => {
     --ink-dim: rgba(232, 238, 247, 0.55);
     --cyan: #38bdf8;
     --cyan-dim: #075985;
+    --error: #f87171;
+    --error-bg: rgba(248, 113, 113, 0.08);
+    --queue: rgba(232, 238, 247, 0.55);
 
     background: var(--paper);
     background-image:
@@ -194,7 +240,7 @@ const statusCounts = computed(() => {
 
 .sg-plate, .sg-plate * { font-feature-settings: "tnum" 1; }
 
-/* Top header rule */
+/* ─── Top header rule ─── */
 .sg-top {
     display: flex; align-items: center; gap: 1rem;
     margin-bottom: 2.5rem;
@@ -206,7 +252,7 @@ const statusCounts = computed(() => {
     color: var(--ink-dim);
 }
 
-/* Title block — small rectangle, top-right */
+/* ─── Title block — small rectangle, top-right ─── */
 .sg-titleblock {
     position: absolute; top: 2.5rem; right: 2.5rem;
     width: 17rem;
@@ -224,7 +270,7 @@ const statusCounts = computed(() => {
 .tb-row span { color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.1em; }
 .tb-row b { color: var(--ink); font-weight: 500; }
 
-/* Hero */
+/* ─── Hero ─── */
 .sg-hero { max-width: 38rem; margin: 1rem 0 3.5rem; }
 .sg-h1 {
     font-size: clamp(2rem, 4vw, 3.3rem);
@@ -247,9 +293,6 @@ const statusCounts = computed(() => {
     color: rgba(232, 238, 247, 0.78);
     margin: 0 0 1rem 0;
 }
-
-/* Sub-lede sits directly under the prose: a datasheet line noting that the
-   rendered fleet is a *sample*, not a fixed deployment size. */
 .sg-sub-lede {
     max-width: 34rem;
     font-family: "SF Mono", ui-monospace, monospace;
@@ -261,14 +304,6 @@ const statusCounts = computed(() => {
 }
 .sg-sub-lede b { color: var(--ink); font-weight: 600; margin-right: 0.35rem; }
 .sg-sub-sep { color: rgba(56, 189, 248, 0.4); margin: 0 0.55rem; }
-
-/* Status counts inside the dimension label — the numeric stands out against
-   the dim rule text so glanceable counts survive shrinking down. */
-.sg-dim-num {
-    color: var(--cyan);
-    font-weight: 700;
-    margin: 0 0.15rem;
-}
 .sg-lede code {
     font-family: "SF Mono", ui-monospace, monospace;
     padding: 0.05rem 0.35rem;
@@ -278,7 +313,7 @@ const statusCounts = computed(() => {
     font-size: 0.85em;
 }
 
-/* Section header */
+/* ─── Section header ─── */
 .sg-section-head {
     display: flex; align-items: baseline; gap: 1rem;
     border-bottom: 1px solid rgba(232, 238, 247, 0.2);
@@ -295,45 +330,220 @@ const statusCounts = computed(() => {
     font-size: 0.68rem; color: var(--ink-dim); letter-spacing: 0.1em;
 }
 
-/* Plan view — bed grid */
+/* ─────────────────────────────────────────────────────
+   PLAN VIEW — Bed grid
+   ───────────────────────────────────────────────────── */
 .sg-planview { margin: 3rem 0 3.5rem; }
+
 .sg-beds {
-    /* Auto-fit grid — the lab scales from a handful of beds to forty-plus
-       without the layout ever needing a config change.  Each bed reserves
-       ≥16rem so the wireframe cells stay legible at any count. */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
     gap: 0;
     border: 1px solid var(--cyan);
 }
+
+/* ─── Individual bed cell ─── */
 .bed {
-    min-height: 7rem;
-    padding: 0.7rem 0.85rem;
+    /* Fixed height — the popup lives inside and absolute-positions itself */
+    height: 7rem;
+    padding: 0;
     font-family: "SF Mono", ui-monospace, monospace;
     font-size: 0.7rem;
     position: relative;
-    /* Individual per-cell dividers — works with auto-fit because each bed
-       paints its own right + bottom line instead of relying on a fixed
-       column-count background gradient. */
+    overflow: hidden;
     border-right: 1px solid rgba(56, 189, 248, 0.25);
     border-bottom: 1px solid rgba(56, 189, 248, 0.25);
-    transition: background-color 0.25s ease, outline 0.25s ease;
-    outline: 0 solid transparent;
-}
-.bed:hover { background: rgba(56, 189, 248, 0.08); outline: 1px solid var(--cyan); z-index: 1; }
-.bed-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; }
-.bed-id { color: var(--ink-dim); letter-spacing: 0.1em; }
-.bed-glyph { font-size: 0.85rem; }
-.glyph-idle     { color: rgba(232, 238, 247, 0.3); }
-.glyph-printing { color: var(--cyan); animation: blink 3s ease-in-out infinite; }
-.glyph-error    { color: #f87171; }
-.glyph-queue    { color: rgba(232, 238, 247, 0.55); }
-@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-.bed-job { color: var(--ink); margin-bottom: 0.15rem; letter-spacing: 0.01em; }
-.bed-material, .bed-elapsed { color: var(--ink-dim); font-size: 0.65rem; line-height: 1.4; }
-.bed-idle { color: rgba(232, 238, 247, 0.35); font-style: italic; }
+    cursor: default;
 
-/* Dimension line */
+    /* Smooth background tint on hover */
+    transition: background-color 0.2s ease;
+}
+
+/* Hover background tint — different per status */
+.bed-idle:hover     { background: rgba(56, 189, 248, 0.05); }
+.bed-printing:hover { background: rgba(56, 189, 248, 0.10); }
+.bed-error:hover    { background: var(--error-bg); }
+.bed-queue:hover    { background: rgba(56, 189, 248, 0.07); }
+
+/* Cyan outline glow on hover — same for all */
+.bed::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 1px transparent;
+    pointer-events: none;
+    transition: box-shadow 0.2s ease;
+    z-index: 3;
+}
+.bed:hover::after {
+    box-shadow: inset 0 0 0 1px var(--cyan);
+}
+.bed-error:hover::after {
+    box-shadow: inset 0 0 0 1px var(--error);
+}
+
+/* ─────────────────────────────────────────────────────
+   REST STATE — visible when NOT hovered
+   ───────────────────────────────────────────────────── */
+.bed-rest {
+    position: absolute;
+    inset: 0;
+    padding: 0.65rem 0.85rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Fade out as popup comes in */
+    opacity: 1;
+    transition: opacity 0.18s ease;
+    z-index: 1;
+}
+.bed:hover .bed-rest { opacity: 0; }
+
+.bed-rest-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.bed-id {
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+}
+.bed-glyph {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+/* Glyph colors */
+.glyph-idle     { color: rgba(232, 238, 247, 0.28); }
+.glyph-printing { color: var(--cyan); animation: blink 3s ease-in-out infinite; }
+.glyph-error    { color: var(--error); }
+.glyph-queue    { color: rgba(232, 238, 247, 0.5); }
+
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* Status context label — one line at the bottom of the rest state */
+.bed-status-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+}
+.label-idle     { color: rgba(232, 238, 247, 0.28); }
+.label-printing { color: var(--cyan); }
+.label-error    { color: var(--error); }
+.label-queue    { color: rgba(232, 238, 247, 0.5); }
+
+/* ─────────────────────────────────────────────────────
+   HOVER POPUP — the detail card that slides up
+   ───────────────────────────────────────────────────── */
+.bed-popup {
+    position: absolute;
+    inset: 0;
+    /* Blueprint data card styling */
+    background: rgba(10, 35, 66, 0.96);
+    border-top: 2px solid var(--cyan);
+    padding: 0.55rem 0.85rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.32rem;
+    /* Slide-up + fade-in */
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 2;
+    pointer-events: none;
+}
+.bed:hover .bed-popup {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Error beds: red top border instead of cyan */
+.popup-error { border-top-color: var(--error); }
+
+/* Popup header row: bed ID left, glyph right */
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.1rem;
+}
+.popup-bed-id {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-dim);
+}
+.popup-glyph {
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+/* Status tag pill — sits under the header */
+.popup-status-tag {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.1rem 0.4rem;
+    border: 1px solid currentColor;
+    align-self: flex-start;
+    line-height: 1.6;
+}
+.tag-idle     { color: rgba(232, 238, 247, 0.35); border-color: rgba(232, 238, 247, 0.2); }
+.tag-printing { color: var(--cyan); border-color: rgba(56, 189, 248, 0.45); }
+.tag-error    { color: var(--error); border-color: rgba(248, 113, 113, 0.45); }
+.tag-queue    { color: rgba(232, 238, 247, 0.55); border-color: rgba(232, 238, 247, 0.28); }
+
+/* Detail rows */
+.popup-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+    margin-top: 0.1rem;
+    flex: 1;
+    justify-content: flex-end;
+}
+.popup-row {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    gap: 0.4rem;
+    align-items: baseline;
+}
+.popup-key {
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+}
+.popup-val {
+    font-size: 0.63rem;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+/* Time value gets cyan accent */
+.popup-val-time { color: var(--cyan); }
+
+/* Error override: job name in error beds gets tinted */
+.popup-error .popup-val { color: rgba(248, 113, 113, 0.9); }
+.popup-error .popup-val-time { color: var(--error); }
+
+/* Idle message — no job data row */
+.popup-row-idle {
+    grid-template-columns: 1fr;
+}
+.popup-idle-msg {
+    font-size: 0.6rem;
+    color: rgba(232, 238, 247, 0.3);
+    font-style: italic;
+    letter-spacing: 0.05em;
+}
+
+/* ─── Dimension line ─── */
 .sg-dim { margin-top: 0.75rem; color: var(--cyan); display: flex; flex-direction: column; gap: 0.4rem; }
 .sg-dim-svg { width: 100%; height: 1.2rem; }
 .sg-dim-label {
@@ -342,8 +552,15 @@ const statusCounts = computed(() => {
     color: var(--ink-dim);
     text-align: center;
 }
+.sg-dim-num {
+    color: var(--cyan);
+    font-weight: 700;
+    margin: 0 0.15rem;
+}
 
-/* Callouts */
+/* ─────────────────────────────────────────────────────
+   CALLOUTS
+   ───────────────────────────────────────────────────── */
 .sg-callouts { margin: 3.5rem 0; }
 .callout-list {
     list-style: none; padding: 0; margin: 0;
@@ -390,7 +607,9 @@ const statusCounts = computed(() => {
     font-size: 0.85em;
 }
 
-/* Spec table */
+/* ─────────────────────────────────────────────────────
+   SPEC TABLE
+   ───────────────────────────────────────────────────── */
 .sg-specs { margin: 3.5rem 0; }
 .spec-table {
     width: 100%;
@@ -409,7 +628,9 @@ const statusCounts = computed(() => {
 .spec-table tr.alt { background: rgba(56, 189, 248, 0.035); }
 .spec-table tr:last-child th, .spec-table tr:last-child td { border-bottom: none; }
 
-/* Revisions */
+/* ─────────────────────────────────────────────────────
+   REVISIONS FOOTER
+   ───────────────────────────────────────────────────── */
 .sg-revs { margin: 3.5rem 0 0; }
 .rev-table {
     width: 100%;

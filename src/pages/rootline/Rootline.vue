@@ -431,7 +431,7 @@ const habitat = [
 /* =============================================================
    FIELD PLATES — 4 supplementary screenshots as herbarium mounts
 ============================================================= */
-.field-plates { max-width: 66rem; margin: 0 auto 4.5rem; padding: 0 1rem; }
+.field-plates { max-width: none; margin: 0 auto 4.5rem; padding: 0 1rem; }
 .plates-lede {
     max-width: 42rem;
     margin: 0 auto 2.5rem;
@@ -444,8 +444,8 @@ const habitat = [
 }
 .plate-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
-    gap: 2.5rem 2rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem 2.5rem;
 }
 .plate-mount {
     margin: 0;
@@ -632,6 +632,7 @@ html:not(.dark) .root-plate .frame-inner { background: rgba(255,255,255,0.5); }
     .specimen-body { grid-template-columns: 1fr; }
     .callout-list li { grid-template-columns: 1fr; margin-left: 0 !important; }
     .tendril { display: none; }
+    .plate-grid { grid-template-columns: 1fr; }
 }
 </style>
 

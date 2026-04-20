@@ -24,11 +24,40 @@ const stats = [
 ];
 
 const features = [
-	{ cmd: "/team manage",           title: "TEAM MANAGEMENT",       body: "Auto-provisions channels, roles, rosters, subs, captains. Restores deleted channels on its own.",    img: `${base}fury/team_manage.png` },
-	{ cmd: "/scrim create",          title: "SCRIM SCHEDULING",      body: "Captain schedules; both rosters vote-confirm; Fury spins up a private channel and fires reminders.",  img: `${base}fury/scrim_confirm.png` },
-	{ cmd: "/infractions manage",    title: "INFRACTION TRACKING",   body: "Rides AutoMod. Tally per member, routing config, moderator exemptions, full history dashboard.",      img: `${base}fury/infractions_management.png` },
-	{ cmd: "/attachment-request",    title: "ATTACHMENT MODERATION", body: "Every image is classified for NSFW before posting. Approve / approve-silent / deny in one click.",   img: `${base}fury/attachment_requests.png` },
-	{ cmd: "/practice start",        title: "PRACTICE TRACKING",     body: "Logs voice join/leave for every team member. Rolls up into team leaderboards automatically." },
+	{
+		cmd: "/team manage",
+		title: "TEAM MANAGEMENT",
+		body: "Auto-provisions channels, roles, rosters, subs, captains. Restores deleted channels on its own.",
+		why: "Running a school esports club means constant roster churn — students join, leave, and get promoted every semester. Before Fury, every change meant hours of manual Discord admin. Now a single command re-provisions everything a team needs, and if a student accidentally deletes a channel, it's rebuilt in seconds. The bot absorbs the administrative overhead so staff can focus on the game.",
+		img: `${base}fury/team_manage.png`
+	},
+	{
+		cmd: "/scrim create",
+		title: "SCRIM SCHEDULING",
+		body: "Captain schedules; both rosters vote-confirm; Fury spins up a private channel and fires reminders.",
+		why: "School scrims kept falling apart — teams would schedule, then half the roster wouldn't show. The vote-confirm flow changes that: if your team commits, you're on record. No-shows can be tracked, captains stay accountable, and the dedicated private channel keeps both teams coordinated without flooding the main server. It turned informal arrangements into binding commitments.",
+		img: `${base}fury/scrim_confirm.png`
+	},
+	{
+		cmd: "/infractions manage",
+		title: "INFRACTION TRACKING",
+		body: "Rides AutoMod. Tally per member, routing config, moderator exemptions, full history dashboard.",
+		why: "K-12 esports clubs have real accountability requirements — school administration needs documented evidence for disciplinary reports. A shared spreadsheet collapses under 90 active students. Fury automatically routes every AutoMod flag, tallies infractions per member, and maintains a timestamped history. Staff can pull a clean report for any student at any time, making every decision defensible.",
+		img: `${base}fury/infractions_management.png`
+	},
+	{
+		cmd: "/attachment-request",
+		title: "ATTACHMENT MODERATION",
+		body: "Every image is classified for NSFW before posting. Approve / approve-silent / deny in one click.",
+		why: "One inappropriate image in a K-12 Discord is a serious policy violation with real administrative consequences. Manual post-hoc moderation is reactive — by the time a moderator sees it, students already have. Fury's AI-first classification makes it proactive: every image is screened before it reaches anyone. Staff approval is a single click in a dedicated moderation channel, and the school admin never has to hear about it.",
+		img: `${base}fury/attachment_requests.png`
+	},
+	{
+		cmd: "/practice start",
+		title: "PRACTICE TRACKING",
+		body: "Logs voice join/leave for every team member. Rolls up into team leaderboards automatically.",
+		why: "Coaches deserve real data. Before this feature, starting lineup decisions were made on gut instinct and social dynamics. Now every practice session is logged automatically — who showed up, for how long, across how many weeks. At roster review time, the leaderboard speaks for itself. It also motivates players: they can see exactly where they rank in commitment, not just in skill.",
+	},
 ];
 
 const credits = [
@@ -138,9 +167,9 @@ const credits = [
 						</template>
 						<div class="stage-info">
 							<code class="stage-cmd">{{ f.cmd }}</code>
-							<span class="stage-info-sep" />
-							<p class="stage-body">{{ f.body }}</p>
 						</div>
+						<p class="stage-body">{{ f.body }}</p>
+						<p v-if="f.why" class="stage-why">{{ f.why }}</p>
 					</article>
 				</div>
 			</div>
@@ -562,9 +591,9 @@ const credits = [
 /* Info bar */
 .stage-info {
 	display: flex;
-	align-items: baseline;
+	align-items: center;
 	gap: 1.25rem;
-	padding: 0.85rem 0 0;
+	padding: 0.85rem 0 0.5rem;
 	border-top: 1px dashed var(--rule);
 	margin-top: 0.75rem;
 }
@@ -577,26 +606,29 @@ const credits = [
 	white-space: nowrap;
 	flex-shrink: 0;
 }
-.stage-info-sep {
-	width: 1px;
-	height: 1em;
-	background: var(--rule);
-	flex-shrink: 0;
-	align-self: center;
-}
 .stage-body {
 	font-family: "VT323", monospace;
 	font-size: 1.18rem;
 	line-height: 1.55;
 	letter-spacing: 0.02em;
 	color: var(--mute);
+	margin: 0 0 0.75rem;
+}
+.stage-why {
+	font-family: "VT323", monospace;
+	font-size: 1.05rem;
+	line-height: 1.6;
+	letter-spacing: 0.01em;
+	color: rgba(232, 249, 255, 0.42);
 	margin: 0;
+	padding: 0.75rem 1rem;
+	border-left: 1px solid var(--rule);
+	background: rgba(78, 219, 252, 0.025);
+	border-radius: 0 2px 2px 0;
 }
 
 @media (max-width: 560px) {
 	.stage-list { gap: 3rem; }
-	.stage-info { flex-wrap: wrap; gap: 0.6rem; }
-	.stage-info-sep { display: none; }
 }
 
 .credits-roll { margin-top: 1.25rem; border-top: 1px dashed var(--rule); }

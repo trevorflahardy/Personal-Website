@@ -15,7 +15,7 @@ $ npx docuflow init
 $ npx docuflow build
 \`\`\`
 
-## Pillars
+<h2> Pillars </h2>
 
 - Author in MDX — Markdown + JSX.
 - Built on React + Vite (HMR in milliseconds).
@@ -57,6 +57,36 @@ const lineNumsContent = computed(() =>
 	markdownSource.value.split("\n").map((_, i) => String(i + 1).padStart(2, " ")).join("\n")
 );
 
+// Resizable split pane
+const splitPct = ref(44.4);
+const splitRef = ref<HTMLElement | null>(null);
+let isDragging = false;
+
+function startResize(e: MouseEvent) {
+	e.preventDefault();
+	isDragging = true;
+	document.body.style.cursor = "col-resize";
+	document.body.style.userSelect = "none";
+
+	const onMove = (me: MouseEvent) => {
+		if (!isDragging || !splitRef.value) return;
+		const rect = splitRef.value.getBoundingClientRect();
+		const pct = ((me.clientX - rect.left) / rect.width) * 100;
+		splitPct.value = Math.min(Math.max(pct, 22), 78);
+	};
+
+	const onUp = () => {
+		isDragging = false;
+		document.body.style.cursor = "";
+		document.body.style.userSelect = "";
+		document.removeEventListener("mousemove", onMove);
+		document.removeEventListener("mouseup", onUp);
+	};
+
+	document.addEventListener("mousemove", onMove);
+	document.addEventListener("mouseup", onUp);
+}
+
 onMounted(async () => {
 	await nextTick();
 	updateCursor();
@@ -89,7 +119,7 @@ onMounted(async () => {
 				</div>
 			</div>
 
-			<div class="docuflow-split">
+			<div class="docuflow-split" ref="splitRef" :style="`--left-pct: ${splitPct}%`">
 				<!-- Editable source pane -->
 				<section class="docuflow-pane docuflow-pane--source" aria-label="Source">
 					<header class="pane-head">
@@ -98,22 +128,13 @@ onMounted(async () => {
 					</header>
 					<div class="source-edit-wrap">
 						<pre class="line-nums" ref="lineNumsRef" aria-hidden="true">{{ lineNumsContent }}</pre>
-						<textarea
-							ref="textareaRef"
-							v-model="markdownSource"
-							class="source-textarea"
-							@scroll="syncLineNums"
-							@keyup="updateCursor"
-							@mouseup="updateCursor"
-							@click="updateCursor"
-							spellcheck="false"
-							autocomplete="off"
-							autocorrect="off"
-						/>
+						<textarea ref="textareaRef" v-model="markdownSource" class="source-textarea"
+							@scroll="syncLineNums" @keyup="updateCursor" @mouseup="updateCursor" @click="updateCursor"
+							spellcheck="false" autocomplete="off" autocorrect="off" />
 					</div>
 				</section>
 
-				<div class="docuflow-divider" aria-hidden="true">
+				<div class="docuflow-divider" aria-hidden="true" @mousedown="startResize">
 					<span class="divider-grab" />
 				</div>
 
@@ -151,28 +172,34 @@ onMounted(async () => {
 				<div class="ds-section__inner">
 					<p class="ds-kicker">The loop</p>
 					<h2 class="ds-heading">Write, preview, ship.</h2>
-					<p class="ds-sub">Docuflow collapses the typical docs workflow — MDX authoring, live reload, and a static build — into a single tool with no configuration overhead.</p>
+					<p class="ds-sub">Docuflow collapses the typical docs workflow — MDX authoring, live reload, and a
+						static build — into a single tool with no configuration overhead.</p>
 
 					<div class="ds-steps">
 						<div class="ds-step">
 							<span class="ds-step__n">01</span>
 							<div>
 								<p class="ds-step__title">Author in MDX</p>
-								<p class="ds-step__body">Write prose in Markdown, drop in JSX components when static text won't cut it. Import shared React components, embed interactive examples, keep docs alive alongside the code.</p>
+								<p class="ds-step__body">Write prose in Markdown, drop in JSX components when static
+									text won't cut it. Import shared React components, embed interactive examples, keep
+									docs alive alongside the code.</p>
 							</div>
 						</div>
 						<div class="ds-step">
 							<span class="ds-step__n">02</span>
 							<div>
 								<p class="ds-step__title">Instant hot reload</p>
-								<p class="ds-step__body">Vite's HMR means every keystroke reflects in the browser in milliseconds — no full refresh, no lost scroll position, no waiting.</p>
+								<p class="ds-step__body">Vite's HMR means every keystroke reflects in the browser in
+									milliseconds — no full refresh, no lost scroll position, no waiting.</p>
 							</div>
 						</div>
 						<div class="ds-step">
 							<span class="ds-step__n">03</span>
 							<div>
 								<p class="ds-step__title">One command to ship</p>
-								<p class="ds-step__body"><code class="ds-inline-code">docuflow build</code> emits a folder of HTML, CSS, and JS. Drop it on GitHub Pages, Netlify, Vercel, S3, or a Raspberry Pi in your closet.</p>
+								<p class="ds-step__body"><code class="ds-inline-code">docuflow build</code> emits a
+									folder of HTML, CSS, and JS. Drop it on GitHub Pages, Netlify, Vercel, S3, or a
+									Raspberry Pi in your closet.</p>
 							</div>
 						</div>
 					</div>
@@ -180,20 +207,25 @@ onMounted(async () => {
 			</section>
 
 			<!-- Screenshots -->
-			<section class="ds-section ds-section--dark">
-				<div class="ds-section__inner">
+			<section class="ds-section ds-section--dark ds-section--shots">
+				<div class="ds-section__inner ds-section__inner--wide">
 					<p class="ds-kicker ds-kicker--light">In the browser</p>
 					<h2 class="ds-heading ds-heading--light">What it looks like.</h2>
-					<p class="ds-sub ds-sub--light">The generated output is a clean static site — fast, accessible, and completely yours to style.</p>
+					<p class="ds-sub ds-sub--light">The generated output is a clean static site — fast, accessible, and
+						completely yours to style.</p>
 
 					<div class="ds-screenshots">
 						<figure class="ds-fig">
-							<img src="/docuflow-home.png" alt="Docuflow project home page screenshot" class="ds-fig__img" />
-							<figcaption class="ds-fig__cap">Home page — project landing generated from <code>index.mdx</code></figcaption>
+							<img src="/docuflow-home.png" alt="Docuflow project home page screenshot"
+								class="ds-fig__img" />
+							<figcaption class="ds-fig__cap">Home page — project landing generated from
+								<code>index.mdx</code>
+							</figcaption>
 						</figure>
 						<figure class="ds-fig">
 							<img src="/docuflow-docs.png" alt="Docuflow docs page screenshot" class="ds-fig__img" />
-							<figcaption class="ds-fig__cap">Docs page — sidebar nav + MDX content with component islands</figcaption>
+							<figcaption class="ds-fig__cap">Docs page — sidebar nav + MDX content with component islands
+							</figcaption>
 						</figure>
 					</div>
 				</div>
@@ -204,29 +236,35 @@ onMounted(async () => {
 				<div class="ds-section__inner">
 					<p class="ds-kicker">Under the hood</p>
 					<h2 class="ds-heading">Built on things that last.</h2>
-					<p class="ds-sub">No abandoned dependencies, no bespoke build graphs. Docuflow sits on top of the React and Vite ecosystems — tools with a long runway.</p>
+					<p class="ds-sub">No abandoned dependencies, no bespoke build graphs. Docuflow sits on top of the
+						React and Vite ecosystems — tools with a long runway.</p>
 
 					<div class="ds-tech-grid">
 						<div class="ds-tech">
 							<span class="ds-tech__name">React 19</span>
-							<p class="ds-tech__desc">Component model for dynamic doc islands — tabs, code playgrounds, interactive diagrams.</p>
+							<p class="ds-tech__desc">Component model for dynamic doc islands — tabs, code playgrounds,
+								interactive diagrams.</p>
 						</div>
 						<div class="ds-tech">
 							<span class="ds-tech__name">Vite 6</span>
-							<p class="ds-tech__desc">Sub-100ms HMR, tree-shaking, and production builds. Zero webpack config — ever.</p>
+							<p class="ds-tech__desc">Sub-100ms HMR, tree-shaking, and production builds. Zero webpack
+								config — ever.</p>
 						</div>
 						<div class="ds-tech">
 							<span class="ds-tech__name">MDX 3</span>
-							<p class="ds-tech__desc">Markdown that compiles to JSX. Import components, export data, keep prose readable.</p>
+							<p class="ds-tech__desc">Markdown that compiles to JSX. Import components, export data, keep
+								prose readable.</p>
 						</div>
 						<div class="ds-tech">
 							<span class="ds-tech__name">Static output</span>
-							<p class="ds-tech__desc">Pure HTML/CSS/JS. No server required. Serve from any CDN or static host.</p>
+							<p class="ds-tech__desc">Pure HTML/CSS/JS. No server required. Serve from any CDN or static
+								host.</p>
 						</div>
 					</div>
 
 					<div class="ds-cta">
-						<a href="https://github.com/trevorflahardy/docuflow" target="_blank" rel="noreferrer" class="ds-cta__link">
+						<a href="https://github.com/trevorflahardy/docuflow" target="_blank" rel="noreferrer"
+							class="ds-cta__link">
 							<span class="ds-cta__arrow">→</span>
 							View on GitHub
 						</a>
@@ -268,6 +306,7 @@ onMounted(async () => {
 	z-index: 0;
 	pointer-events: none;
 }
+
 .docuflow-bg__grid {
 	position: absolute;
 	inset: 0;
@@ -277,6 +316,7 @@ onMounted(async () => {
 	background-size: 28px 28px;
 	mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
 }
+
 .docuflow-bg__gradient {
 	position: absolute;
 	inset: 0;
@@ -300,13 +340,38 @@ onMounted(async () => {
 	background: var(--paper-2);
 	border-bottom: 1px solid var(--rule);
 }
-.chrome-dots { display: inline-flex; gap: 0.4rem; }
-.chrome-dot { width: 0.65rem; height: 0.65rem; border-radius: 9999px; display: inline-block; }
-.chrome-dot--r { background: #e56765; }
-.chrome-dot--y { background: #e5c265; }
-.chrome-dot--g { background: #80c97a; }
 
-.chrome-tabs { display: inline-flex; gap: 0.35rem; flex: 1; margin-left: 0.75rem; }
+.chrome-dots {
+	display: inline-flex;
+	gap: 0.4rem;
+}
+
+.chrome-dot {
+	width: 0.65rem;
+	height: 0.65rem;
+	border-radius: 9999px;
+	display: inline-block;
+}
+
+.chrome-dot--r {
+	background: #e56765;
+}
+
+.chrome-dot--y {
+	background: #e5c265;
+}
+
+.chrome-dot--g {
+	background: #80c97a;
+}
+
+.chrome-tabs {
+	display: inline-flex;
+	gap: 0.35rem;
+	flex: 1;
+	margin-left: 0.75rem;
+}
+
 .chrome-tab {
 	font-family: "SF Mono", ui-monospace, monospace;
 	font-size: 0.72rem;
@@ -316,12 +381,18 @@ onMounted(async () => {
 	border: 1px solid transparent;
 	border-bottom: none;
 }
+
 .chrome-tab--active {
 	color: var(--ink);
 	background: var(--paper);
 	border-color: var(--rule);
 }
-.chrome-meta { display: inline-flex; gap: 0.35rem; }
+
+.chrome-meta {
+	display: inline-flex;
+	gap: 0.35rem;
+}
+
 .chrome-meta-pill {
 	font-family: "SF Mono", ui-monospace, monospace;
 	font-size: 0.65rem;
@@ -333,21 +404,44 @@ onMounted(async () => {
 	color: var(--mute);
 	background: var(--paper);
 }
-.chrome-meta-pill--live { color: var(--accent); border-color: rgba(47, 107, 255, 0.3); }
+
+.chrome-meta-pill--live {
+	color: var(--accent);
+	border-color: rgba(47, 107, 255, 0.3);
+}
 
 .docuflow-split {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.25fr);
+	grid-template-columns: var(--left-pct, 44.4%) auto 1fr;
 	min-height: 0;
 }
+
 @media (max-width: 960px) {
-	.docuflow-split { grid-template-columns: 1fr; grid-template-rows: 400px auto 400px; }
-	.docuflow-divider { display: none; }
+	.docuflow-split {
+		grid-template-columns: 1fr;
+		grid-template-rows: 400px auto 400px;
+	}
+
+	.docuflow-divider {
+		display: none;
+	}
 }
 
-.docuflow-pane { display: flex; flex-direction: column; min-height: 0; min-width: 0; }
-.docuflow-pane--source { background: var(--paper); border-right: 1px solid var(--rule); }
-.docuflow-pane--preview { background: var(--paper); }
+.docuflow-pane {
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
+	min-width: 0;
+}
+
+.docuflow-pane--source {
+	background: var(--paper);
+	border-right: 1px solid var(--rule);
+}
+
+.docuflow-pane--preview {
+	background: var(--paper);
+}
 
 .pane-head {
 	display: flex;
@@ -358,6 +452,7 @@ onMounted(async () => {
 	background: rgba(236, 230, 216, 0.5);
 	flex-shrink: 0;
 }
+
 .pane-head__label {
 	font-family: "SF Mono", ui-monospace, monospace;
 	font-size: 0.62rem;
@@ -365,6 +460,7 @@ onMounted(async () => {
 	text-transform: uppercase;
 	color: var(--accent);
 }
+
 .pane-head__path {
 	font-family: "SF Mono", ui-monospace, monospace;
 	font-size: 0.7rem;
@@ -410,22 +506,31 @@ onMounted(async () => {
 	border: none;
 	outline: none;
 	resize: none;
-	white-space: pre;
-	overflow-wrap: normal;
-	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
 	overflow-y: auto;
 	tab-size: 2;
 	caret-color: var(--accent);
 }
+
 .source-textarea::selection {
 	background: rgba(47, 107, 255, 0.18);
 }
 
 /* Preview pane */
-.preview-scroll { overflow-y: auto; flex: 1; min-height: 0; }
-.preview-scroll::-webkit-scrollbar { width: 10px; }
+.preview-scroll {
+	overflow-y: auto;
+	flex: 1;
+	min-height: 0;
+}
+
+.preview-scroll::-webkit-scrollbar {
+	width: 10px;
+}
+
 .preview-scroll::-webkit-scrollbar-thumb {
-	background: rgba(26, 29, 36, 0.18); border-radius: 9999px;
+	background: rgba(26, 29, 36, 0.18);
+	border-radius: 9999px;
 }
 
 /* Rendered markdown styles (via v-html) */
@@ -437,6 +542,7 @@ onMounted(async () => {
 	line-height: 1.7;
 	color: var(--ink-2);
 }
+
 .preview-doc :deep(h1) {
 	font-family: "Fraunces", "Times New Roman", serif;
 	font-size: clamp(2rem, 4vw, 3rem);
@@ -446,6 +552,7 @@ onMounted(async () => {
 	color: var(--ink);
 	margin: 0 0 0.9rem;
 }
+
 .preview-doc :deep(h2) {
 	font-family: "Fraunces", "Times New Roman", serif;
 	font-size: 1.45rem;
@@ -454,6 +561,7 @@ onMounted(async () => {
 	color: var(--ink);
 	margin: 2rem 0 0.75rem;
 }
+
 .preview-doc :deep(h3) {
 	font-family: "Fraunces", serif;
 	font-size: 1.1rem;
@@ -461,9 +569,11 @@ onMounted(async () => {
 	color: var(--ink);
 	margin: 1.5rem 0 0.5rem;
 }
+
 .preview-doc :deep(p) {
 	margin: 0 0 1rem;
 }
+
 .preview-doc :deep(blockquote) {
 	border-left: 3px solid var(--accent);
 	margin: 1.25rem 0;
@@ -473,13 +583,17 @@ onMounted(async () => {
 	font-style: italic;
 	color: var(--mute);
 }
-.preview-doc :deep(ul), .preview-doc :deep(ol) {
+
+.preview-doc :deep(ul),
+.preview-doc :deep(ol) {
 	margin: 0 0 1rem;
 	padding-left: 1.5rem;
 }
+
 .preview-doc :deep(li) {
 	margin-bottom: 0.3rem;
 }
+
 .preview-doc :deep(code) {
 	font-family: "SF Mono", ui-monospace, monospace;
 	font-size: 0.82em;
@@ -488,6 +602,7 @@ onMounted(async () => {
 	border-radius: 0.3rem;
 	color: var(--syntax-heading);
 }
+
 .preview-doc :deep(pre) {
 	background: var(--ink);
 	color: #d7dce6;
@@ -499,32 +614,61 @@ onMounted(async () => {
 	margin: 0 0 1.25rem;
 	overflow-x: auto;
 }
+
 .preview-doc :deep(pre code) {
 	background: none;
 	padding: 0;
 	color: inherit;
 	font-size: inherit;
 }
+
 .preview-doc :deep(a) {
 	color: var(--accent);
 	text-decoration: none;
 }
+
 .preview-doc :deep(a:hover) {
 	text-decoration: underline;
 }
+
 .preview-doc :deep(hr) {
 	border: none;
 	border-top: 1px solid var(--rule);
 	margin: 1.75rem 0;
 }
-.preview-doc :deep(strong) { color: var(--ink); }
-.preview-doc :deep(em) { color: var(--accent-ink); }
+
+.preview-doc :deep(strong) {
+	color: var(--ink);
+}
+
+.preview-doc :deep(em) {
+	color: var(--accent-ink);
+}
 
 .docuflow-divider {
+	width: 10px;
+	background: transparent;
+	position: relative;
+	cursor: col-resize;
+	flex-shrink: 0;
+	transition: background 150ms ease;
+}
+
+.docuflow-divider::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
 	width: 1px;
 	background: var(--rule);
-	position: relative;
 }
+
+.docuflow-divider:hover::before {
+	background: rgba(47, 107, 255, 0.5);
+}
+
 .divider-grab {
 	position: absolute;
 	top: 50%;
@@ -533,7 +677,13 @@ onMounted(async () => {
 	width: 4px;
 	height: 36px;
 	border-radius: 9999px;
-	background: rgba(26, 29, 36, 0.18);
+	background: rgba(26, 29, 36, 0.22);
+	transition: background 150ms ease, height 150ms ease;
+}
+
+.docuflow-divider:hover .divider-grab {
+	background: rgba(47, 107, 255, 0.55);
+	height: 56px;
 }
 
 .docuflow-statusbar {
@@ -545,10 +695,23 @@ onMounted(async () => {
 	font-family: "SF Mono", ui-monospace, monospace;
 	font-size: 0.7rem;
 }
-.sb-cluster { display: inline-flex; gap: 1rem; }
-.sb-item { letter-spacing: 0.04em; }
-.sb-item--ok { color: #80c97a; }
-.sb-item--accent { color: #7aa6ff; }
+
+.sb-cluster {
+	display: inline-flex;
+	gap: 1rem;
+}
+
+.sb-item {
+	letter-spacing: 0.04em;
+}
+
+.sb-item--ok {
+	color: #80c97a;
+}
+
+.sb-item--accent {
+	color: #7aa6ff;
+}
 
 /* ===== Content sections ===== */
 .docuflow-sections {
@@ -560,6 +723,7 @@ onMounted(async () => {
 	padding: 5rem 2rem;
 	border-top: 1px solid var(--rule);
 }
+
 .ds-section--dark {
 	background: var(--ink);
 	border-top-color: rgba(255, 255, 255, 0.08);
@@ -570,6 +734,10 @@ onMounted(async () => {
 	margin: 0 auto;
 }
 
+.ds-section__inner--wide {
+	max-width: none;
+}
+
 .ds-kicker {
 	font-family: "SF Mono", ui-monospace, monospace;
 	font-size: 0.68rem;
@@ -578,7 +746,10 @@ onMounted(async () => {
 	color: var(--accent);
 	margin: 0 0 0.75rem;
 }
-.ds-kicker--light { color: rgba(255, 255, 255, 0.45); }
+
+.ds-kicker--light {
+	color: rgba(255, 255, 255, 0.45);
+}
 
 .ds-heading {
 	font-family: "Fraunces", "Times New Roman", serif;
@@ -589,7 +760,10 @@ onMounted(async () => {
 	color: var(--ink);
 	margin: 0 0 0.85rem;
 }
-.ds-heading--light { color: rgba(255, 255, 255, 0.92); }
+
+.ds-heading--light {
+	color: rgba(255, 255, 255, 0.92);
+}
 
 .ds-sub {
 	font-size: 1rem;
@@ -598,7 +772,10 @@ onMounted(async () => {
 	margin: 0 0 3rem;
 	max-width: 56ch;
 }
-.ds-sub--light { color: rgba(255, 255, 255, 0.52); }
+
+.ds-sub--light {
+	color: rgba(255, 255, 255, 0.52);
+}
 
 /* Steps */
 .ds-steps {
@@ -606,11 +783,13 @@ onMounted(async () => {
 	flex-direction: column;
 	gap: 2.5rem;
 }
+
 .ds-step {
 	display: flex;
 	gap: 1.75rem;
 	align-items: flex-start;
 }
+
 .ds-step__n {
 	font-family: "SF Mono", ui-monospace, monospace;
 	font-size: 0.68rem;
@@ -623,18 +802,21 @@ onMounted(async () => {
 	flex-shrink: 0;
 	margin-top: 0.15rem;
 }
+
 .ds-step__title {
 	font-size: 1.05rem;
 	font-weight: 600;
 	color: var(--ink);
 	margin: 0 0 0.35rem;
 }
+
 .ds-step__body {
 	font-size: 0.92rem;
 	line-height: 1.65;
 	color: var(--mute);
 	margin: 0;
 }
+
 .ds-inline-code {
 	font-family: "SF Mono", ui-monospace, monospace;
 	font-size: 0.82em;
@@ -647,18 +829,27 @@ onMounted(async () => {
 /* Screenshots */
 .ds-screenshots {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-	gap: 1.5rem;
+	grid-template-columns: 1fr;
+	gap: 2.5rem;
 }
+
+@media (min-width: 1000px) {
+	.ds-screenshots {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
 .ds-fig {
 	margin: 0;
 }
+
 .ds-fig__img {
 	width: 100%;
 	border-radius: 0.75rem;
 	border: 1px solid rgba(255, 255, 255, 0.12);
 	display: block;
 }
+
 .ds-fig__cap {
 	font-family: "SF Mono", ui-monospace, monospace;
 	font-size: 0.68rem;
@@ -666,8 +857,9 @@ onMounted(async () => {
 	margin-top: 0.75rem;
 	letter-spacing: 0.04em;
 }
+
 .ds-fig__cap code {
-	background: rgba(255,255,255,0.07);
+	background: rgba(255, 255, 255, 0.07);
 	padding: 0.1em 0.35em;
 	border-radius: 0.25rem;
 }
@@ -679,12 +871,14 @@ onMounted(async () => {
 	gap: 1rem;
 	margin-bottom: 3rem;
 }
+
 .ds-tech {
 	padding: 1.25rem 1.35rem;
 	border: 1px solid var(--rule);
 	border-radius: 0.65rem;
 	background: rgba(255, 255, 255, 0.55);
 }
+
 .ds-tech__name {
 	display: block;
 	font-family: "SF Mono", ui-monospace, monospace;
@@ -693,6 +887,7 @@ onMounted(async () => {
 	color: var(--accent);
 	margin-bottom: 0.55rem;
 }
+
 .ds-tech__desc {
 	font-size: 0.84rem;
 	line-height: 1.55;
@@ -701,7 +896,10 @@ onMounted(async () => {
 }
 
 /* CTA */
-.ds-cta { text-align: center; }
+.ds-cta {
+	text-align: center;
+}
+
 .ds-cta__link {
 	display: inline-flex;
 	align-items: center;
@@ -716,7 +914,17 @@ onMounted(async () => {
 	background: var(--accent-soft);
 	transition: transform 180ms ease, background 180ms ease;
 }
-.ds-cta__link:hover { transform: translateY(-2px); background: #d6e3ff; }
-.ds-cta__arrow { transition: transform 180ms ease; }
-.ds-cta__link:hover .ds-cta__arrow { transform: translateX(3px); }
+
+.ds-cta__link:hover {
+	transform: translateY(-2px);
+	background: #d6e3ff;
+}
+
+.ds-cta__arrow {
+	transition: transform 180ms ease;
+}
+
+.ds-cta__link:hover .ds-cta__arrow {
+	transform: translateX(3px);
+}
 </style>

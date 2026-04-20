@@ -12,6 +12,11 @@ const heroCanvas = ref<HTMLCanvasElement | null>(null);
 const nodeById = (id: string): ArchNode =>
     architectureNodes.find((n) => n.id === id) as ArchNode;
 
+// Nodes are placed with CSS `top: n.y + '%'` (0-100 space). The SVG now uses
+// viewBox "0 0 100 100" so SVG y coordinates map 1:1 to CSS percentages.
+// Node y values in act-data are in 0-80 space, so no scaling needed — they're
+// used directly as CSS percentages AND SVG coordinates. The ±4 offset is an
+// approximate half-height of a node card in percentage units (~4% of 34rem container).
 const archEdges = computed(() =>
     architectureLinks.map(([a, b]) => {
         const s = nodeById(a);
@@ -163,7 +168,7 @@ onMounted(() => {
             <div class="arch-canvas">
                 <!-- Grid backdrop inherits from .act-arch::before.  Edges drawn
                      below the nodes; dots placed at each endpoint. -->
-                <svg viewBox="0 0 100 80" preserveAspectRatio="none" class="arch-svg">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="arch-svg">
                     <!-- Orthogonal connectors: source.bottom → midY → target.top -->
                     <template v-for="(e, i) in archEdges" :key="i">
                         <path :d="e.d" class="arch-edge" />
