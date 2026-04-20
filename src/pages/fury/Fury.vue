@@ -1,452 +1,477 @@
 <script setup lang="ts">
-import PageLayoutSpacer from '@/components/PageLayoutSpacer.vue';
-import Button from '@/components/Button.vue';
-import { icon as furyIcon } from './info';
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
-// Vite base URL — required for public/ assets when base !== "/"
 const base = import.meta.env.BASE_URL;
 
+const score = ref(0);
+const hiScore = ref(137420);
+let scoreTimer: number | undefined;
+
+onMounted(() => {
+	scoreTimer = window.setInterval(() => {
+		score.value += Math.floor(Math.random() * 90) + 10;
+	}, 140);
+});
+onBeforeUnmount(() => {
+	if (scoreTimer) window.clearInterval(scoreTimer);
+});
+
 const stats = [
-    { value: '94', label: 'Members Served', icon: 'pi-users' },
-    { value: '4', label: 'Active Servers', icon: 'pi-globe' },
-    { value: '165', label: 'Channels Managed', icon: 'pi-comment' },
-    { value: '5', label: 'Core Systems', icon: 'pi-cog' },
+	{ v: "94",  l: "MEMBERS" },
+	{ v: "04",  l: "SERVERS" },
+	{ v: "165", l: "CHANNELS" },
+	{ v: "05",  l: "SYSTEMS" },
 ];
 
 const features = [
-    {
-        icon: 'pi-users',
-        title: 'Team Management',
-        subtitle: 'Full team lifecycle — automated.',
-        command: '/team manage',
-        description:
-            'Fury provisions everything a team needs in one command: private channels, role-gated access, configurable rosters, substitute slots, and captain designations. Every detail lives in a single Discord panel — no manual setup, ever.',
-        bullets: [
-            'Auto-provisions text & voice channels per team',
-            'Members, subs & captains with distinct permissions',
-            'Custom team names, logos & descriptions',
-            'Auto-restores accidentally deleted channels',
-        ],
-        screenshot: `${base}fury/team_manage.png`,
-        alt: 'Team management panel in Discord',
-        flip: false,
-    },
-    {
-        icon: 'pi-calendar',
-        title: 'Scrim Scheduling',
-        subtitle: 'Democratic match confirmation.',
-        command: '/scrim create',
-        description:
-            "Captains schedule practice matches at a set time. Both rosters must vote-confirm their attendance before Fury spins up a private scrim channel and fires automated reminders — no show-up surprises, ever.",
-        bullets: [
-            'Schedule matches between any two registered teams',
-            'Vote-to-confirm ensures both sides are ready',
-            'Auto-creates scrim-only private channels',
-            'Automated reminders and post-scrim cleanup',
-        ],
-        screenshot: `${base}fury/scrim_confirm.png`,
-        alt: 'Scrim confirmation voting message in Discord',
-        flip: true,
-    },
-    {
-        icon: 'pi-shield',
-        title: 'Infraction Tracking',
-        subtitle: 'AutoMod integration, visualized.',
-        command: '/infractions manage',
-        description:
-            "Layered on top of Discord's native AutoMod, Fury maintains a running tally of every violation across the server. Moderators get a full dashboard to configure routing, review member histories, and catch repeat offenders before they become problems.",
-        bullets: [
-            "Hooks directly into Discord's AutoMod event stream",
-            'Per-member violation counters with full history',
-            'Configurable notification channel routing',
-            'Role-based moderator exemptions & access controls',
-        ],
-        screenshot: `${base}fury/infractions_management.png`,
-        alt: 'Infraction settings management panel in Discord',
-        flip: false,
-    },
-    {
-        icon: 'pi-image',
-        title: 'Attachment Moderation',
-        subtitle: 'Nothing posts without approval.',
-        command: '/attachment-request',
-        description:
-            'Students submit image requests before anything appears in a channel. Each submission is automatically classified for NSFW content — giving moderators a real confidence score before they approve or deny. Keeping content age-appropriate, always.',
-        bullets: [
-            'Students submit up to 4 attachments per request',
-            'Automatic NSFW classification with confidence scores',
-            'One-click approve / approve without message / deny',
-            'Full audit log stored for every decision',
-        ],
-        screenshot: `${base}fury/attachment_requests.png`,
-        alt: 'Attachment request approval panel in Discord',
-        flip: true,
-    },
+	{ cmd: "/team manage",           title: "TEAM MANAGEMENT",     body: "Auto-provisions channels, roles, rosters, subs, captains. Restores deleted channels on its own." },
+	{ cmd: "/scrim create",          title: "SCRIM SCHEDULING",    body: "Captain schedules; both rosters vote-confirm; Fury spins up a private channel and fires reminders." },
+	{ cmd: "/infractions manage",    title: "INFRACTION TRACKING", body: "Rides AutoMod. Tally per member, routing config, moderator exemptions, full history dashboard." },
+	{ cmd: "/attachment-request",    title: "ATTACHMENT MODERATION", body: "Every image is classified for NSFW before posting. Approve / approve-silent / deny in one click." },
+	{ cmd: "/practice start",        title: "PRACTICE TRACKING",   body: "Logs voice join/leave for every team member. Rolls up into team leaderboards automatically." },
 ];
 
-const scrimSteps = [
-    { n: '01', title: 'Captain Schedules', body: 'A captain runs /scrim create, picks the opponent team, sets a time, and configures the player count.' },
-    { n: '02', title: 'Teams Vote', body: 'Fury pings both teams. Each player clicks Confirm — the scrim only proceeds once both rosters hit the required threshold.' },
-    { n: '03', title: 'Channel Spins Up', body: 'Once confirmed, Fury creates a private scrim channel with permissions locked to the participating players and captains only.' },
-    { n: '04', title: 'Reminders Fire', body: 'Automated reminders go out leading up to game time. After the scrim, Fury cleans up the channel and logs the result.' },
-];
-
-const techStack = [
-    { name: 'Python', icon: 'pi-code', desc: 'Core runtime' },
-    { name: 'discord.py', icon: 'pi-discord', desc: 'Discord API framework' },
-    { name: 'PostgreSQL', icon: 'pi-database', desc: 'Persistent storage' },
-    { name: 'asyncpg', icon: 'pi-bolt', desc: 'Async DB driver' },
-    { name: 'NudeDetector', icon: 'pi-eye', desc: 'NSFW classification' },
-    { name: 'systemd', icon: 'pi-server', desc: 'Process management' },
+const credits = [
+	{ role: "ENGINE",    val: "Python 3" },
+	{ role: "FRAMEWORK", val: "discord.py" },
+	{ role: "STORAGE",   val: "PostgreSQL" },
+	{ role: "DRIVER",    val: "asyncpg" },
+	{ role: "VISION",    val: "NudeDetector" },
+	{ role: "SERVICE",   val: "systemd" },
 ];
 </script>
 
 <template>
-    <PageLayoutSpacer>
+	<div class="fury-cabinet">
+		<div class="fury-bg" aria-hidden="true">
+			<div class="fury-bg__horizon" />
+			<div class="fury-bg__grid" />
+			<div class="fury-bg__scanlines" />
+			<div class="fury-bg__vignette" />
+		</div>
 
-        <!-- ============================================================
-             HERO
-        ============================================================ -->
-        <div class="relative w-full overflow-hidden rounded-2xl border border-white/8 shadow-xl">
+		<header class="fury-marquee">
+			<div class="marquee-side marquee-side--l">
+				<span class="marquee-label">1UP</span>
+				<span class="marquee-score">{{ score.toLocaleString().padStart(9, "0") }}</span>
+			</div>
+			<div class="marquee-center">
+				<span class="marquee-kicker">FLORIDA VIRTUAL SCHOOL · eSPORTS</span>
+				<h1 class="marquee-title">
+					<span class="mt-char" style="--d: 0ms">F</span><span class="mt-char" style="--d: 60ms">U</span><span class="mt-char" style="--d: 120ms">R</span><span class="mt-char" style="--d: 180ms">Y</span>
+				</h1>
+				<span class="marquee-sub">— a moderation &amp; team-management bot for a school gaming community —</span>
+			</div>
+			<div class="marquee-side marquee-side--r">
+				<span class="marquee-label">HI-SCORE</span>
+				<span class="marquee-score marquee-score--hi">{{ hiScore.toLocaleString().padStart(9, "0") }}</span>
+			</div>
+		</header>
 
-            <!-- Layered backgrounds -->
-            <div class="absolute inset-0 bg-[#0d1117]" />
-            <div class="absolute inset-0 bg-linear-to-br from-fury/8 via-transparent to-transparent" />
+		<section class="fury-coin">
+			<div class="coin-blink">▸ INSERT COIN TO CONTINUE ◂</div>
+			<div class="coin-links">
+				<a class="coin-btn coin-btn--primary" href="https://github.com/trevorflahardy/Fury-Bot" target="_blank" rel="noreferrer noopener">
+					<span class="coin-btn__pulse" /> PRESS START · SOURCE
+				</a>
+				<a class="coin-btn" href="https://github.com/trevorflahardy/Fury-Bot" target="_blank" rel="noreferrer noopener">
+					SELECT · DEV BOARD
+				</a>
+			</div>
+		</section>
 
-            <!-- Dot grid texture -->
-            <div
-                class="absolute inset-0 opacity-40"
-                style="background-image: radial-gradient(circle, rgba(78,219,252,0.18) 1px, transparent 1px); background-size: 28px 28px;"
-            />
+		<section class="fury-hud">
+			<div v-for="s in stats" :key="s.l" class="hud-tile">
+				<span class="hud-tile__v">{{ s.v }}</span>
+				<span class="hud-tile__l">{{ s.l }}</span>
+			</div>
+		</section>
 
-            <!-- Glow orbs -->
-            <div class="pointer-events-none absolute -left-24 -top-24 h-[28rem] w-[28rem] rounded-full bg-fury/25 blur-3xl" />
-            <div class="pointer-events-none absolute -bottom-16 right-16 h-64 w-64 rounded-full bg-fury/12 blur-3xl" />
+		<section class="fury-act" data-act="ACT I — ORIGIN">
+			<div class="act-inner">
+				<h2 class="act-title">THE FIRST OF ITS KIND</h2>
+				<p class="act-body">
+					When I joined FLVS's eSports club as lead student, the job was odd:
+					build a thriving competitive gaming community <em>inside</em> an accredited
+					K-12 school. Policy demanded strict moderation, organized teams, and total
+					accountability — and no off-the-shelf bot was built for any of it.
+				</p>
+				<p class="act-body">
+					So I built <strong>Fury</strong> from scratch. Purpose-made for the
+					constraints and responsibilities of a school environment.
+				</p>
+				<div class="act-screenshot">
+					<img :src="`${base}fury/fury_about.png`" alt="Fury /about command showing live server stats" />
+					<span class="shot-cap">/about — live stats from the FLVS server</span>
+				</div>
+			</div>
+		</section>
 
-            <!-- Top accent line -->
-            <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-fury/80 to-transparent" />
+		<section class="fury-act" data-act="ACT II — SYSTEMS">
+			<div class="act-inner">
+				<h2 class="act-title">CORE SYSTEMS</h2>
+				<div class="system-grid">
+					<article v-for="(f, i) in features" :key="f.cmd" class="system-card" :style="{ '--i': i }">
+						<div class="system-card__rail" />
+						<header class="system-card__head">
+							<span class="system-card__slot">SLOT · {{ String(i + 1).padStart(2, "0") }}</span>
+							<code class="system-card__cmd">{{ f.cmd }}</code>
+						</header>
+						<h3 class="system-card__title">{{ f.title }}</h3>
+						<p class="system-card__body">{{ f.body }}</p>
+					</article>
+				</div>
+			</div>
+		</section>
 
-            <div class="relative z-10 px-8 py-12 sm:px-12 sm:py-14 md:px-14 md:py-16">
+		<section class="fury-act" data-act="ACT III — HIGH SCORES">
+			<div class="act-inner">
+				<h2 class="act-title">CREDITS</h2>
+				<p class="act-body act-body--tight">Built with —</p>
+				<div class="credits-roll">
+					<div v-for="c in credits" :key="c.role" class="credit-row">
+						<span class="credit-role">{{ c.role }}</span>
+						<span class="credit-dots" />
+						<span class="credit-val">{{ c.val }}</span>
+					</div>
+				</div>
+			</div>
+		</section>
 
-                <!-- Origin badge -->
-                <div class="mb-7 inline-flex items-center gap-2 rounded-full border border-fury/30 bg-fury/10 px-3.5 py-1.5 backdrop-blur-sm">
-                    <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-fury" />
-                    <span class="text-xs font-semibold uppercase tracking-widest text-fury">
-                        Florida Virtual School · eSports
-                    </span>
-                </div>
-
-                <!-- Logo + Title -->
-                <div class="mb-5 flex items-center gap-4">
-                    <img
-                        :src="furyIcon"
-                        alt="Fury bot icon"
-                        class="h-14 w-14 shrink-0 rounded-2xl shadow-lg shadow-black/50 sm:h-16 sm:w-16"
-                    />
-                    <h1 class="text-5xl font-bold leading-none tracking-tight text-white sm:text-6xl md:text-7xl">
-                        Fury<span class="text-fury">.</span>
-                    </h1>
-                </div>
-
-                <!-- Tagline -->
-                <p class="mb-8 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
-                    A Discord moderation and team management bot built for a school eSports community —
-                    the first of its kind at an accredited K-12 institution. Keeping competitive
-                    gaming safe, structured, and accountable.
-                </p>
-
-                <!-- Command chips row -->
-                <div class="mb-8 flex flex-wrap gap-2">
-                    <span
-                        v-for="cmd in ['/team manage', '/scrim create', '/infractions manage', '/attachment-request', '/practice start']"
-                        :key="cmd"
-                        class="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-xs text-white/50 backdrop-blur-sm"
-                    >
-                        <span class="text-fury">/</span>{{ cmd.slice(1) }}
-                    </span>
-                </div>
-
-                <!-- CTAs -->
-                <div class="flex flex-row flex-wrap gap-3">
-                    <Button
-                        link="https://github.com/trevorflahardy/Fury-Bot"
-                        content="Source Code"
-                        icon="pi-github"
-                        background="bg-fury/20 hover:bg-fury/30 border border-fury/40"
-                    />
-                    <Button
-                        link="https://github.com/trevorflahardy/Fury-Bot"
-                        content="Dev Board"
-                        icon="pi-book"
-                        background="bg-white/6 hover:bg-white/10 border border-white/10"
-                    />
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             STATS
-        ============================================================ -->
-        <div class="grid w-full grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-            <div
-                v-for="stat in stats"
-                :key="stat.value"
-                class="glass-card flex flex-col items-center gap-1.5 px-4 py-5 text-center"
-            >
-                <div class="mb-1 flex h-8 w-8 items-center justify-center rounded-xl border border-fury/20 bg-fury/10">
-                    <i class="pi text-fury text-sm" :class="stat.icon" />
-                </div>
-                <span class="text-2xl font-bold leading-none tracking-tight text-fury sm:text-3xl">{{ stat.value }}</span>
-                <span class="text-xs leading-tight text-white/55">{{ stat.label }}</span>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             ORIGIN STORY
-        ============================================================ -->
-        <div class="glass-card flex w-full flex-col items-start gap-7 p-6 sm:p-8 md:flex-row md:gap-10">
-
-            <div class="min-w-0 flex-1">
-                <div class="mb-4 flex items-center gap-2.5">
-                    <div class="h-0.5 w-6 rounded-full bg-fury" />
-                    <span class="text-xs font-semibold uppercase tracking-widest text-fury">Origin Story</span>
-                </div>
-                <h2 class="title-2 mb-0">The first of its kind.</h2>
-                <p class="body mt-3">
-                    When I joined Florida Virtual School's eSports club as lead student, we faced a unique
-                    challenge: building a thriving competitive gaming community inside an accredited K-12
-                    school. The club needed its first-ever Discord server — but school policy demanded strict
-                    content moderation, organized team management, and full accountability at every level.
-                </p>
-                <p class="body mb-0">
-                    No existing bot was built for this. So I built Fury from scratch — purpose-designed for
-                    the constraints and responsibilities of a school environment.
-                </p>
-            </div>
-
-            <!-- /about screenshot -->
-            <div class="w-full shrink-0 md:w-68 xl:w-76">
-                <div class="overflow-hidden rounded-xl border border-white/8 bg-discord-400 p-2.5 shadow-xl shadow-black/50">
-                    <img
-                        :src="`${base}fury/fury_about.png`"
-                        alt="Fury /about command showing live server stats"
-                        class="w-full rounded-lg"
-                    />
-                </div>
-                <p class="mt-2 text-center text-xs italic text-white/35">/about — live stats from the FLVS server.</p>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             FEATURES HEADER
-        ============================================================ -->
-        <div class="text-center">
-            <div class="mb-3 flex items-center justify-center gap-3">
-                <div class="h-px w-10 rounded-full bg-fury/40" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-fury">Core Features</span>
-                <div class="h-px w-10 rounded-full bg-fury/40" />
-            </div>
-            <h2 class="title-2 mb-2">Built for every edge case.</h2>
-            <p class="subtitle">From team rosters to real-time content moderation — Fury handles it end to end.</p>
-        </div>
-
-        <!-- ============================================================
-             FEATURE CARDS
-        ============================================================ -->
-        <div class="flex w-full flex-col gap-5 sm:gap-6">
-            <div
-                v-for="feature in features"
-                :key="feature.title"
-                class="glass-card w-full overflow-hidden p-5 sm:p-7"
-            >
-                <div
-                    class="flex flex-col items-start gap-6"
-                    :class="feature.flip ? 'lg:flex-row-reverse' : 'lg:flex-row'"
-                >
-                    <!-- Text side -->
-                    <div class="min-w-0 flex-1">
-
-                        <!-- Command chip -->
-                        <div class="mb-4 inline-flex items-center gap-1.5 rounded-lg border border-fury/20 bg-fury/8 px-2.5 py-1">
-                            <span class="font-mono text-xs font-semibold text-fury">{{ feature.command }}</span>
-                        </div>
-
-                        <div class="mb-4 flex items-center gap-3">
-                            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-fury/20 bg-fury/10">
-                                <i class="pi text-fury text-base" :class="feature.icon" />
-                            </div>
-                            <div>
-                                <h3 class="card-title mb-0 leading-snug">{{ feature.title }}</h3>
-                                <p class="mt-0.5 text-xs font-medium tracking-wide text-fury/70">{{ feature.subtitle }}</p>
-                            </div>
-                        </div>
-
-                        <p class="card-body mb-5">{{ feature.description }}</p>
-
-                        <ul class="flex flex-col gap-2.5">
-                            <li
-                                v-for="bullet in feature.bullets"
-                                :key="bullet"
-                                class="flex items-start gap-2.5 text-sm leading-snug text-white/70"
-                            >
-                                <i class="pi pi-check-circle mt-0.5 shrink-0 text-sm text-fury" />
-                                <span>{{ bullet }}</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Screenshot side -->
-                    <div class="w-full shrink-0 lg:w-[46%]">
-                        <div class="overflow-hidden rounded-xl border border-white/8 bg-discord-400 p-2.5 shadow-xl shadow-black/50">
-                            <!-- Discord-style window chrome -->
-                            <div class="mb-2 flex items-center gap-1.5 px-1">
-                                <div class="h-2 w-2 rounded-full bg-white/15" />
-                                <div class="h-2 w-2 rounded-full bg-white/15" />
-                                <div class="h-2 w-2 rounded-full bg-white/15" />
-                                <span class="ml-2 font-mono text-xs text-white/25">{{ feature.command }}</span>
-                            </div>
-                            <img
-                                :src="feature.screenshot"
-                                :alt="feature.alt"
-                                class="w-full rounded-lg"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             SCRIM WORKFLOW TIMELINE
-        ============================================================ -->
-        <div class="w-full">
-            <div class="mb-6 text-center">
-                <div class="mb-3 flex items-center justify-center gap-3">
-                    <div class="h-px w-8 rounded-full bg-fury/35" />
-                    <span class="text-xs font-semibold uppercase tracking-widest text-fury/70">Scrim Workflow</span>
-                    <div class="h-px w-8 rounded-full bg-fury/35" />
-                </div>
-                <h2 class="title-2 mb-2">From schedule to game time.</h2>
-                <p class="subtitle">The four-step lifecycle every scrim goes through.</p>
-            </div>
-
-            <div class="relative flex flex-col gap-0 sm:grid sm:grid-cols-4 sm:gap-0">
-                <!-- Connecting line (desktop) -->
-                <div class="absolute left-0 right-0 top-5 hidden h-px bg-linear-to-r from-fury/20 via-fury/40 to-fury/20 sm:block" style="top: 1.25rem;" />
-
-                <div
-                    v-for="(step, i) in scrimSteps"
-                    :key="step.n"
-                    class="relative flex flex-col items-start gap-3 sm:items-center sm:px-3 sm:text-center"
-                    :class="i !== scrimSteps.length - 1 ? 'pb-6 sm:pb-0' : ''"
-                >
-                    <!-- Step node -->
-                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-fury/30 bg-fury/12 backdrop-blur-sm sm:z-10">
-                        <span class="font-mono text-xs font-bold text-fury">{{ step.n }}</span>
-                    </div>
-
-                    <!-- Vertical connecting line (mobile) -->
-                    <div v-if="i !== scrimSteps.length - 1" class="absolute left-[19px] top-10 h-6 w-px bg-fury/20 sm:hidden" />
-
-                    <div class="pl-14 sm:pl-0">
-                        <p class="mb-1 text-sm font-semibold text-white/90">{{ step.title }}</p>
-                        <p class="text-xs leading-relaxed text-white/50">{{ step.body }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             PRACTICE TRACKING
-        ============================================================ -->
-        <div class="glass-card w-full p-6 sm:p-8">
-            <div class="flex items-start gap-5">
-                <div class="mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-fury/20 bg-fury/10">
-                    <i class="pi pi-clock text-fury text-xl" />
-                </div>
-                <div class="min-w-0 flex-1">
-                    <div class="mb-3 inline-flex items-center gap-1.5 rounded-lg border border-fury/20 bg-fury/8 px-2.5 py-1">
-                        <span class="font-mono text-xs font-semibold text-fury">/practice start</span>
-                    </div>
-                    <h3 class="card-title mb-0.5">Practice Tracking</h3>
-                    <p class="mb-4 text-xs font-medium tracking-wide text-fury/70">Automatic voice participation logging.</p>
-                    <p class="card-body mb-5">
-                        Team members start a practice session and Fury tracks every join and leave
-                        event in the team voice channel automatically. Participation data rolls up into
-                        per-team leaderboards — no manual check-ins, no spreadsheets.
-                    </p>
-                    <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                        <div class="rounded-xl border border-fury/15 bg-fury/6 p-4 text-center">
-                            <p class="mb-0.5 text-sm font-semibold text-white/90">Auto-Track</p>
-                            <p class="text-xs text-white/50">Voice join/leave events logged in real time</p>
-                        </div>
-                        <div class="rounded-xl border border-fury/15 bg-fury/6 p-4 text-center">
-                            <p class="mb-0.5 text-sm font-semibold text-white/90">Leaderboards</p>
-                            <p class="text-xs text-white/50">Practice time rankings per team</p>
-                        </div>
-                        <div class="rounded-xl border border-fury/15 bg-fury/6 p-4 text-center">
-                            <p class="mb-0.5 text-sm font-semibold text-white/90">Validated</p>
-                            <p class="text-xs text-white/50">Confirms team membership before recording</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             BOT SIGNATURE BANNER
-        ============================================================ -->
-        <div class="relative w-full overflow-hidden rounded-2xl border border-fury/15 bg-discord-400">
-            <div class="pointer-events-none absolute inset-0 bg-linear-to-r from-fury/6 to-transparent" />
-            <div class="pointer-events-none absolute right-0 top-0 h-full w-1/3 bg-linear-to-l from-fury/5 to-transparent" />
-            <div class="relative z-10 flex items-center gap-4 p-5 sm:p-6">
-                <img :src="furyIcon" alt="Fury bot" class="h-12 w-12 shrink-0 rounded-xl shadow-md" />
-                <div class="min-w-0 flex-1">
-                    <p class="text-sm font-semibold text-white/90">Fury <span class="ml-1.5 rounded bg-fury/20 px-1.5 py-0.5 font-mono text-xs text-fury">APP</span></p>
-                    <p class="mt-0.5 text-xs text-white/50">A bot focused on moderation and utility safe for a school environment — serving 94 members across 4 servers.</p>
-                </div>
-                <div class="hidden shrink-0 flex-col items-end gap-1 sm:flex">
-                    <span class="text-xs text-white/30">Latency</span>
-                    <span class="font-mono text-sm font-semibold text-fury">111 ms</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             TECH STACK
-        ============================================================ -->
-        <div class="w-full">
-            <div class="mb-5 flex items-center justify-center gap-3">
-                <div class="h-px w-8 rounded-full bg-fury/30" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-fury/65">Built With</span>
-                <div class="h-px w-8 rounded-full bg-fury/30" />
-            </div>
-            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-                <div
-                    v-for="tech in techStack"
-                    :key="tech.name"
-                    class="glass-card flex items-center gap-3 p-3.5 sm:p-4"
-                >
-                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-fury/20 bg-fury/10">
-                        <i class="pi text-fury text-sm" :class="tech.icon" />
-                    </div>
-                    <div>
-                        <p class="text-sm font-semibold leading-tight text-white/90">{{ tech.name }}</p>
-                        <p class="mt-0.5 text-xs text-white/45">{{ tech.desc }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             FOOTER NOTE
-        ============================================================ -->
-        <div class="pb-4">
-            <p class="mx-auto max-w-xl text-center text-xs italic leading-relaxed text-white/35">
-                Fury was built and maintained while I was a student at Florida Virtual School.
-                It is open-source and available on GitHub.
-            </p>
-        </div>
-
-    </PageLayoutSpacer>
+		<footer class="fury-footer">
+			<span>© TREVOR FLAHARDY · FLVS eSPORTS</span>
+			<span class="footer-dot">●</span>
+			<span>ALL RIGHTS RESERVED</span>
+			<span class="footer-dot">●</span>
+			<span>PLAYER 1 READY</span>
+		</footer>
+	</div>
 </template>
+
+<style scoped>
+.fury-cabinet {
+	--bg: #0a0514;
+	--bg-2: #1a0a2e;
+	--ink: #e8f9ff;
+	--mute: rgba(232, 249, 255, 0.55);
+	--faint: rgba(232, 249, 255, 0.28);
+	--neon: #ff2d7a;
+	--neon-2: #4edbfc;
+	--gold: #ffd447;
+	--rule: rgba(78, 219, 252, 0.25);
+
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: "Press Start 2P", "VT323", "SF Mono", ui-monospace, monospace;
+	overflow: hidden;
+}
+
+.fury-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.fury-bg__horizon {
+	position: absolute; inset: 0;
+	background:
+		radial-gradient(ellipse at 50% 0%, rgba(78, 219, 252, 0.18), transparent 55%),
+		radial-gradient(ellipse at 50% 100%, rgba(255, 45, 122, 0.18), transparent 55%),
+		linear-gradient(to bottom, #0a0514 0%, #180a2a 50%, #0a0514 100%);
+}
+.fury-bg__grid {
+	position: absolute; left: -10%; right: -10%; bottom: 0; height: 55vh;
+	background-image:
+		linear-gradient(rgba(78, 219, 252, 0.4) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(78, 219, 252, 0.4) 1px, transparent 1px);
+	background-size: 60px 40px;
+	transform: perspective(600px) rotateX(65deg);
+	transform-origin: bottom;
+	mask-image: linear-gradient(to top, black 10%, transparent 90%);
+	opacity: 0.4;
+}
+.fury-bg__scanlines {
+	position: absolute; inset: 0;
+	background: repeating-linear-gradient(to bottom, transparent 0 2px, rgba(0,0,0,0.18) 2px 3px);
+	mix-blend-mode: overlay;
+	pointer-events: none;
+}
+.fury-bg__vignette {
+	position: absolute; inset: 0;
+	background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+}
+
+.fury-marquee {
+	position: relative;
+	z-index: 2;
+	display: grid;
+	grid-template-columns: 1fr auto 1fr;
+	align-items: center;
+	gap: 2rem;
+	padding: 2.5rem clamp(1.25rem, 4vw, 3rem) 1.5rem;
+	border-bottom: 1px solid var(--rule);
+}
+.marquee-side { display: flex; flex-direction: column; gap: 0.4rem; }
+.marquee-side--l { align-items: flex-start; }
+.marquee-side--r { align-items: flex-end; }
+.marquee-label {
+	font-size: 0.62rem; letter-spacing: 0.25em; color: var(--neon);
+	text-shadow: 0 0 8px rgba(255, 45, 122, 0.8);
+}
+.marquee-score {
+	font-size: 1rem; letter-spacing: 0.14em; color: var(--gold);
+	text-shadow: 0 0 10px rgba(255, 212, 71, 0.7);
+	font-variant-numeric: tabular-nums;
+}
+.marquee-score--hi { color: var(--neon-2); text-shadow: 0 0 10px rgba(78, 219, 252, 0.7); }
+
+.marquee-center { text-align: center; }
+.marquee-kicker {
+	display: block;
+	font-size: 0.58rem; letter-spacing: 0.3em;
+	color: var(--neon-2);
+	margin-bottom: 0.9rem;
+	text-shadow: 0 0 6px rgba(78, 219, 252, 0.6);
+}
+.marquee-title {
+	margin: 0;
+	font-size: clamp(3rem, 10vw, 6.5rem);
+	line-height: 1;
+	letter-spacing: 0.04em;
+	color: var(--ink);
+	text-shadow:
+		0 0 8px rgba(255, 45, 122, 0.9),
+		0 0 24px rgba(255, 45, 122, 0.5),
+		0 0 48px rgba(78, 219, 252, 0.3);
+}
+.mt-char {
+	display: inline-block;
+	animation: fury-bob 2.4s ease-in-out infinite;
+	animation-delay: var(--d, 0ms);
+}
+@keyframes fury-bob {
+	0%, 100% { transform: translateY(0); }
+	50%      { transform: translateY(-0.18em); }
+}
+.marquee-sub {
+	display: block;
+	margin-top: 0.9rem;
+	font-family: "VT323", "SF Mono", monospace;
+	font-size: 0.95rem;
+	letter-spacing: 0.08em;
+	color: var(--mute);
+}
+
+.fury-coin {
+	position: relative; z-index: 2;
+	text-align: center;
+	padding: 2rem 1rem 2.5rem;
+}
+.coin-blink {
+	font-size: 0.82rem; letter-spacing: 0.18em;
+	color: var(--gold);
+	text-shadow: 0 0 8px rgba(255, 212, 71, 0.65);
+	animation: coin-blink 1.1s steps(2, end) infinite;
+	margin-bottom: 1.25rem;
+}
+@keyframes coin-blink {
+	0%, 49%  { opacity: 1; }
+	50%, 100%{ opacity: 0.25; }
+}
+.coin-links { display: inline-flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+.coin-btn {
+	position: relative;
+	display: inline-flex; align-items: center; gap: 0.5rem;
+	padding: 0.9rem 1.4rem;
+	font-size: 0.7rem; letter-spacing: 0.14em;
+	color: var(--ink);
+	background: rgba(78, 219, 252, 0.06);
+	border: 2px solid rgba(78, 219, 252, 0.45);
+	border-radius: 0;
+	text-decoration: none;
+	transition: transform 140ms ease, background 140ms ease, box-shadow 140ms ease;
+	box-shadow: 0 0 0 0 rgba(78, 219, 252, 0);
+}
+.coin-btn:hover {
+	transform: translate(-2px, -2px);
+	background: rgba(78, 219, 252, 0.14);
+	box-shadow: 4px 4px 0 rgba(78, 219, 252, 0.5);
+}
+.coin-btn--primary {
+	color: var(--bg);
+	background: var(--neon);
+	border-color: var(--neon);
+}
+.coin-btn--primary:hover {
+	background: var(--gold); border-color: var(--gold);
+	box-shadow: 4px 4px 0 rgba(255, 212, 71, 0.6);
+}
+.coin-btn__pulse {
+	width: 0.6rem; height: 0.6rem; border-radius: 9999px;
+	background: var(--bg);
+	animation: coin-pulse 1s ease-in-out infinite;
+}
+@keyframes coin-pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.25 } }
+
+.fury-hud {
+	position: relative; z-index: 2;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 1px;
+	margin: 0 clamp(1.25rem, 4vw, 3rem);
+	background: var(--rule);
+	border: 1px solid var(--rule);
+}
+@media (max-width: 640px) { .fury-hud { grid-template-columns: repeat(2, 1fr); } }
+.hud-tile {
+	display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+	padding: 1.4rem 0.75rem;
+	background: rgba(10, 5, 20, 0.7);
+}
+.hud-tile__v {
+	font-size: clamp(1.8rem, 4vw, 2.6rem);
+	color: var(--neon-2);
+	text-shadow: 0 0 12px rgba(78, 219, 252, 0.6);
+	font-variant-numeric: tabular-nums;
+}
+.hud-tile__l {
+	font-size: 0.56rem; letter-spacing: 0.22em;
+	color: var(--mute);
+}
+
+.fury-act {
+	position: relative; z-index: 2;
+	padding: 5rem clamp(1.25rem, 4vw, 3rem);
+}
+.fury-act::before {
+	content: attr(data-act);
+	position: absolute;
+	top: 2rem; left: clamp(1.25rem, 4vw, 3rem);
+	font-size: 0.58rem; letter-spacing: 0.3em;
+	color: var(--neon);
+	text-shadow: 0 0 8px rgba(255, 45, 122, 0.6);
+}
+.fury-act + .fury-act { border-top: 1px dashed var(--rule); }
+.act-inner { max-width: 1080px; margin: 0 auto; }
+.act-title {
+	font-size: clamp(1.4rem, 3vw, 2rem);
+	letter-spacing: 0.08em;
+	margin: 1.5rem 0 1.5rem;
+	color: var(--ink);
+	text-shadow: 0 0 10px rgba(78, 219, 252, 0.4);
+}
+.act-body {
+	font-family: "VT323", "SF Mono", monospace;
+	font-size: 1.15rem;
+	line-height: 1.55;
+	letter-spacing: 0.03em;
+	color: var(--mute);
+	max-width: 62ch;
+	margin: 0 0 1rem;
+}
+.act-body--tight { margin-bottom: 0.5rem; }
+.act-body em { color: var(--gold); font-style: normal; }
+.act-body strong { color: var(--neon); font-weight: inherit; }
+
+.act-screenshot {
+	margin-top: 2rem;
+	max-width: 560px;
+	border: 2px solid var(--rule);
+	padding: 0.6rem;
+	background: rgba(10, 5, 20, 0.6);
+}
+.act-screenshot img { width: 100%; display: block; }
+.shot-cap {
+	display: block;
+	margin-top: 0.5rem;
+	font-family: "VT323", monospace;
+	font-size: 0.9rem;
+	color: var(--faint);
+	text-align: center;
+	letter-spacing: 0.05em;
+}
+
+.system-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 1.25rem;
+}
+.system-card {
+	position: relative;
+	padding: 1.25rem 1.25rem 1.25rem 1.6rem;
+	background: rgba(10, 5, 20, 0.75);
+	border: 1px solid var(--rule);
+	transition: transform 180ms ease, border-color 180ms ease;
+	animation: sys-in 400ms ease-out both;
+	animation-delay: calc(var(--i, 0) * 80ms);
+}
+@keyframes sys-in {
+	from { opacity: 0; transform: translateY(8px); }
+	to   { opacity: 1; transform: translateY(0); }
+}
+.system-card:hover {
+	transform: translate(-2px, -2px);
+	border-color: var(--neon);
+	box-shadow: 4px 4px 0 rgba(255, 45, 122, 0.4);
+}
+.system-card__rail {
+	position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+	background: linear-gradient(to bottom, var(--neon-2), var(--neon));
+}
+.system-card__head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+.system-card__slot { font-size: 0.56rem; letter-spacing: 0.22em; color: var(--faint); }
+.system-card__cmd {
+	font-family: "VT323", monospace;
+	font-size: 0.95rem;
+	color: var(--gold);
+	letter-spacing: 0.04em;
+}
+.system-card__title {
+	font-size: 0.82rem; letter-spacing: 0.12em;
+	margin: 0 0 0.6rem;
+	color: var(--ink);
+}
+.system-card__body {
+	font-family: "VT323", monospace;
+	font-size: 1.05rem;
+	line-height: 1.5;
+	letter-spacing: 0.02em;
+	color: var(--mute);
+	margin: 0;
+}
+
+.credits-roll { margin-top: 1.25rem; border-top: 1px dashed var(--rule); }
+.credit-row {
+	display: flex; align-items: baseline; gap: 0.75rem;
+	padding: 0.85rem 0;
+	border-bottom: 1px dashed var(--rule);
+}
+.credit-role {
+	font-size: 0.62rem; letter-spacing: 0.22em; color: var(--neon);
+	min-width: 6.5rem;
+}
+.credit-dots {
+	flex: 1;
+	border-bottom: 1px dotted var(--faint);
+	transform: translateY(-2px);
+}
+.credit-val {
+	font-family: "VT323", monospace;
+	font-size: 1.15rem;
+	color: var(--ink);
+	letter-spacing: 0.05em;
+}
+
+.fury-footer {
+	position: relative; z-index: 2;
+	display: flex; justify-content: center; align-items: center; gap: 0.8rem;
+	padding: 1.4rem 1rem;
+	font-size: 0.58rem; letter-spacing: 0.22em;
+	color: var(--faint);
+	border-top: 1px solid var(--rule);
+	flex-wrap: wrap;
+}
+.footer-dot { color: var(--neon); }
+
+@media (prefers-reduced-motion: reduce) {
+	.mt-char, .coin-blink, .coin-btn__pulse, .system-card { animation: none !important; }
+}
+</style>

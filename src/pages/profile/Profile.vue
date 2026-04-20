@@ -2,6 +2,7 @@
 import { defineAsyncComponent, Suspense } from "vue";
 
 import Intro from "./Intro.vue";
+import WorkExperience from "./WorkExperience.vue";
 import PageLayoutSpacer from "@/components/PageLayoutSpacer.vue";
 
 const Extras = defineAsyncComponent(() => {
@@ -12,6 +13,8 @@ const Extras = defineAsyncComponent(() => {
 <template>
   <PageLayoutSpacer>
     <Intro />
+
+    <WorkExperience />
 
     <Suspense>
       <Extras />
