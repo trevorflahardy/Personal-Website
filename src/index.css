@@ -47,12 +47,30 @@
   --color-baro-rust: #ce422b;
   --color-baro-copper: #b87333;
 
+  --color-kew: #f97316;
+  --color-kew-dim: #7c3b0a;
+
+  --color-rootline: #4ade80;
+  --color-rootline-dim: #166534;
+
+  --color-sliceguard: #38bdf8;
+  --color-sliceguard-dim: #075985;
+
+  --color-regviz: #a78bfa;
+  --color-regviz-dim: #4c1d95;
+
+  --color-pp-neon: #dfff00;
+  --color-pp-forest: #132d1f;
+  --color-pp-deep: #0f392b;
+
   /* Background images */
   --background-image-apt-day: url("/AptDay.png");
   --background-image-apt-night: url("/AptNight.png");
 
   /* Font family */
-  --font-family-sf-pro-display: "SF Pro Display", "Helvetica Neue", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-sf-pro-display:
+    "SF Pro Display", "Helvetica Neue", -apple-system, BlinkMacSystemFont,
+    sans-serif;
 }
 
 @layer base {
@@ -99,33 +117,503 @@
   .card-body {
     @apply text-sm md:text-sm lg:text-base text-white/78 font-light text-pretty leading-relaxed;
   }
+
+  /* Light mode — typography flips to readable dark-on-light. Uses the same
+     `html:not(.dark)` selector as the glass tokens so the toggle drives both. */
+  html:not(.dark) .hero-title,
+  html:not(.dark) .title,
+  html:not(.dark) .title-2,
+  html:not(.dark) .card-title {
+    color: rgb(15, 23, 42);
+  }
+  html:not(.dark) .title-3 {
+    color: rgba(15, 23, 42, 0.92);
+  }
+  html:not(.dark) .title-4 {
+    color: rgba(15, 23, 42, 0.88);
+  }
+  html:not(.dark) .subtitle {
+    color: rgba(15, 23, 42, 0.72);
+  }
+  html:not(.dark) .body,
+  html:not(.dark) .card-body {
+    color: rgba(15, 23, 42, 0.78);
+  }
+  html:not(.dark) .card-title-2 {
+    color: rgba(15, 23, 42, 0.82);
+  }
+  html:not(.dark) .card-caption {
+    color: rgba(15, 23, 42, 0.62);
+  }
+}
+
+/* Blanket override (unlayered so it wins over Tailwind's utilities layer) —
+   in light mode, `text-white` / `text-white/X` utilities flip to dark-slate at
+   a matching opacity. Covers inline template usage that bypasses the semantic
+   typography classes above. Use !important because Tailwind utility styles are
+   emitted after cascade layers in v4 and the engine often re-emits them per
+   route chunk. */
+html:not(.dark) .text-white {
+  color: rgb(15, 23, 42) !important;
+}
+html:not(.dark) .text-white\/95 {
+  color: rgb(15 23 42 / 0.95) !important;
+}
+html:not(.dark) .text-white\/90 {
+  color: rgb(15 23 42 / 0.9) !important;
+}
+html:not(.dark) .text-white\/85 {
+  color: rgb(15 23 42 / 0.85) !important;
+}
+html:not(.dark) .text-white\/80 {
+  color: rgb(15 23 42 / 0.8) !important;
+}
+html:not(.dark) .text-white\/78 {
+  color: rgb(15 23 42 / 0.78) !important;
+}
+html:not(.dark) .text-white\/75 {
+  color: rgb(15 23 42 / 0.75) !important;
+}
+html:not(.dark) .text-white\/72 {
+  color: rgb(15 23 42 / 0.72) !important;
+}
+html:not(.dark) .text-white\/70 {
+  color: rgb(15 23 42 / 0.7) !important;
+}
+html:not(.dark) .text-white\/65 {
+  color: rgb(15 23 42 / 0.65) !important;
+}
+html:not(.dark) .text-white\/60 {
+  color: rgb(15 23 42 / 0.6) !important;
+}
+html:not(.dark) .text-white\/55 {
+  color: rgb(15 23 42 / 0.6) !important;
+}
+html:not(.dark) .text-white\/50 {
+  color: rgb(15 23 42 / 0.55) !important;
+}
+html:not(.dark) .text-white\/45 {
+  color: rgb(15 23 42 / 0.55) !important;
+}
+html:not(.dark) .text-white\/40 {
+  color: rgb(15 23 42 / 0.52) !important;
+}
+html:not(.dark) .text-white\/35 {
+  color: rgb(15 23 42 / 0.5) !important;
+}
+html:not(.dark) .text-white\/30 {
+  color: rgb(15 23 42 / 0.48) !important;
+}
+html:not(.dark) .text-white\/25 {
+  color: rgb(15 23 42 / 0.45) !important;
+}
+html:not(.dark) .text-white\/20 {
+  color: rgb(15 23 42 / 0.4) !important;
+}
+html:not(.dark) .text-white\/15 {
+  color: rgb(15 23 42 / 0.38) !important;
+}
+html:not(.dark) .text-white\/10 {
+  color: rgb(15 23 42 / 0.32) !important;
 }
 
 @layer components {
-  .glass-thin {
-    @apply backdrop-blur-md shadow-md border border-white/8;
+  /* ============================================================
+     LIQUID GLASS — iOS 26 / macOS Tahoe 26 approximation.
+     Full docs: .claude/skills/liquid-glass/SKILL.md
+     Four layers: backdrop refraction + tint + specular rim + inner highlight.
+  ============================================================ */
+  .lg-surface {
+    position: relative;
+    background-color: var(--lg-tint, rgba(255, 255, 255, 0.08));
+    backdrop-filter: blur(var(--lg-blur, 20px)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--lg-blur, 20px)) saturate(180%);
+    border: 1px solid var(--lg-border, rgba(255, 255, 255, 0.12));
+    box-shadow:
+      inset 0 1px 0 0 var(--lg-highlight, rgba(255, 255, 255, 0.18)),
+      inset 0 -1px 0 0 rgba(255, 255, 255, 0.04),
+      0 8px 32px -8px rgba(0, 0, 0, 0.35);
   }
 
-  .glass-regular {
-    @apply backdrop-blur-lg shadow-lg border border-white/8;
+  .lg-surface::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.35),
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.08)
+    );
+    -webkit-mask:
+      linear-gradient(#000, #000) content-box,
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 
-  .glass-semithick {
-    @apply backdrop-blur-xl shadow-xl border border-white/6;
+  /* Dark mode defaults — real-glass feel: smoked neutral, not white haze. */
+  .lg-thin {
+    --lg-blur: 10px;
+    --lg-tint: rgba(14, 16, 20, 0.28);
+    --lg-border: rgba(255, 255, 255, 0.06);
+    --lg-highlight: rgba(255, 255, 255, 0.08);
+  }
+  .lg-regular {
+    --lg-blur: 22px;
+    --lg-tint: rgba(14, 16, 20, 0.38);
+    --lg-border: rgba(255, 255, 255, 0.08);
+    --lg-highlight: rgba(255, 255, 255, 0.12);
+  }
+  .lg-thick {
+    --lg-blur: 30px;
+    --lg-tint: rgba(14, 16, 20, 0.48);
+    --lg-border: rgba(255, 255, 255, 0.1);
+    --lg-highlight: rgba(255, 255, 255, 0.16);
+  }
+  .lg-sidebar {
+    --lg-blur: 34px;
+    --lg-tint: rgba(14, 16, 20, 0.55);
+    --lg-border: rgba(255, 255, 255, 0.12);
+    --lg-highlight: rgba(255, 255, 255, 0.18);
   }
 
-  .glass-thick {
-    @apply backdrop-blur-2xl shadow-2xl border border-white/5;
+  html:not(.dark) .lg-thin,
+  html:not(.dark).lg-thin {
+    --lg-tint: rgba(255, 255, 255, 0.5);
+    --lg-border: rgba(0, 0, 0, 0.08);
+    --lg-highlight: rgba(255, 255, 255, 0.65);
+  }
+  html:not(.dark) .lg-regular,
+  html:not(.dark).lg-regular {
+    --lg-tint: rgba(255, 255, 255, 0.62);
+    --lg-border: rgba(0, 0, 0, 0.1);
+    --lg-highlight: rgba(255, 255, 255, 0.75);
+  }
+  html:not(.dark) .lg-thick,
+  html:not(.dark).lg-thick {
+    --lg-tint: rgba(255, 255, 255, 0.76);
+    --lg-border: rgba(15, 23, 42, 0.12);
+    --lg-highlight: rgba(255, 255, 255, 0.82);
+  }
+  html:not(.dark) .lg-sidebar,
+  html:not(.dark).lg-sidebar {
+    --lg-tint: rgba(255, 255, 255, 0.82);
+    --lg-border: rgba(15, 23, 42, 0.14);
+    --lg-highlight: rgba(255, 255, 255, 0.88);
   }
 
+  @media (prefers-reduced-transparency: reduce) {
+    .lg-surface {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background-color: rgba(24, 24, 28, 0.94);
+    }
+    html:not(.dark) .lg-surface {
+      background-color: rgba(248, 248, 250, 0.98);
+    }
+  }
+
+  /* Legacy glass classes — inherit the Liquid Glass surface treatment. Each sets
+     its own tint/blur variables so existing markup keeps working untouched. */
+  .glass-thin,
+  .glass-regular,
+  .glass-semithick,
+  .glass-thick,
   .glass-card {
-    @apply bg-white/4 backdrop-blur-xl border border-white/8 rounded-2xl shadow-lg;
+    position: relative;
+    border-radius: 1rem;
+    background-color: var(--lg-tint);
+    backdrop-filter: blur(var(--lg-blur)) saturate(180%);
+    -webkit-backdrop-filter: blur(var(--lg-blur)) saturate(180%);
+    border: 1px solid var(--lg-border);
+    box-shadow:
+      inset 0 1px 0 0 var(--lg-highlight),
+      inset 0 -1px 0 0 rgba(255, 255, 255, 0.04),
+      0 8px 32px -8px rgba(0, 0, 0, 0.35);
+  }
+
+  .glass-thin::before,
+  .glass-regular::before,
+  .glass-semithick::before,
+  .glass-thick::before,
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.35),
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.08)
+    );
+    -webkit-mask:
+      linear-gradient(#000, #000) content-box,
+      linear-gradient(#000, #000);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Dark mode — smoked glass, not white haze. Unified alpha between sidebar and main surfaces. */
+  .glass-thin {
+    --lg-blur: 10px;
+    --lg-tint: rgba(14, 16, 20, 0.28);
+    --lg-border: rgba(255, 255, 255, 0.06);
+    --lg-highlight: rgba(255, 255, 255, 0.08);
+  }
+  .glass-regular {
+    --lg-blur: 22px;
+    --lg-tint: rgba(14, 16, 20, 0.38);
+    --lg-border: rgba(255, 255, 255, 0.08);
+    --lg-highlight: rgba(255, 255, 255, 0.12);
+  }
+  .glass-semithick {
+    --lg-blur: 26px;
+    --lg-tint: rgba(14, 16, 20, 0.44);
+    --lg-border: rgba(255, 255, 255, 0.09);
+    --lg-highlight: rgba(255, 255, 255, 0.14);
+  }
+  .glass-thick {
+    --lg-blur: 32px;
+    --lg-tint: rgba(14, 16, 20, 0.5);
+    --lg-border: rgba(255, 255, 255, 0.1);
+    --lg-highlight: rgba(255, 255, 255, 0.16);
+  }
+  .glass-card {
+    --lg-blur: 28px;
+    --lg-tint: rgba(14, 16, 20, 0.44);
+    --lg-border: rgba(255, 255, 255, 0.09);
+    --lg-highlight: rgba(255, 255, 255, 0.14);
+  }
+
+  /* Light mode — clean frosted white. Triggered by the `.dark` toggle, not system preference. */
+  html:not(.dark) .glass-thin {
+    --lg-tint: rgba(255, 255, 255, 0.5);
+    --lg-border: rgba(15, 23, 42, 0.08);
+    --lg-highlight: rgba(255, 255, 255, 0.65);
+  }
+  html:not(.dark) .glass-regular {
+    --lg-tint: rgba(255, 255, 255, 0.62);
+    --lg-border: rgba(15, 23, 42, 0.1);
+    --lg-highlight: rgba(255, 255, 255, 0.75);
+  }
+  html:not(.dark) .glass-semithick {
+    --lg-tint: rgba(255, 255, 255, 0.7);
+    --lg-border: rgba(15, 23, 42, 0.11);
+    --lg-highlight: rgba(255, 255, 255, 0.8);
+  }
+  html:not(.dark) .glass-thick {
+    --lg-tint: rgba(255, 255, 255, 0.78);
+    --lg-border: rgba(15, 23, 42, 0.12);
+    --lg-highlight: rgba(255, 255, 255, 0.84);
+  }
+  html:not(.dark) .glass-card {
+    --lg-tint: rgba(255, 255, 255, 0.72);
+    --lg-border: rgba(15, 23, 42, 0.11);
+    --lg-highlight: rgba(255, 255, 255, 0.8);
+  }
+
+  /* ============================================================
+     NESTED GLASS — the "pocket" treatment.
+     When a glass surface sits inside another glass surface, the inner one
+     must NOT replicate the outer's raised, back-lit look — otherwise the
+     two panels read as equal-weight and the composition turns to fog.
+     Instead, the inner panel is "pressed in": darker fill, inset shadow,
+     no specular rim, no outer shadow. Reads as a depression carved into
+     the parent — hierarchy without extra contrast.
+  ============================================================ */
+  .glass-pocket,
+  :is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card)
+    :is(
+      .glass-thin,
+      .glass-regular,
+      .glass-semithick,
+      .glass-thick,
+      .glass-card
+    ) {
+    position: relative;
+    border-radius: 0.875rem;
+    background-color: rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(6px) saturate(120%);
+    -webkit-backdrop-filter: blur(6px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+      inset 0 1px 2px rgba(0, 0, 0, 0.35),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.04),
+      0 0 0 0 transparent;
+  }
+
+  /* Kill the specular rim on nested cards — the parent already owns the light. */
+  :is(.glass-thin, .glass-regular, .glass-semithick, .glass-thick, .glass-card)
+    :is(
+      .glass-thin,
+      .glass-regular,
+      .glass-semithick,
+      .glass-thick,
+      .glass-card
+    )::before,
+  .glass-pocket::before {
+    display: none;
+  }
+
+  html:not(.dark) .glass-pocket,
+  html:not(.dark)
+    :is(
+      .glass-thin,
+      .glass-regular,
+      .glass-semithick,
+      .glass-thick,
+      .glass-card
+    )
+    :is(
+      .glass-thin,
+      .glass-regular,
+      .glass-semithick,
+      .glass-thick,
+      .glass-card
+    ) {
+    background-color: rgba(15, 23, 42, 0.05);
+    border-color: rgba(15, 23, 42, 0.09);
+    box-shadow:
+      inset 0 1px 2px rgba(15, 23, 42, 0.1),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.6);
+  }
+
+  /* ============================================================
+     MOTION PRIMITIVES — organic hover + scroll-in, ported from the
+     CampusEvents glassmorphism-ui skill. Respect prefers-reduced-motion.
+  ============================================================ */
+  .hover-lift {
+    transition:
+      transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.25s ease;
+    will-change: transform;
+  }
+  .hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      inset 0 1px 0 0 var(--lg-highlight, rgba(255, 255, 255, 0.22)),
+      0 18px 48px -12px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .rise-in {
+    animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .rise-1 {
+    animation-delay: 0.06s;
+  }
+  .rise-2 {
+    animation-delay: 0.14s;
+  }
+  .rise-3 {
+    animation-delay: 0.22s;
+  }
+  .rise-4 {
+    animation-delay: 0.3s;
+  }
+  .rise-5 {
+    animation-delay: 0.38s;
+  }
+
+  @keyframes orb-drift {
+    0%,
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(6%, -4%, 0) scale(1.08);
+    }
+  }
+  .orb-drift {
+    animation: orb-drift 18s ease-in-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hover-lift:hover {
+      transform: none;
+    }
+    .rise-in,
+    .orb-drift {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 
   .button-glass:hover {
     transform: scale(1.03);
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     @apply shadow-xl;
+  }
+
+  /* Subtle hover-lift on standalone primary cards. Nested glass (pockets) is
+     excluded so the inner panel doesn't "float out" of its parent. */
+  .glass-card:not(
+    :is(
+        .glass-thin,
+        .glass-regular,
+        .glass-semithick,
+        .glass-thick,
+        .glass-card
+      )
+      .glass-card
+  ) {
+    transition:
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .glass-card:not(
+      :is(
+          .glass-thin,
+          .glass-regular,
+          .glass-semithick,
+          .glass-thick,
+          .glass-card
+        )
+        .glass-card
+    ):hover {
+    transform: translateY(-2px);
+  }
+
+  /* Grain overlay — a tiny feTurbulence-generated noise layer that sits above
+     the room background but below content. Kills the "too clean AI gradient"
+     feel. Technique from fffuel's nnnoise. */
+  .grain-overlay::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.06;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.8'/></svg>");
+    background-size: 180px 180px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glass-card:hover {
+      transform: none;
+    }
   }
 }
 

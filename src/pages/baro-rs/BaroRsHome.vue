@@ -1,601 +1,636 @@
 <script setup lang="ts">
-import PageLayoutSpacer from '@/components/PageLayoutSpacer.vue';
-import Button from '@/components/Button.vue';
-import { icon as baroIcon } from './info';
-import { drivers } from './drivers/driver-data';
-
-const base = import.meta.env.BASE_URL;
-
-function scrollToDrivers() {
-    document.getElementById('drivers')?.scrollIntoView({ behavior: 'smooth' });
-}
-
-const stats = [
-    { value: '2-3s', label: 'Boot Time', icon: 'pi-bolt' },
-    { value: '10s', label: 'Sample Interval', icon: 'pi-sync' },
-    { value: '200ms', label: 'Display Refresh', icon: 'pi-desktop' },
-    { value: '~80KB', label: 'Heap Usage', icon: 'pi-microchip' },
-];
-
-const hardwareSpecs = [
-    { name: 'ESP32-S3', detail: 'Dual-core Xtensa LX7', icon: 'pi-microchip' },
-    { name: '320x240 LCD', detail: 'ILI9342C RGB565 SPI', icon: 'pi-desktop' },
-    { name: 'SHT40', detail: 'Temperature & Humidity', icon: 'pi-chart-line' },
-    { name: 'MicroSD', detail: 'Persistent Storage', icon: 'pi-database' },
-    { name: 'FT6336U', detail: 'Capacitive Touch', icon: 'pi-tablet' },
-    { name: 'AXP2101', detail: 'Power Management', icon: 'pi-bolt' },
-    { name: 'AW9523', detail: 'GPIO Expander', icon: 'pi-sitemap' },
-    { name: '8MB PSRAM', detail: 'Extended Memory', icon: 'pi-server' },
-];
-
-const architectureTasks = [
-    { name: 'Sensor Sampling', desc: 'SHT40 reads every 10s via I\u00B2C', icon: 'pi-chart-line', position: 'left' },
-    { name: 'Embassy Runtime', desc: 'Async task orchestration', icon: 'pi-cog', position: 'center' },
-    { name: 'Touch Input', desc: 'FT6336U gesture detection', icon: 'pi-tablet', position: 'left' },
-    { name: 'LCD Display', desc: '5Hz render at 200ms refresh', icon: 'pi-desktop', position: 'right' },
-    { name: 'SD Storage', desc: 'Batched writes, append-only', icon: 'pi-database', position: 'right' },
-];
-
-const techStack = [
-    { name: 'Rust', desc: 'Systems language' },
-    { name: 'Embassy', desc: 'Async runtime' },
-    { name: 'esp-hal', desc: 'Hardware abstraction' },
-    { name: 'embedded-hal', desc: 'Portable traits' },
-    { name: 'SHT40', desc: 'Sensor driver' },
-    { name: 'FatFS', desc: 'SD filesystem' },
-    { name: 'ILI9342C', desc: 'Display driver' },
-    { name: 'SNTP', desc: 'Time sync' },
-];
-
-const futureRoadmap = [
-    {
-        phase: 'Near-term',
-        items: ['BMP390 pressure sensor', 'BH1750 light sensor', 'Battery monitoring', 'Deep sleep mode'],
-    },
-    {
-        phase: 'Medium-term',
-        items: ['SCD41 CO\u2082 sensing', 'SGP40 VOC detection', 'Dew point & heat index', 'Advanced metrics'],
-    },
-    {
-        phase: 'Long-term',
-        items: ['Custom PCB with 20+ sensors', 'OTA firmware updates', 'Cloud integration', 'Remote monitoring dashboard'],
-    },
-];
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+import { RouterLink } from "vue-router";
+import { drivers } from "./drivers/driver-data";
+import { specReadout, architectureNodes, architectureLinks, commitLog, type ArchNode } from "./act-data";
+import { useLenis } from "@/composables/useLenis";
 
 const driverList = Object.values(drivers);
+const heroCanvas = ref<HTMLCanvasElement | null>(null);
+
+// Pre-compute SVG arch edges once — the template only reads, never calls.
+const nodeById = (id: string): ArchNode =>
+    architectureNodes.find((n) => n.id === id) as ArchNode;
+
+// Nodes are placed with CSS `top: n.y + '%'` (0-100 space). The SVG now uses
+// viewBox "0 0 100 100" so SVG y coordinates map 1:1 to CSS percentages.
+// Node y values in act-data are in 0-80 space, so no scaling needed — they're
+// used directly as CSS percentages AND SVG coordinates. The ±4 offset is an
+// approximate half-height of a node card in percentage units (~4% of 34rem container).
+const archEdges = computed(() =>
+    architectureLinks.map(([a, b]) => {
+        const s = nodeById(a);
+        const t = nodeById(b);
+        const sy = s.y + 4;
+        const ty = t.y - 4;
+        const midY = (sy + ty) / 2;
+        return {
+            d: `M ${s.x} ${sy} L ${s.x} ${midY} L ${t.x} ${midY} L ${t.x} ${ty}`,
+            sx: s.x, sy, tx: t.x, ty,
+        };
+    })
+);
+
+useLenis();
+
+// Oscilloscope — amber sine wave that lives in the hero. Frequency breathes
+// slowly; a secondary high-frequency line adds texture. Runs on rAF and pauses
+// when the user prefers reduced motion.
+let rafId = 0;
+onMounted(() => {
+    const cvs = heroCanvas.value;
+    if (!cvs) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const ctx = cvs.getContext("2d");
+    if (!ctx) return;
+
+    const resize = () => {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        cvs.width = cvs.clientWidth * dpr;
+        cvs.height = cvs.clientHeight * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    let t = 0;
+    const draw = () => {
+        const w = cvs.clientWidth;
+        const h = cvs.clientHeight;
+        ctx.clearRect(0, 0, w, h);
+
+        // primary sine
+        ctx.beginPath();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = "rgba(245,158,11,0.75)";
+        ctx.shadowBlur = 14;
+        ctx.shadowColor = "rgba(245,158,11,0.45)";
+        for (let x = 0; x <= w; x += 2) {
+            const freq = 0.012 + Math.sin(t * 0.0007) * 0.003;
+            const y = h / 2 + Math.sin(x * freq + t * 0.015) * (h * 0.14);
+            x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // echo/texture line
+        ctx.beginPath();
+        ctx.lineWidth = 0.8;
+        ctx.strokeStyle = "rgba(245,158,11,0.22)";
+        for (let x = 0; x <= w; x += 2) {
+            const y = h / 2 + Math.sin(x * 0.03 + t * 0.008) * (h * 0.05) + Math.cos(x * 0.08 + t * 0.02) * 6;
+            x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        t += reduced ? 0 : 16;
+        rafId = requestAnimationFrame(draw);
+    };
+    rafId = requestAnimationFrame(draw);
+
+    onBeforeUnmount(() => {
+        cancelAnimationFrame(rafId);
+        window.removeEventListener("resize", resize);
+    });
+});
 </script>
 
 <template>
-    <PageLayoutSpacer>
-
-        <!-- ============================================================
-             HERO
-        ============================================================ -->
-        <div class="relative w-full overflow-hidden rounded-2xl border border-white/8 shadow-xl">
-            <!-- Layered backgrounds -->
-            <div class="absolute inset-0 bg-[#0c0a09]" />
-            <div class="absolute inset-0 bg-linear-to-br from-baro-default/8 via-transparent to-baro-copper/5" />
-
-            <!-- PCB circuit trace grid -->
-            <div class="absolute inset-0 opacity-30"
-                style="background-image: linear-gradient(90deg, rgba(245,158,11,0.08) 1px, transparent 1px), linear-gradient(rgba(245,158,11,0.08) 1px, transparent 1px); background-size: 24px 24px;" />
-
-            <!-- Diagonal circuit traces -->
-            <div class="absolute inset-0 opacity-15"
-                style="background-image: linear-gradient(45deg, rgba(184,115,51,0.12) 1px, transparent 1px); background-size: 34px 34px;" />
-
-            <!-- Glow orbs -->
-            <div class="pointer-events-none absolute -left-24 -top-24 h-[28rem] w-[28rem] rounded-full bg-baro-default/20 blur-3xl animate-pulse"
-                style="animation-duration: 4s;" />
-            <div class="pointer-events-none absolute -bottom-16 right-16 h-64 w-64 rounded-full bg-baro-copper/15 blur-3xl animate-pulse"
-                style="animation-duration: 6s;" />
-            <div class="pointer-events-none absolute top-1/3 right-1/4 h-48 w-48 rounded-full bg-baro-rust/10 blur-3xl animate-pulse"
-                style="animation-duration: 5s;" />
-
-            <!-- Top accent line -->
-            <div
-                class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-baro-default/80 to-transparent" />
-
-            <!-- Animated data stream dots -->
-            <div class="absolute inset-0 overflow-hidden pointer-events-none">
-                <div class="data-stream-dot absolute h-1 w-1 rounded-full bg-baro-default/40"
-                    style="top: 20%; animation: dataStream 8s linear infinite;" />
-                <div class="data-stream-dot absolute h-1 w-1 rounded-full bg-baro-copper/30"
-                    style="top: 60%; animation: dataStream 12s linear infinite 3s;" />
-                <div class="data-stream-dot absolute h-0.5 w-0.5 rounded-full bg-baro-default/25"
-                    style="top: 80%; animation: dataStream 10s linear infinite 6s;" />
-            </div>
-
-            <div class="relative z-10 px-6 py-10 sm:px-10 sm:py-14 md:px-14 md:py-16">
-
-                <!-- Platform badge -->
-                <div
-                    class="mb-7 inline-flex items-center gap-2 rounded-full border border-baro-default/30 bg-baro-default/10 px-3.5 py-1.5 backdrop-blur-sm">
-                    <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-baro-default" />
-                    <span class="text-xs font-semibold uppercase tracking-widest text-baro-default">
-                        ESP32-S3 · Rust · no_std
-                    </span>
+    <article class="baro-page">
+        <section class="act act-hero">
+            <canvas ref="heroCanvas" class="hero-scope" />
+            <div class="hero-stack">
+                <div class="hero-meta">
+                    <span class="dot" /> ESP32-S3 · RUST · NO_STD · LIVE
                 </div>
-
-                <!-- Logo + Title -->
-                <div class="mb-5 flex items-center gap-4">
-                    <img :src="baroIcon" alt="Baro-RS icon"
-                        class="h-14 w-14 shrink-0 rounded-2xl shadow-lg shadow-black/50 sm:h-16 sm:w-16" />
-                    <h1 class="text-5xl font-bold leading-none tracking-tight text-white sm:text-6xl md:text-7xl">
-                        Baro<span class="text-baro-default">.</span>RS
-                    </h1>
-                </div>
-
-                <!-- Tagline -->
-                <p class="mb-8 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
-                    A production-grade environmental monitoring station written entirely in Rust for the ESP32-S3.
-                    Designed to run continuously for months or years with exceptional reliability —
-                    sampling, storing, and visualizing environmental data in real time.
-                </p>
-
-                <!-- Status chips -->
-                <div class="mb-8 flex flex-wrap gap-2">
-                    <span
-                        v-for="chip in ['Embassy Async', 'SHT40 Sensor', 'SD Storage', 'Touch LCD', 'Multi-Scale Rollups']"
-                        :key="chip"
-                        class="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-xs text-white/50 backdrop-blur-sm">
-                        <span class="h-1 w-1 rounded-full bg-baro-default/50" />
-                        {{ chip }}
-                    </span>
-                </div>
-
-                <!-- CTAs -->
-                <div class="flex flex-row flex-wrap gap-3">
-                    <Button link="https://github.com/trevorflahardy/baro-rs" content="Source Code" icon="pi-github"
-                        background="bg-baro-default/20 hover:bg-baro-default/30 border border-baro-default/40" />
-                    <button type="button" @click="scrollToDrivers"
-                        class="group py-2.5 px-5 sm:py-3 sm:px-6 rounded-xl shadow font-medium transition-all duration-500 hover:scale-105 ease-in-out bg-white/6 hover:bg-white/10 border border-white/10 cursor-pointer driver-pulse">
-                        <span class="text-white text-sm font-medium flex flex-row items-center justify-center gap-2">
-                            <i class="pi pi-microchip"></i>
-                            <span>View Drivers</span>
-                            <i
-                                class="pi pi-arrow-down text-xs transition-transform duration-300 group-hover:translate-y-0.5" />
-                        </span>
-                    </button>
+                <h1 class="hero-title">BARO<span class="dot-char">.</span>RS</h1>
+                <p class="hero-kicker">a precision environmental instrument, written in rust, running unattended for months.</p>
+                <div class="hero-ruler">
+                    <span>0</span><span>45</span><span>90</span><span>135</span><span>180d</span>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- ============================================================
-             STATS
-        ============================================================ -->
-        <div class="grid w-full grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-            <div v-for="stat in stats" :key="stat.label"
-                class="glass-card flex flex-col items-center gap-1.5 px-4 py-5 text-center">
-                <div
-                    class="mb-1 flex h-8 w-8 items-center justify-center rounded-xl border border-baro-default/20 bg-baro-default/10">
-                    <i class="pi text-baro-default text-sm" :class="stat.icon" />
-                </div>
-                <span class="text-2xl font-bold leading-none tracking-tight text-baro-default sm:text-3xl font-mono">
-                    {{ stat.value }}
-                </span>
-                <span class="text-xs leading-tight text-white/55">{{ stat.label }}</span>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             THE PROBLEM — WHY THIS EXISTS
-        ============================================================ -->
-        <div class="glass-card w-full p-6 sm:p-8">
-            <div class="flex items-center gap-2.5 mb-5">
-                <div class="h-0.5 w-6 rounded-full bg-baro-default" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-baro-default">The Problem</span>
-            </div>
-            <h2 class="title-2 mb-0">What if you could see the air?</h2>
-            <p class="body mt-3">
-                Temperature, humidity, CO&#x2082; levels, air pressure, light intensity — the environment around
-                us is constantly changing, but these changes are invisible. Consumer weather stations give you a
-                snapshot. Baro-RS gives you the full picture: continuous, high-resolution environmental data
-                recorded over weeks, months, or years.
-            </p>
-            <p class="body mb-0">
-                This isn't a weekend project with an Arduino and a DHT11. It's a production-grade monitoring
-                station built to run unattended, survive power cycles, and produce data you can actually trust —
-                because the firmware, the drivers, and the storage layer are all written from scratch in Rust.
-            </p>
-        </div>
-
-        <!-- ============================================================
-             HARDWARE SECTION — STICKY IMAGES
-        ============================================================ -->
-        <div class="w-full">
-            <div class="flex items-center gap-2.5 mb-6">
-                <div class="h-0.5 w-6 rounded-full bg-baro-default" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-baro-default">Hardware</span>
-            </div>
-
-            <div class="flex flex-col gap-8 lg:flex-row lg:gap-10">
-                <!-- Photos — sticky on desktop so they stay visible as you scroll past specs -->
-                <div
-                    class="flex flex-col gap-4 sm:flex-row lg:flex-col lg:w-[40%] lg:shrink-0 lg:sticky lg:top-4 lg:self-start">
-                    <div class="flex-1 overflow-hidden rounded-xl border border-baro-default/15 p-1.5">
-                        <img :src="`${base}baro-rs/hardware-1.png`" alt="Baro-RS hardware front view"
-                            class="w-full rounded-lg" />
-                        <p class="mt-1.5 text-center text-xs italic text-white/35">Breadboard prototype — detailed view
-                        </p>
-                    </div>
-                    <div class="flex-1 overflow-hidden rounded-xl border border-baro-default/15 p-1.5">
-                        <img :src="`${base}baro-rs/hardware-2.png`" alt="Baro-RS hardware alternate view"
-                            class="w-full rounded-lg" />
-                        <p class="mt-1.5 text-center text-xs italic text-white/35">M5Stack CoreS3 SE — single-room
-                            monitor</p>
-                    </div>
-                </div>
-
-                <!-- Description + specs — scrolls past the sticky images -->
-                <div class="min-w-0 flex-1">
-                    <h2 class="title-2 mb-0">Built on real hardware.</h2>
-                    <p class="body mt-3">
-                        Baro-RS runs on the M5Stack CoreS3 SE — an ESP32-S3 development board with a built-in
-                        capacitive touch LCD, power management IC, GPIO expander, and microSD slot. It's a
-                        complete embedded computer the size of a matchbox.
+        <section class="act act-origin" data-act="01 · origin / spec">
+            <div class="origin-grid">
+                <div class="origin-main">
+                    <div class="origin-label">// origin</div>
+                    <h2 class="origin-title">
+                        the question wasn't <em>can we sense the air?</em><br>
+                        it was <em>can we keep sensing it, quietly, for half a year?</em>
+                    </h2>
+                    <p class="origin-body">
+                        baro.rs is an esp32-s3 environmental station written entirely in rust. no arduino wrappers, no micropython fallback — just <code>no_std</code>, <code>embassy</code>, and six hand-rolled <code>embedded-hal</code> drivers. the target is not novelty. the target is <em>uptime</em>.
                     </p>
-                    <p class="body">
-                        The current prototype lives on a breadboard, but the architecture is designed for a
-                        single custom PCB that will house 20+ sensors — from CO&#x2082; and VOC detection to
-                        UV index and particulate matter.
-                    </p>
-                    <p class="body mb-5">
-                        Every peripheral on this board is driven by a purpose-built Rust driver written from
-                        scratch. No C bindings, no unsafe wrappers — just pure embedded Rust with
-                        platform-agnostic traits that can run on any microcontroller.
-                    </p>
-
-                    <!-- Hardware spec grid -->
-                    <div class="grid grid-cols-2 gap-2.5 sm:gap-3">
-                        <div v-for="spec in hardwareSpecs" :key="spec.name"
-                            class="flex items-center gap-2.5 rounded-xl border border-white/6 bg-white/3 px-3 py-2.5">
-                            <div
-                                class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-baro-default/15 bg-baro-default/8">
-                                <i class="pi text-baro-default text-xs" :class="spec.icon" />
-                            </div>
-                            <div class="min-w-0">
-                                <p class="text-xs font-semibold text-white/90 leading-tight">{{ spec.name }}</p>
-                                <p class="text-[10px] text-white/45 leading-tight">{{ spec.detail }}</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             HOW IT WORKS — THE STORY
-        ============================================================ -->
-        <div class="glass-card w-full p-6 sm:p-8">
-            <div class="flex items-center gap-2.5 mb-5">
-                <div class="h-0.5 w-6 rounded-full bg-baro-default" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-baro-default">How It Works</span>
-            </div>
-            <h2 class="title-2 mb-0">Always watching. Never sleeping.</h2>
-            <p class="body mt-3 mb-0">
-                Every 10 seconds, Baro-RS wakes the SHT40 sensor, reads the temperature and humidity over I&#x00B2;C,
-                and stores the result. Readings accumulate on the microSD card in an append-only format optimized
-                for longevity — no filesystem fragmentation, no database overhead, just fixed-size versioned records
-                written in batches.
-            </p>
-            <p class="body mt-3 mb-0">
-                Meanwhile, the touch LCD renders real-time graphs and historical trends at 5 frames per second.
-                Swipe through time scales — from the last 5 minutes to the entire recording history — and watch
-                patterns emerge. Daily temperature cycles, humidity spikes when it rains, the slow seasonal drift
-                across months. All of this runs concurrently on an async runtime with no operating system.
-            </p>
-        </div>
-
-        <!-- ============================================================
-             ARCHITECTURE
-        ============================================================ -->
-        <div class="w-full">
-            <div class="mb-6 text-center">
-                <div class="mb-3 flex items-center justify-center gap-3">
-                    <div class="h-px w-10 rounded-full bg-baro-default/40" />
-                    <span class="text-xs font-semibold uppercase tracking-widest text-baro-default">Architecture</span>
-                    <div class="h-px w-10 rounded-full bg-baro-default/40" />
-                </div>
-                <h2 class="title-2 mb-2">Async from the ground up.</h2>
-                <p class="subtitle">Embassy orchestrates concurrent tasks — sampling, rendering, storage, and touch —
-                    all without an OS.</p>
-            </div>
-
-            <!-- Architecture flow diagram -->
-            <div class="glass-card w-full p-5 sm:p-7">
-                <div class="flex flex-col gap-4 lg:flex-row lg:items-stretch lg:gap-0">
-                    <!-- Input column -->
-                    <div class="flex flex-col gap-3 lg:w-[28%]">
-                        <div v-for="task in architectureTasks.filter(t => t.position === 'left')" :key="task.name"
-                            class="flex items-center gap-3 rounded-xl border border-baro-default/15 bg-baro-default/5 px-4 py-3">
-                            <div
-                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-baro-default/20 bg-baro-default/10">
-                                <i class="pi text-baro-default text-sm" :class="task.icon" />
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold text-white/90">{{ task.name }}</p>
-                                <p class="text-xs text-white/50">{{ task.desc }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Center connector + Embassy core -->
-                    <div class="flex flex-col items-center justify-center lg:w-[44%] py-4 lg:py-0">
-                        <!-- Desktop: with connecting lines -->
-                        <div class="hidden lg:flex items-center w-full justify-center gap-0">
-                            <div class="h-px flex-1 bg-linear-to-r from-baro-default/10 to-baro-default/30" />
-                            <div
-                                class="relative rounded-2xl border-2 border-baro-default/30 bg-baro-default/8 px-6 py-5 backdrop-blur-sm">
-                                <div class="absolute -inset-1 rounded-2xl bg-baro-default/5 blur-xl" />
-                                <div class="relative text-center">
-                                    <div class="mb-2 flex justify-center">
-                                        <div
-                                            class="flex h-12 w-12 items-center justify-center rounded-2xl border border-baro-default/30 bg-baro-default/15">
-                                            <i class="pi pi-cog text-baro-default text-xl" />
-                                        </div>
-                                    </div>
-                                    <p class="text-sm font-bold text-baro-default">Embassy Runtime</p>
-                                    <p class="text-xs text-white/50 mt-0.5">Async task orchestration</p>
-                                </div>
-                            </div>
-                            <div class="h-px flex-1 bg-linear-to-r from-baro-default/30 to-baro-default/10" />
-                        </div>
-
-                        <!-- Mobile: simple centered card -->
-                        <div
-                            class="lg:hidden rounded-2xl border-2 border-baro-default/30 bg-baro-default/8 px-6 py-5 backdrop-blur-sm w-full">
-                            <div class="flex items-center gap-3 justify-center">
-                                <div
-                                    class="flex h-10 w-10 items-center justify-center rounded-xl border border-baro-default/30 bg-baro-default/15">
-                                    <i class="pi pi-cog text-baro-default text-lg" />
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-baro-default">Embassy Runtime</p>
-                                    <p class="text-xs text-white/50">Async task orchestration</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Output column -->
-                    <div class="flex flex-col gap-3 lg:w-[28%]">
-                        <div v-for="task in architectureTasks.filter(t => t.position === 'right')" :key="task.name"
-                            class="flex items-center gap-3 rounded-xl border border-baro-copper/15 bg-baro-copper/5 px-4 py-3">
-                            <div
-                                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-baro-copper/20 bg-baro-copper/10">
-                                <i class="pi text-baro-copper text-sm" :class="task.icon" />
-                            </div>
-                            <div>
-                                <p class="text-sm font-semibold text-white/90">{{ task.name }}</p>
-                                <p class="text-xs text-white/50">{{ task.desc }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             SMART STORAGE — replaces the old "Data Rollups" section
-        ============================================================ -->
-        <div class="glass-card w-full p-6 sm:p-8">
-            <div class="flex items-center gap-2.5 mb-5">
-                <div class="h-0.5 w-6 rounded-full bg-baro-default" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-baro-default">Smart Storage</span>
-            </div>
-            <h2 class="title-2 mb-0">196 years of data on a single microSD card.</h2>
-            <p class="body mt-3">
-                At one sample every 10 seconds, Baro-RS generates over 8,000 readings per day. Raw storage would
-                fill a microSD card in weeks — so the system intelligently compresses history using multi-scale
-                rollups. Recent data keeps full resolution. Older data gets aggregated into summaries at
-                progressively larger time windows, preserving trends while staying within storage limits.
-            </p>
-            <p class="body mb-6">
-                The result: you can zoom from a 5-minute real-time view all the way out to the complete recording
-                history, and every scale tells a meaningful story.
-            </p>
-
-            <!-- Time scale visualization -->
-            <div class="grid grid-cols-3 gap-2.5 sm:grid-cols-6">
-                <div v-for="(scale, i) in [
-                    { label: '5 min', desc: 'Real-time' },
-                    { label: '1 hour', desc: 'Short-term' },
-                    { label: '24 hours', desc: 'Daily cycle' },
-                    { label: '7 days', desc: 'Weekly' },
-                    { label: '1 month', desc: 'Seasonal' },
-                    { label: 'All time', desc: 'Full history' },
-                ]" :key="scale.label"
-                    class="group flex flex-col items-center rounded-xl border border-white/6 bg-white/3 px-2 py-3 text-center transition-all duration-300 hover:border-baro-default/20 hover:bg-baro-default/5">
-                    <div
-                        class="mb-2 flex h-8 w-8 items-center justify-center rounded-full border border-baro-default/20 bg-baro-default/8 font-mono text-[10px] font-bold text-baro-default transition-transform duration-300 group-hover:scale-110">
-                        {{ String(i + 1).padStart(2, '0') }}
-                    </div>
-                    <p class="text-xs font-semibold text-white/85 mb-0.5">{{ scale.label }}</p>
-                    <p class="text-[10px] text-white/40">{{ scale.desc }}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             DRIVER GRID — GATEWAY TO SUB-PAGES
-        ============================================================ -->
-        <div id="drivers" class="w-full scroll-mt-8">
-            <div class="mb-6 text-center">
-                <div class="mb-3 flex items-center justify-center gap-3">
-                    <div class="h-px w-10 rounded-full bg-baro-default/40" />
-                    <span class="text-xs font-semibold uppercase tracking-widest text-baro-default">Rust Drivers</span>
-                    <div class="h-px w-10 rounded-full bg-baro-default/40" />
-                </div>
-                <h2 class="title-2 mb-2">Every driver, written from scratch.</h2>
-                <p class="subtitle">
-                    Most embedded projects lean on C libraries or community crates. Baro-RS doesn't — every sensor,
-                    every power rail, every I&#x00B2;C peripheral is driven by a custom <code
-                        class="text-baro-default/80 text-xs bg-baro-default/8 px-1.5 py-0.5 rounded">no_std</code> Rust
-                    driver,
-                    designed to be portable across any embedded platform. Click any driver to explore it.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <router-link v-for="driver in driverList" :key="driver.id"
-                    :to="{ name: 'baro-rs-driver', params: { driverId: driver.id } }"
-                    class="group relative glass-card overflow-hidden p-5 sm:p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl cursor-pointer no-underline">
-
-                    <!-- Hover glow -->
-                    <div class="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full blur-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-                        :style="{ backgroundColor: driver.color + '15' }" />
-
-                    <!-- Top border accent on hover -->
-                    <div class="absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                        :style="{ background: `linear-gradient(90deg, transparent, ${driver.color}80, transparent)` }" />
-
-                    <!-- Icon + Name -->
-                    <div class="mb-3 flex items-center gap-3">
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border transition-colors duration-300"
-                            :style="{ borderColor: driver.color + '30', backgroundColor: driver.color + '12' }">
-                            <i class="pi text-base" :class="driver.icon" :style="{ color: driver.color }" />
-                        </div>
-                        <div class="min-w-0 flex-1">
-                            <p class="text-sm font-bold text-white/90 group-hover:text-white transition-colors">{{
-                                driver.name }}</p>
-                            <p class="text-[10px] font-mono uppercase tracking-wider"
-                                :style="{ color: driver.color + 'aa' }">
-                                {{ driver.protocol }}
-                            </p>
-                        </div>
-                        <!-- Arrow indicator — always visible -->
-                        <div
-                            class="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-white/8 bg-white/4 transition-all duration-300 group-hover:border-white/15 group-hover:bg-white/8">
-                            <i
-                                class="pi pi-arrow-right text-[10px] text-white/30 transition-all duration-300 group-hover:text-white/70 group-hover:translate-x-0.5" />
-                        </div>
-                    </div>
-
-                    <!-- Description -->
-                    <p class="text-xs text-white/55 leading-relaxed mb-4">{{ driver.tagline }}</p>
-
-                    <!-- Bottom: key metric + explore hint -->
-                    <div class="flex items-center justify-between">
-                        <span class="inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-mono"
-                            :style="{ borderColor: driver.color + '25', backgroundColor: driver.color + '08', color: driver.color + 'cc' }">
-                            {{ driver.keyMetric }}
-                        </span>
-                        <span class="text-[10px] text-white/25 font-medium uppercase tracking-wider">Explore
-                            driver</span>
-                    </div>
-                </router-link>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             FUTURE VISION
-        ============================================================ -->
-        <div class="glass-card w-full p-6 sm:p-8">
-            <div class="flex items-center gap-2.5 mb-5">
-                <div class="h-0.5 w-6 rounded-full bg-baro-default" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-baro-default">What's Next</span>
-            </div>
-            <h2 class="title-2 mb-1">From breadboard to custom PCB.</h2>
-            <p class="body mb-6">
-                The current prototype proves the architecture works. The next step is a single custom PCB that
-                replaces the breadboard tangle with a clean, compact board housing 20+ environmental sensors —
-                CO&#x2082;, VOC, particulate matter, UV, barometric pressure, and more. One device, one firmware,
-                total environmental awareness.
-            </p>
-
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                <div v-for="(phase, i) in futureRoadmap" :key="phase.phase"
-                    class="rounded-xl border border-white/6 bg-white/3 p-4">
-                    <div class="mb-3 flex items-center gap-2">
-                        <div
-                            class="flex h-7 w-7 items-center justify-center rounded-full border border-baro-default/25 bg-baro-default/10 font-mono text-[10px] font-bold text-baro-default">
-                            {{ String(i + 1).padStart(2, '0') }}
-                        </div>
-                        <span class="text-sm font-semibold text-white/90">{{ phase.phase }}</span>
-                    </div>
-                    <ul class="flex flex-col gap-1.5">
-                        <li v-for="item in phase.items" :key="item"
-                            class="flex items-start gap-2 text-xs text-white/55">
-                            <i class="pi pi-chevron-right mt-0.5 shrink-0 text-[9px] text-baro-default/50" />
-                            <span>{{ item }}</span>
+                <aside class="origin-side">
+                    <div class="spec-label">// spec sheet</div>
+                    <ul class="spec-list">
+                        <li v-for="row in specReadout" :key="row.label">
+                            <span class="spec-k">{{ row.label }}</span>
+                            <span class="spec-dots" aria-hidden="true" />
+                            <span class="spec-v">{{ row.value }}</span>
                         </li>
                     </ul>
-                </div>
+                </aside>
             </div>
-        </div>
+        </section>
 
-        <!-- ============================================================
-             TECH STACK
-        ============================================================ -->
-        <div class="w-full">
-            <div class="mb-5 flex items-center justify-center gap-3">
-                <div class="h-px w-8 rounded-full bg-baro-default/30" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-baro-default/65">Built With</span>
-                <div class="h-px w-8 rounded-full bg-baro-default/30" />
-            </div>
-            <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <div v-for="tech in techStack" :key="tech.name" class="glass-card flex items-center gap-3 p-3.5">
-                    <div
-                        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-baro-default/20 bg-baro-default/10">
-                        <span class="font-mono text-xs font-bold text-baro-default">{{ tech.name.substring(0,
-                            2).toUpperCase() }}</span>
+        <section class="act act-drivers" id="drivers" data-act="02 · drivers">
+            <div class="drivers-label">// 06 drivers · embedded-hal 1.0</div>
+            <h2 class="drivers-title">six instruments, one bus.</h2>
+            <p class="drivers-kicker">each driver is its own crate, tested in isolation, shared by anyone on crates.io. click through for the full implementation notes.</p>
+            <div class="drivers-stack">
+                <RouterLink v-for="(d, i) in driverList" :key="d.id"
+                    :to="{ name: 'baro-rs-driver', params: { driverId: d.id } }"
+                    class="driver-row" :style="{ '--dc': d.color }">
+                    <span class="driver-idx">{{ String(i + 1).padStart(2, '0') }}</span>
+                    <span class="driver-swatch" />
+                    <div class="driver-body">
+                        <div class="driver-name">{{ d.name }}</div>
+                        <div class="driver-tag">{{ d.tagline }}</div>
                     </div>
-                    <div>
-                        <p class="text-sm font-semibold leading-tight text-white/90">{{ tech.name }}</p>
-                        <p class="mt-0.5 text-xs text-white/45">{{ tech.desc }}</p>
+                    <div class="driver-meta">
+                        <span>{{ d.protocol }}</span>
+                        <span>{{ d.keyMetric }}</span>
                     </div>
-                </div>
+                    <span class="driver-arrow">&rarr;</span>
+                </RouterLink>
             </div>
-        </div>
+        </section>
 
-        <!-- ============================================================
-             FOOTER NOTE
-        ============================================================ -->
-        <div class="pb-4">
-            <p class="mx-auto max-w-xl text-center text-xs italic leading-relaxed text-white/35">
-                Baro-RS is an ongoing project under active development. Hardware photos show the current breadboard
-                prototype. All Rust drivers are open-source under the MIT license.
+        <section class="act act-arch" data-act="03 · architecture">
+            <div class="arch-label">// architecture · internal topology</div>
+            <p class="arch-lede">
+                four levels, async end-to-end.  every edge is a typed channel;
+                every node a polled future that yields when its work is done.
             </p>
-        </div>
+            <div class="arch-canvas">
+                <!-- Grid backdrop inherits from .act-arch::before.  Edges drawn
+                     below the nodes; dots placed at each endpoint. -->
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="arch-svg">
+                    <!-- Orthogonal connectors: source.bottom → midY → target.top -->
+                    <template v-for="(e, i) in archEdges" :key="i">
+                        <path :d="e.d" class="arch-edge" />
+                        <circle :cx="e.sx" :cy="e.sy" r="0.55" class="arch-dot" />
+                        <circle :cx="e.tx" :cy="e.ty" r="0.55" class="arch-dot" />
+                    </template>
+                </svg>
+                <div v-for="n in architectureNodes" :key="n.id"
+                    class="arch-node" :class="`arch-node--${n.kind}`"
+                    :style="{ left: n.x + '%', top: n.y + '%' }">
+                    <span class="arch-node-label">{{ n.label }}</span>
+                    <span class="arch-node-sub">{{ n.sub }}</span>
+                </div>
+            </div>
 
-    </PageLayoutSpacer>
+            <!-- Legend: what the three node tiers actually are -->
+            <div class="arch-legend">
+                <div class="legend-item"><span class="legend-chip legend-chip--root" />compute root</div>
+                <div class="legend-item"><span class="legend-chip legend-chip--hub" />async runtime · bus</div>
+                <div class="legend-item"><span class="legend-chip legend-chip--leaf" />driver cluster</div>
+            </div>
+        </section>
+
+        <section class="act act-log" data-act="04 · log">
+            <div class="log-label">// commit log · recent</div>
+            <ol class="log-list">
+                <li v-for="c in commitLog" :key="c.sha" class="log-row">
+                    <span class="log-sha">{{ c.sha }}</span>
+                    <span class="log-date">{{ c.date }}</span>
+                    <span class="log-msg">{{ c.msg }}</span>
+                </li>
+            </ol>
+            <a href="https://github.com/trevorflahardy/baro.rs" target="_blank" rel="noopener" class="log-source">
+                view full source on github &rarr;
+            </a>
+        </section>
+    </article>
 </template>
 
 <style scoped>
-@keyframes dataStream {
-    0% {
-        left: -2%;
-        opacity: 0;
-    }
+.baro-page {
+    --ink: #f8fafc;
+    --amber: #f59e0b;
+    --amber-glow: rgba(245, 158, 11, 0.65);
+    --copper: #b87333;
+    --graphite: #0b0e10;
+    --graphite-2: #14181c;
 
-    5% {
-        opacity: 1;
-    }
-
-    95% {
-        opacity: 1;
-    }
-
-    100% {
-        left: 102%;
-        opacity: 0;
-    }
+    display: block;
+    background: var(--graphite);
+    color: var(--ink);
+    font-family: "SF Pro Display", "Inter", sans-serif;
+    background-image:
+        linear-gradient(rgba(245, 158, 11, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 158, 11, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    min-height: 100%;
 }
 
-@keyframes driverPulse {
-
-    0%,
-    100% {
-        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
-    }
-
-    50% {
-        box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.15);
-    }
+.act {
+    position: relative;
+    padding: 6rem clamp(1.5rem, 6vw, 6rem);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.driver-pulse {
-    animation: driverPulse 2.5s ease-in-out infinite;
+/* Numbered index markers along the left gutter — asymmetric anchor for each act. */
+.act::before {
+    content: attr(data-act);
+    position: absolute;
+    left: clamp(1rem, 3vw, 3rem);
+    top: 4.2rem;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    color: rgba(245, 158, 11, 0.4);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-transform: uppercase;
+    pointer-events: none;
 }
+
+.act-hero {
+    min-height: 88vh;
+    padding-top: 7rem;
+    overflow: hidden;
+}
+.act-hero::before { display: none; }
+
+.hero-scope {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.55;
+}
+
+.hero-stack {
+    position: relative;
+    z-index: 1;
+    max-width: 64rem;
+}
+
+.hero-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+.hero-meta .dot {
+    width: 0.45rem; height: 0.45rem; border-radius: 50%;
+    background: var(--amber);
+    box-shadow: 0 0 12px var(--amber-glow);
+    animation: pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%     { opacity: 0.45; transform: scale(0.85); }
+}
+
+.hero-title {
+    font-size: clamp(4rem, 14vw, 11rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 0.88;
+    margin: 0 0 1.5rem;
+    color: var(--ink);
+}
+.hero-title .dot-char { color: var(--amber); }
+
+.hero-kicker {
+    max-width: 30rem;
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: rgba(248, 250, 252, 0.7);
+    margin: 0 0 3rem;
+}
+
+.hero-ruler {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: end;
+    max-width: 34rem;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: rgba(248, 250, 252, 0.4);
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(248, 250, 252, 0.18);
+    position: relative;
+}
+.hero-ruler::before {
+    content: "";
+    position: absolute; top: -4px; left: 0;
+    width: 18%; height: 1px; background: var(--amber);
+}
+
+/* shared small section label */
+.origin-label, .spec-label, .drivers-label, .arch-label, .log-label {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+/* ORIGIN + SPEC — asymmetric 2-col on wide screens; stacked on mobile */
+.act-origin { padding: 6rem clamp(1.5rem, 6vw, 6rem) 5rem; }
+.origin-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    max-width: 96rem;
+    margin-left: clamp(1rem, 5vw, 4rem);
+}
+@media (min-width: 1024px) {
+    .origin-grid {
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+        gap: clamp(3rem, 6vw, 7rem);
+        align-items: start;
+    }
+    .origin-side {
+        position: sticky;
+        top: 3rem;
+        padding-left: 2.5rem;
+        border-left: 1px solid rgba(245, 158, 11, 0.18);
+    }
+}
+.origin-title {
+    font-size: clamp(1.4rem, 2.2vw, 2.1rem);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    max-width: 48rem;
+    margin: 0 0 1.5rem;
+    color: var(--ink);
+}
+.origin-title em { color: var(--amber); font-style: italic; font-weight: 600; }
+.origin-body {
+    max-width: 42rem;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: rgba(248, 250, 252, 0.7);
+    margin: 0;
+}
+.origin-body code {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.9em;
+    padding: 0.12rem 0.4rem;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.18);
+    border-radius: 3px;
+    color: var(--ink);
+}
+
+/* SPEC LIST */
+.act-spec { padding: 5rem 2.5rem; }
+.spec-list {
+    list-style: none; padding: 0; margin: 0;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.88rem;
+    max-width: 54rem;
+}
+.spec-list li {
+    display: grid;
+    grid-template-columns: 14rem 1fr auto;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.55rem 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.07);
+}
+.spec-k { color: rgba(248, 250, 252, 0.5); letter-spacing: 0.06em; }
+.spec-v { color: var(--ink); }
+.spec-dots {
+    display: block; height: 1px;
+    background-image: radial-gradient(circle, rgba(248,250,252,0.22) 1px, transparent 1px);
+    background-size: 6px 2px;
+    background-repeat: repeat-x;
+    align-self: center;
+}
+
+/* DRIVERS */
+.act-drivers { padding: 6rem 2.5rem; }
+.drivers-title {
+    font-size: clamp(1.7rem, 3vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.75rem;
+    color: var(--ink);
+}
+.drivers-kicker {
+    max-width: 36rem;
+    font-size: 0.95rem;
+    color: rgba(248, 250, 252, 0.65);
+    margin: 0 0 2.5rem;
+    line-height: 1.6;
+}
+.drivers-stack {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.driver-row {
+    display: grid;
+    grid-template-columns: 2.5rem 0.5rem 1fr auto 1.5rem;
+    gap: 1.25rem;
+    align-items: center;
+    padding: 1.15rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.25s ease, padding 0.25s ease;
+    position: relative;
+}
+.driver-row::before {
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px; background: var(--dc, var(--amber));
+    transform: scaleY(0.2); transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.driver-row:hover { background: rgba(245, 158, 11, 0.04); padding-left: 1rem; }
+.driver-row:hover::before { transform: scaleY(1); }
+.driver-idx {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    color: rgba(248, 250, 252, 0.35);
+    letter-spacing: 0.12em;
+}
+.driver-swatch {
+    width: 0.5rem; height: 0.5rem;
+    border-radius: 50%;
+    background: var(--dc, var(--amber));
+    box-shadow: 0 0 12px color-mix(in srgb, var(--dc, var(--amber)) 60%, transparent);
+}
+.driver-name {
+    font-weight: 600; font-size: 1rem; letter-spacing: -0.005em;
+    margin-bottom: 0.15rem;
+}
+.driver-tag {
+    font-size: 0.85rem;
+    color: rgba(248, 250, 252, 0.55);
+    line-height: 1.45;
+}
+.driver-meta {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 0.1rem;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: rgba(248, 250, 252, 0.5);
+}
+.driver-arrow {
+    font-family: "SF Mono", ui-monospace, monospace;
+    color: rgba(248, 250, 252, 0.35);
+    transition: transform 0.25s ease, color 0.25s ease;
+}
+.driver-row:hover .driver-arrow { transform: translateX(4px); color: var(--dc, var(--amber)); }
+
+/* ARCHITECTURE */
+.act-arch { padding: 6rem 2.5rem; }
+.arch-lede {
+    max-width: 48rem;
+    margin: 0.75rem 0 2.25rem;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(248, 250, 252, 0.55);
+}
+.arch-canvas {
+    position: relative;
+    height: 34rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--graphite-2);
+    background-image:
+        linear-gradient(rgba(245, 158, 11, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(245, 158, 11, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    overflow: visible;
+    border-radius: 2px;
+}
+.arch-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+.arch-edge {
+    fill: none;
+    stroke: rgba(245, 158, 11, 0.55);
+    stroke-width: 0.28;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+.arch-dot {
+    fill: var(--amber);
+    filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.8));
+}
+.arch-node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.25rem;
+    padding: 0.55rem 0.9rem;
+    background: var(--graphite);
+    font-family: "SF Mono", ui-monospace, monospace;
+    width: 11rem;          /* fixed so connectors always meet the same edge */
+    text-align: center;
+    border: 1px solid rgba(245, 158, 11, 0.45);
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.5),
+        0 8px 24px rgba(0, 0, 0, 0.35);
+}
+.arch-node--root {
+    border-color: var(--amber);
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.5),
+        0 0 24px rgba(245, 158, 11, 0.22),
+        0 8px 28px rgba(0, 0, 0, 0.45);
+}
+.arch-node--hub { border-color: rgba(245, 158, 11, 0.6); }
+.arch-node--leaf {
+    border-color: rgba(245, 158, 11, 0.28);
+    background: rgba(15, 17, 21, 0.85);
+}
+.arch-node-label {
+    font-size: 0.74rem;
+    letter-spacing: 0.22em;
+    color: var(--amber);
+    font-weight: 600;
+}
+.arch-node-sub {
+    font-size: 0.64rem;
+    color: rgba(248, 250, 252, 0.55);
+    letter-spacing: 0.04em;
+    line-height: 1.35;
+}
+
+.arch-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    color: rgba(248, 250, 252, 0.45);
+    text-transform: uppercase;
+}
+.legend-item { display: inline-flex; align-items: center; gap: 0.5rem; }
+.legend-chip {
+    display: inline-block;
+    width: 0.85rem; height: 0.85rem;
+    border: 1px solid rgba(245, 158, 11, 0.45);
+    background: var(--graphite);
+}
+.legend-chip--root { border-color: var(--amber); box-shadow: 0 0 8px rgba(245, 158, 11, 0.4); }
+.legend-chip--hub  { border-color: rgba(245, 158, 11, 0.6); }
+.legend-chip--leaf { border-color: rgba(245, 158, 11, 0.28); background: rgba(15, 17, 21, 0.85); }
+
+/* COMMIT LOG */
+.act-log { padding: 5rem 2.5rem 6rem; }
+.log-list {
+    list-style: none; padding: 0; margin: 0;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.82rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.log-row {
+    display: grid;
+    grid-template-columns: 5rem 6rem 1fr;
+    gap: 1rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: rgba(248, 250, 252, 0.7);
+}
+.log-sha { color: var(--amber); }
+.log-date { color: rgba(248, 250, 252, 0.4); }
+.log-source {
+    display: inline-block;
+    margin-top: 2.5rem;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(245, 158, 11, 0.4);
+    padding-bottom: 0.2rem;
+    transition: color 0.2s ease;
+}
+.log-source:hover { color: var(--ink); border-color: var(--ink); }
+
+/* light mode — the instrument keeps its graphite canvas even in light mode
+   because it represents an actual physical device with a black housing. */
 </style>
+
+

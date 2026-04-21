@@ -1,641 +1,592 @@
 <script setup lang="ts">
-import PageLayoutSpacer from "@/components/PageLayoutSpacer.vue";
-import Button from "@/components/Button.vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
-// Vite base URL — required for public/ assets when base !== "/"
 const base = import.meta.env.BASE_URL;
-
-// Pipeline: two phases tell the story
-const phase1 = [
-    {
-        n: '01',
-        icon: 'pi-file-edit',
-        label: 'Typst Source',
-        sub: '.typ files',
-        desc: 'Class notes authored in Typst — structured, semantic, version-controlled markup.',
-    },
-    {
-        n: '02',
-        icon: 'pi-cog',
-        label: 'Compiler',
-        sub: 'typst compile',
-        desc: 'Typst compiles the source to a pixel-perfect PDF in milliseconds.',
-    },
-    {
-        n: '03',
-        icon: 'pi-file',
-        label: 'PDF Output',
-        sub: '14 pages',
-        desc: 'A clean, structured PDF with headings, definitions, and code blocks intact.',
-    },
-];
-
-const phase2 = [
-    {
-        n: '04',
-        icon: 'pi-sitemap',
-        label: 'Chunking',
-        sub: 'semantic splits',
-        desc: 'PDF text is parsed and split into overlapping semantic chunks for retrieval.',
-    },
-    {
-        n: '05',
-        icon: 'pi-chart-scatter',
-        label: 'Embeddings',
-        sub: 'text-embedding-3',
-        desc: 'Each chunk is encoded into a high-dimensional vector via the OpenAI embedding model.',
-    },
-    {
-        n: '06',
-        icon: 'pi-database',
-        label: 'Vector Index',
-        sub: 'FAISS',
-        desc: 'Vectors are stored in a FAISS index for sub-millisecond cosine similarity search.',
-    },
-    {
-        n: '07',
-        icon: 'pi-sparkles',
-        label: 'AI Features',
-        sub: 'RAG-powered',
-        desc: 'Chat, quizzes, and flashcards — all grounded in retrieved class note context.',
-    },
-];
 
 const features = [
     {
-        icon: 'pi-comment',
-        title: 'AI Chat',
-        subtitle: 'Ask anything about the course.',
-        desc: 'The AI assistant has full retrieval access to all 14 pages of Secure Coding notes. Ask about mechanisms, cryptography, access control, or design principles — and get answers grounded in the actual lecture material, not hallucinations.',
-        screenshot: `${base}cnt_4419_study_hub/homepage.png`,
-        bullets: [
-            'RAG pipeline retrieves the most relevant note chunks per query',
-            'Answers cite concepts directly from the source material',
-            'Understands course-specific terminology and definitions',
-            'Persistent conversation context across the session',
+        icon: "📄",
+        title: "Typed Class Notes",
+        sub: "Typst → PDF, in-browser viewer",
+        body: "All 8 chapters of CNT 4419 authored in Typst, compiled to a crisp PDF, and viewable directly in the browser — zoom, search, and page navigation included.",
+        img: `${base}cnt_4419_study_hub/homepage.png`,
+        imgAlt: "Study Hub homepage with PDF viewer",
+        chapters: [
+            "Foundations — policy, mechanism, traces",
+            "CIA triad, safety & liveness properties",
+            "Enforcers — static/dynamic, sound/complete/precise",
+            "Mechanism categories — preventative, detective, containment",
+            "Secure Design Principles — PoLP, TOCTOU, defense in depth",
+            "Attack Vectors — confused deputy, phishing, DoS/DDoS",
+            "Access Control — RBAC, MAC, Bell-LaPadula, Biba",
+            "Memory & Buffers — overflow, ROP, ASLR, stack guards, CFI",
         ],
-        flip: false,
     },
     {
-        icon: 'pi-check-square',
-        title: 'AI Quiz Generator',
-        subtitle: 'Exam prep that knows your notes.',
-        desc: 'Generates multi-choice fill-in-the-blank questions pulled directly from the Typst source. Each question includes a difficulty tag, topic label, and quotes from actual lecture content — making every question genuinely relevant.',
-        screenshot: `${base}cnt_4419_study_hub/ai_quiz_gen_question.png`,
-        bullets: [
-            'Configurable question count with real-time generation progress',
-            'Fill-in-the-blank questions with direct note quotes as context',
-            'Difficulty tags: easy / medium / hard per question',
-            'Four answer choices generated from course concepts',
-        ],
-        flip: true,
+        icon: "🧠",
+        title: "Practice Quiz Engine",
+        sub: "500+ questions, AI explanations, XP system",
+        body: "Multiple-choice, true/false, and short-answer questions across all 8 chapters. Wrong answers trigger an on-device LLM explanation grounded in the actual notes. Earn XP, level up.",
+        img: `${base}cnt_4419_study_hub/ai_quiz_gen_question.png`,
+        imgAlt: "Quiz engine with AI explanations",
+        chapters: [],
     },
     {
-        icon: 'pi-clone',
-        title: 'AI Flashcards',
-        subtitle: 'Spaced repetition, auto-generated.',
-        desc: 'Flashcards generated from key concepts, definitions, and principles in the notes. Rate each card to track recall confidence. The flip animation reveals the full answer with full topic context.',
-        screenshot: `${base}cnt_4419_study_hub/ai_flashcard_answer.png`,
-        bullets: [
-            'Auto-generated from course definitions and key concepts',
-            'Recall rating system: Again / Good / Easy',
-            'Flip animation reveals answer with topic label',
-            'Delete cards you have mastered',
-        ],
-        flip: false,
+        icon: "💬",
+        title: "AI Chat Assistant",
+        sub: "On-device RAG — nothing leaves your browser",
+        body: "Transformers.js embeds query semantics; a WebGPU-accelerated on-device LLM generates answers grounded in the retrieved note passages. No API keys. No data collection. Fully offline after first load.",
+        img: `${base}cnt_4419_study_hub/ai_flashcard_answer.png`,
+        imgAlt: "AI Chat with grounded answers",
+        chapters: [],
+    },
+    {
+        icon: "📇",
+        title: "Flashcards",
+        sub: "Key concepts, spaced repetition",
+        body: "Flip-card decks derived from definitions and key claims in the notes. Review the terms that matter — CIA triad, PoLP, TOCTOU, ASLR, Bell-LaPadula — in a quick-fire format.",
+        img: `${base}cnt_4419_study_hub/ai_flashcard_question.png`,
+        imgAlt: "Flashcard review interface",
+        chapters: [],
     },
 ];
 
-const techStack = [
-    { name: 'Typst', icon: 'pi-file-edit', desc: 'Note authoring & PDF compilation' },
-    { name: 'Python', icon: 'pi-code', desc: 'Embedding pipeline & backend' },
-    { name: 'OpenAI API', icon: 'pi-sparkles', desc: 'Embeddings + chat completion' },
-    { name: 'FAISS', icon: 'pi-database', desc: 'Vector similarity index' },
-    { name: 'FastAPI', icon: 'pi-bolt', desc: 'REST API layer' },
-    { name: 'React', icon: 'pi-desktop', desc: 'Frontend web application' },
+const stack = [
+    { k: "FRAMEWORK",  v: "Nuxt 3 + Nuxt UI" },
+    { k: "NOTES",      v: "Typst → PDF" },
+    { k: "EMBEDDINGS", v: "Transformers.js (in-browser)" },
+    { k: "CHAT",       v: "WebGPU on-device LLM" },
+    { k: "HOSTING",    v: "GitHub Pages (fully static)" },
+    { k: "PRIVACY",    v: "No server, no data collection" },
 ];
-
 </script>
 
 <template>
-    <PageLayoutSpacer>
-
-        <!-- ============================================================
-             HERO
-        ============================================================ -->
-        <div class="relative w-full overflow-hidden rounded-2xl border border-white/8 shadow-2xl">
-
-            <!-- Dark base + green tinted bg -->
-            <div class="absolute inset-0 bg-[#080f0a]" />
-            <div class="absolute inset-0 bg-linear-to-br from-cnt-400/10 via-transparent to-cnt-400/4" />
-
-            <!-- Hex/diamond grid texture -->
-            <div class="absolute inset-0 opacity-25"
-                style="background-image: linear-gradient(rgba(52,211,153,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(52,211,153,0.15) 1px, transparent 1px); background-size: 32px 32px;" />
-
-            <!-- Glow orbs -->
-            <div class="pointer-events-none absolute -left-32 -top-32 h-lg w-lg rounded-full bg-cnt-400/20 blur-3xl" />
-            <div class="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-cnt-400/10 blur-3xl" />
-
-            <!-- Top edge line -->
-            <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-cnt-400/70 to-transparent" />
-
-            <div class="relative z-10 px-8 py-12 sm:px-12 sm:py-14 md:px-14 md:py-16">
-
-                <!-- Course badge -->
-                <div
-                    class="mb-6 inline-flex items-center gap-2 rounded-full border border-cnt-400/30 bg-cnt-400/10 px-4 py-1.5 backdrop-blur-sm">
-                    <span class="h-1.5 w-1.5 animate-pulse rounded-full bg-cnt-400" />
-                    <span class="font-mono text-xs font-semibold uppercase tracking-widest text-cnt-400">
-                        CNT 4419 · Secure Coding · University of South Florida
-                    </span>
-                </div>
-
-                <!-- Title -->
-                <h1 class="mb-4 text-5xl font-bold leading-none tracking-tight text-white sm:text-6xl md:text-7xl">
-                    Study<span class="text-cnt-400">.</span>Hub
-                </h1>
-
-                <!-- Tagline -->
-                <p class="mb-8 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg">
-                    I took Typst class notes, compiled them to PDF, chunked and embedded the content,
-                    and built a RAG-powered study tool — complete with AI chat, adaptive quiz generation,
-                    and auto-generated flashcards.
-                </p>
-
-                <!-- Status chips -->
-                <div class="mb-8 flex flex-wrap gap-2">
-                    <span v-for="tag in ['AI Chat', 'Quiz Generator', 'Flashcards', 'RAG Pipeline', 'Typst + PDF']"
-                        :key="tag"
-                        class="inline-flex items-center gap-1.5 rounded-lg border border-cnt-400/20 bg-cnt-400/8 px-2.5 py-1 font-mono text-xs text-cnt-400/70">
-                        <span class="h-1 w-1 rounded-full bg-cnt-400/50" />{{ tag }}
-                    </span>
-                </div>
-
-                <!-- CTAs -->
-                <div class="flex flex-row flex-wrap gap-3">
-                    <Button link="https://github.com/trevorflahardy/cnt_4419_class_notes" content="View on GitHub"
-                        icon="pi-github" background="bg-cnt-400/20 hover:bg-cnt-400/30 border border-cnt-400/40" />
-                </div>
-            </div>
+    <div class="chalk-hall">
+        <!-- Animated chalk-drawing background -->
+        <div class="chalk-bg" aria-hidden="true">
+            <svg class="chalk-doodles" viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
+                <!-- CIA triad triangle -->
+                <path class="doodle doodle--a" d="M80 200 L140 100 L200 200 Z" fill="none" />
+                <!-- Arrow pointing down -->
+                <path class="doodle doodle--b" d="M680 80 L680 180 M665 160 L680 180 L695 160" fill="none" />
+                <!-- Stack frame diagram -->
+                <rect class="doodle doodle--c" x="820" y="300" width="120" height="20" />
+                <rect class="doodle doodle--c" x="820" y="325" width="120" height="20" />
+                <rect class="doodle doodle--c" x="820" y="350" width="120" height="20" />
+                <!-- Bell-LaPadula lattice -->
+                <circle class="doodle doodle--d" cx="150" cy="480" r="18" fill="none" />
+                <circle class="doodle doodle--d" cx="150" cy="540" r="18" fill="none" />
+                <path  class="doodle doodle--d" d="M150 462 L150 522" />
+                <!-- Equation: y = mx + b -->
+                <text class="doodle-text doodle--e" x="500" y="120">CIA = {C, I, A}</text>
+                <!-- Access control -->
+                <text class="doodle-text doodle--f" x="350" y="580">subject → object</text>
+                <!-- Buffer overflow arrow -->
+                <path class="doodle doodle--g" d="M700 450 C 750 400 800 420 830 450" fill="none" />
+                <!-- Circle representing a trust boundary -->
+                <ellipse class="doodle doodle--h" cx="480" cy="420" rx="90" ry="55" fill="none" />
+            </svg>
+            <div class="chalk-bg__vignette" />
         </div>
 
-        <!-- ============================================================
-             STATS
-        ============================================================ -->
-        <div class="grid w-full grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-            <div v-for="stat in [
-                { value: '3000+', label: 'Theoretical optimized PDF sizing', icon: 'pi-file' },
-                { value: '3', label: 'AI Study Modes', icon: 'pi-sparkles' },
-                { value: 'RAG', label: 'Retrieval Model', icon: 'pi-chart-scatter' },
-                { value: '100%', label: 'Note Coverage', icon: 'pi-check-circle' },
-            ]" :key="stat.label" class="glass-card flex flex-col items-center gap-1.5 px-4 py-5 text-center">
-                <div
-                    class="mb-1 flex h-8 w-8 items-center justify-center rounded-xl border border-cnt-400/20 bg-cnt-400/10">
-                    <i class="pi text-cnt-400 text-sm" :class="stat.icon" />
-                </div>
-                <span class="font-mono text-2xl font-bold leading-none tracking-tight text-cnt-400 sm:text-3xl">{{
-                    stat.value }}</span>
-                <span class="text-xs leading-tight text-white/55">{{ stat.label }}</span>
+        <header class="chalk-head">
+            <div class="chalk-head__meta">
+                <span class="meta-label">CNT 4419 · SECURE CODING · SPRING 2026</span>
+                <span class="meta-label">USF · Tampa, FL</span>
             </div>
-        </div>
-
-        <!-- ============================================================
-             ORIGIN
-        ============================================================ -->
-        <div class="glass-card flex w-full flex-col items-start gap-7 p-6 sm:p-8 md:flex-row md:gap-10">
-            <div class="min-w-0 flex-1">
-                <div class="mb-4 flex items-center gap-2.5">
-                    <div class="h-0.5 w-6 rounded-full bg-cnt-400" />
-                    <span class="text-xs font-semibold uppercase tracking-widest text-cnt-400">The Problem</span>
-                </div>
-                <h2 class="title-2 mb-0">Notes that actually study back.</h2>
-                <p class="body mt-3">
-                    Taking good notes is only half the battle. For CNT 4419: Secure Coding at USF, I wrote
-                    structured Typst notes throughout the semester — but reviewing them for exams meant scrolling
-                    through a static PDF with no way to query, quiz, or reinforce the material interactively.
-                </p>
-                <p class="body mb-0">
-                    So I built the Study Hub: a pipeline that takes those Typst sources, compiles them to PDF,
-                    embeds every chunk, and wraps it all in an AI study interface. Your notes become a tutor.
-                </p>
-            </div>
-            <!-- Accent visual -->
-            <div class="flex w-full shrink-0 flex-col gap-3 md:w-56">
-                <div class="rounded-xl border border-cnt-400/20 bg-cnt-400/6 p-4">
-                    <p class="mb-1 font-mono text-xs text-cnt-400/60 uppercase tracking-widest">Before</p>
-                    <p class="text-sm font-medium text-white/80">Static PDF. Ctrl+F. Pray.</p>
-                </div>
-                <div class="flex items-center justify-center">
-                    <i class="pi pi-arrow-down text-cnt-400/40 text-lg" />
-                </div>
-                <div class="rounded-xl border border-cnt-400/40 bg-cnt-400/12 p-4">
-                    <p class="mb-1 font-mono text-xs text-cnt-400/80 uppercase tracking-widest">After</p>
-                    <p class="text-sm font-medium text-white/90">Ask it anything. Quiz yourself.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             THE PIPELINE — signature section
-        ============================================================ -->
-        <div class="w-full">
-            <div class="mb-8 text-center">
-                <div class="mb-3 flex items-center justify-center gap-3">
-                    <div class="h-px w-10 rounded-full bg-cnt-400/40" />
-                    <span class="text-xs font-semibold uppercase tracking-widest text-cnt-400">End-to-End
-                        Pipeline</span>
-                    <div class="h-px w-10 rounded-full bg-cnt-400/40" />
-                </div>
-                <h2 class="title-2 mb-2">From Typst to Intelligence.</h2>
-                <p class="subtitle">Seven steps turn raw class notes into a queryable AI knowledge base.</p>
-            </div>
-
-            <!-- Phase label -->
-            <div class="mb-3 flex items-center gap-3">
-                <span
-                    class="rounded-full border border-cnt-400/30 bg-cnt-400/10 px-3 py-0.5 text-xs font-semibold text-cnt-400 tracking-wide">Phase
-                    1 — Authoring & Compilation</span>
-                <div class="h-px flex-1 bg-cnt-400/15" />
-            </div>
-
-            <!-- Phase 1 nodes -->
-            <div class="relative mb-2 flex flex-col gap-3 sm:flex-row sm:gap-0">
-                <!-- Mobile: vertical connector lines drawn with pseudo approach -->
-                <template v-for="(step, i) in phase1" :key="step.n">
-                    <div class="relative flex flex-col sm:flex-1 sm:items-center sm:text-center">
-                        <!-- Node card -->
-                        <div
-                            class="flex flex-row items-start gap-3 rounded-xl border border-cnt-400/20 bg-cnt-400/6 p-4 sm:flex-col sm:items-center sm:gap-2 sm:p-5 backdrop-blur-sm">
-                            <div
-                                class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cnt-400/25 bg-cnt-400/12 sm:mb-1">
-                                <i class="pi text-cnt-400 text-base sm:text-lg" :class="step.icon" />
-                            </div>
-                            <div class="min-w-0">
-                                <div class="mb-0.5 flex items-center gap-2 sm:justify-center">
-                                    <span class="font-mono text-xs text-cnt-400/50">{{ step.n }}</span>
-                                    <span class="text-sm font-semibold text-white/90">{{ step.label }}</span>
-                                </div>
-                                <span class="font-mono text-xs text-cnt-400/60 sm:block">{{ step.sub }}</span>
-                                <p class="mt-1.5 text-xs leading-relaxed text-white/50 sm:mt-2">{{ step.desc }}</p>
-                            </div>
-                        </div>
-                        <!-- Mobile vertical line -->
-                        <div v-if="i < phase1.length - 1" class="ml-[21px] h-3 w-px bg-cnt-400/20 sm:hidden" />
-                    </div>
-
-                    <!-- Desktop horizontal arrow connector -->
-                    <div v-if="i < phase1.length - 1" class="hidden shrink-0 items-center px-1 sm:flex">
-                        <div class="h-px w-6 bg-cnt-400/30" />
-                        <svg width="8" height="10" viewBox="0 0 8 10" class="text-cnt-400/40" fill="currentColor">
-                            <path d="M0 0 L8 5 L0 10 Z" />
-                        </svg>
-                    </div>
-                </template>
-            </div>
-
-            <!-- Phase turn-down connector -->
-            <div class="my-2 flex items-center gap-3 pl-2 sm:justify-end sm:pr-2">
-                <div class="h-px flex-1 bg-cnt-400/10 sm:flex-none sm:w-0" />
-                <div class="flex items-center gap-1.5 text-xs text-cnt-400/40 font-mono">
-                    <i class="pi pi-arrow-down text-xs" />
-                    <span>pipeline continues</span>
-                </div>
-                <div class="h-px flex-1 bg-cnt-400/10" />
-            </div>
-
-            <!-- Phase 2 label -->
-            <div class="mb-3 flex items-center gap-3">
-                <span
-                    class="rounded-full border border-cnt-400/30 bg-cnt-400/10 px-3 py-0.5 text-xs font-semibold text-cnt-400 tracking-wide">Phase
-                    2 — Embedding & Retrieval</span>
-                <div class="h-px flex-1 bg-cnt-400/15" />
-            </div>
-
-            <!-- Phase 2 nodes -->
-            <div class="relative flex flex-col gap-3 sm:flex-row sm:gap-0">
-                <template v-for="(step, i) in phase2" :key="step.n">
-                    <div class="relative flex flex-col sm:flex-1 sm:items-center sm:text-center">
-                        <div class="flex flex-row items-start gap-3 rounded-xl border border-cnt-400/25 bg-cnt-400/8 p-4 sm:flex-col sm:items-center sm:gap-2 sm:p-5 backdrop-blur-sm"
-                            :class="step.n === '07' ? 'border-cnt-400/50 bg-cnt-400/15' : ''">
-                            <div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-cnt-400/25 bg-cnt-400/12 sm:mb-1"
-                                :class="step.n === '07' ? 'border-cnt-400/60 bg-cnt-400/25' : ''">
-                                <i class="pi text-cnt-400 text-base sm:text-lg" :class="step.icon" />
-                            </div>
-                            <div class="min-w-0">
-                                <div class="mb-0.5 flex items-center gap-2 sm:justify-center">
-                                    <span class="font-mono text-xs text-cnt-400/50">{{ step.n }}</span>
-                                    <span class="text-sm font-semibold"
-                                        :class="step.n === '07' ? 'text-cnt-400' : 'text-white/90'">{{ step.label
-                                        }}</span>
-                                </div>
-                                <span class="font-mono text-xs text-cnt-400/60 sm:block">{{ step.sub }}</span>
-                                <p class="mt-1.5 text-xs leading-relaxed text-white/50 sm:mt-2">{{ step.desc }}</p>
-                            </div>
-                        </div>
-                        <div v-if="i < phase2.length - 1" class="ml-[21px] h-3 w-px bg-cnt-400/20 sm:hidden" />
-                    </div>
-
-                    <div v-if="i < phase2.length - 1" class="hidden shrink-0 items-center px-1 sm:flex">
-                        <div class="h-px w-6 bg-cnt-400/30" />
-                        <svg width="8" height="10" viewBox="0 0 8 10" class="text-cnt-400/40" fill="currentColor">
-                            <path d="M0 0 L8 5 L0 10 Z" />
-                        </svg>
-                    </div>
-                </template>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             TYPST SECTION
-        ============================================================ -->
-        <div class="glass-card w-full overflow-hidden p-0">
-            <div class="flex flex-col lg:flex-row">
-                <!-- Left: explanation -->
-                <div class="flex-1 p-6 sm:p-8">
-                    <div class="mb-4 flex items-center gap-2.5">
-                        <div class="h-0.5 w-6 rounded-full bg-cnt-400" />
-                        <span class="text-xs font-semibold uppercase tracking-widest text-cnt-400">The Source
-                            Format</span>
-                    </div>
-                    <h2 class="title-2 mb-0">Why Typst?</h2>
-                    <p class="body mt-3">
-                        <strong class="text-white/90">Typst</strong> is a modern markup-based typesetting system —
-                        think LaTeX but with a sane syntax. Notes written in <code
-                            class="rounded bg-cnt-400/10 px-1.5 py-0.5 font-mono text-xs text-cnt-400">.typ</code>
-                        files are version-controlled in Git, compile in milliseconds, and produce perfectly
-                        consistent PDFs every time.
-                    </p>
-                    <p class="body mb-0">
-                        The structured heading hierarchy (<code
-                            class="rounded bg-cnt-400/10 px-1.5 py-0.5 font-mono text-xs text-cnt-400">=</code>, <code
-                            class="rounded bg-cnt-400/10 px-1.5 py-0.5 font-mono text-xs text-cnt-400">==</code>)
-                        and custom <code
-                            class="rounded bg-cnt-400/10 px-1.5 py-0.5 font-mono text-xs text-cnt-400">#definition[]</code>
-                        blocks
-                        make the output semantically rich — which means better chunk boundaries when embedding.
-                    </p>
-
-                    <!-- Typst advantages -->
-                    <div class="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
-                        <div v-for="adv in [
-                            { icon: 'pi-bolt', text: 'Millisecond compilation' },
-                            { icon: 'pi-github', text: 'Git-native & diffable' },
-                            { icon: 'pi-sitemap', text: 'Semantic heading structure' },
-                            { icon: 'pi-code', text: 'Custom function blocks' },
-                        ]" :key="adv.text" class="flex items-center gap-2 text-sm text-white/65">
-                            <i class="pi text-cnt-400 text-xs shrink-0" :class="adv.icon" />
-                            {{ adv.text }}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right: styled code block -->
-                <div class="lg:w-[52%] shrink-0 border-t border-white/6 lg:border-t-0 lg:border-l">
-                    <!-- Fake editor chrome -->
-                    <div class="flex items-center gap-1.5 border-b border-white/6 bg-white/2 px-4 py-2.5">
-                        <div class="h-2.5 w-2.5 rounded-full bg-white/10" />
-                        <div class="h-2.5 w-2.5 rounded-full bg-white/10" />
-                        <div class="h-2.5 w-2.5 rounded-full bg-white/10" />
-                        <span class="ml-3 font-mono text-xs text-white/25">access_control.typ</span>
-                        <span
-                            class="ml-auto rounded bg-cnt-400/15 px-1.5 py-0.5 font-mono text-xs text-cnt-400/70">typst</span>
-                    </div>
-                    <!-- Code content -->
-                    <div class="overflow-x-auto p-5 font-mono text-xs leading-6 sm:text-sm">
-                        <div class="text-cnt-400 font-semibold">= Access Control Mechanisms</div>
-                        <div class="h-2" />
-                        <div class="text-white/65">Access control determines <span
-                                class="italic text-white/85">who</span> can
-                            access</div>
-                        <div class="text-white/65"><span class="italic text-white/85">what</span> resources and under
-                            <span class="italic text-white/85">what conditions</span>.
-                        </div>
-                        <div class="h-2" />
-                        <div class="text-cnt-400/75 font-semibold">== Mandatory Access Control (MAC)</div>
-                        <div class="text-white/65">The system enforces policy — users cannot override it.</div>
-                        <div class="h-2" />
-                        <div class="text-cnt-400/60">#definition[</div>
-                        <div class="pl-4 text-white/75"> <span class="font-bold text-white/90">*Bell-LaPadula*</span>:
-                            "No read
-                            up, no write down."</div>
-                        <div class="pl-4 text-white/65"> Designed to preserve <span
-                                class="font-bold text-white/85">*confidentiality*</span>.</div>
-                        <div class="text-cnt-400/60">]</div>
-                        <div class="h-2" />
-                        <div class="text-white/65"><span class="text-cnt-400/70">-</span> Subject label must <span
-                                class="font-bold text-white/85">*dominate*</span> object label to read</div>
-                        <div class="text-white/65"><span class="text-cnt-400/70">-</span> Write-down is prohibited to
-                            prevent
-                            data leakage</div>
-                        <!-- Blinking cursor -->
-                        <div class="mt-1 inline-block h-4 w-0.5 bg-cnt-400 animate-pulse" />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             AI FEATURES HEADER
-        ============================================================ -->
-        <div class="text-center">
-            <div class="mb-3 flex items-center justify-center gap-3">
-                <div class="h-px w-10 rounded-full bg-cnt-400/40" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-cnt-400">AI Features</span>
-                <div class="h-px w-10 rounded-full bg-cnt-400/40" />
-            </div>
-            <h2 class="title-2 mb-2">Three ways to study smarter.</h2>
-            <p class="subtitle">Each mode is powered by the same RAG pipeline — different interface, same grounded
-                intelligence.
+            <h1 class="chalk-title">
+                CNT<span class="chalk-title__accent"> 4419 </span>Study Hub
+            </h1>
+            <p class="chalk-sub">
+                A complete AI-powered study platform for Secure Coding — typed notes, quiz engine,
+                and on-device chat, all running in your browser. No server. No data leaves your machine.
             </p>
-        </div>
+            <div class="chalk-ctas">
+                <a class="chalk-btn chalk-btn--primary" href="https://trevorflahardy.github.io/cnt_4419_class_notes/" target="_blank" rel="noreferrer">
+                    Open Study Hub
+                </a>
+                <a class="chalk-btn" href="https://github.com/trevorflahardy/cnt_4419_class_notes" target="_blank" rel="noreferrer">
+                    GitHub →
+                </a>
+            </div>
+        </header>
 
-        <!-- ============================================================
-             FEATURE CARDS
-        ============================================================ -->
-        <div class="flex w-full flex-col gap-5 sm:gap-6">
-            <div v-for="feature in features" :key="feature.title" class="glass-card w-full overflow-hidden p-5 sm:p-7">
-                <div class="flex flex-col items-start gap-6"
-                    :class="feature.flip ? 'lg:flex-row-reverse' : 'lg:flex-row'">
-                    <!-- Text side -->
-                    <div class="min-w-0 flex-1">
-                        <div class="mb-4 flex items-center gap-3">
-                            <div
-                                class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-cnt-400/25 bg-cnt-400/12">
-                                <i class="pi text-cnt-400 text-base" :class="feature.icon" />
-                            </div>
-                            <div>
-                                <h3 class="card-title mb-0 leading-snug">{{ feature.title }}</h3>
-                                <p class="mt-0.5 text-xs font-medium tracking-wide text-cnt-400/70">{{ feature.subtitle
-                                }}</p>
-                            </div>
-                        </div>
-                        <p class="card-body mb-5">{{ feature.desc }}</p>
-                        <ul class="flex flex-col gap-2.5">
-                            <li v-for="bullet in feature.bullets" :key="bullet"
-                                class="flex items-start gap-2.5 text-sm leading-snug text-white/70">
-                                <i class="pi pi-check-circle mt-0.5 shrink-0 text-sm text-cnt-400" />
-                                <span>{{ bullet }}</span>
-                            </li>
-                        </ul>
+        <!-- Feature cards -->
+        <section class="chalk-features">
+            <div v-for="(f, i) in features" :key="f.title" class="feature-row" :class="i % 2 === 1 ? 'feature-row--flip' : ''">
+                <div class="feature-text">
+                    <div class="feature-eyebrow">
+                        <span class="feature-icon">{{ f.icon }}</span>
+                        <span class="feature-sub">{{ f.sub }}</span>
                     </div>
-
-                    <!-- Screenshot side -->
-                    <div class="w-full shrink-0 lg:w-[48%]">
-                        <div
-                            class="overflow-hidden rounded-xl border border-white/8 bg-[#0d1a10] shadow-xl shadow-black/50">
-                            <!-- Fake app chrome -->
-                            <div class="flex items-center gap-1.5 border-b border-white/6 px-3 py-2">
-                                <div class="h-2 w-2 rounded-full bg-white/15" />
-                                <div class="h-2 w-2 rounded-full bg-white/15" />
-                                <div class="h-2 w-2 rounded-full bg-white/15" />
-                                <span class="ml-2 font-mono text-xs text-white/20">CNT 4419 · Study Hub</span>
-                                <div class="ml-auto flex items-center gap-1">
-                                    <span class="h-1.5 w-1.5 rounded-full bg-cnt-400 animate-pulse" />
-                                    <span class="font-mono text-xs text-cnt-400/60">AI Ready</span>
-                                </div>
-                            </div>
-                            <img :src="feature.screenshot" :alt="`${feature.title} screenshot`" class="w-full" />
-                        </div>
-                    </div>
+                    <h2 class="feature-title">{{ f.title }}</h2>
+                    <p class="feature-body">{{ f.body }}</p>
+                    <ul v-if="f.chapters.length" class="chapter-list">
+                        <li v-for="ch in f.chapters" :key="ch">{{ ch }}</li>
+                    </ul>
+                </div>
+                <div class="feature-shot">
+                    <img :src="f.img" :alt="f.imgAlt" loading="lazy" />
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- ============================================================
-             HOW RAG WORKS
-        ============================================================ -->
-        <div class="relative w-full overflow-hidden rounded-2xl border border-white/6 bg-[#080f0a] p-6 sm:p-8">
-            <!-- Subtle grid -->
-            <div class="absolute inset-0 opacity-15"
-                style="background-image: linear-gradient(rgba(52,211,153,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(52,211,153,0.2) 1px, transparent 1px); background-size: 24px 24px;" />
-            <div class="relative z-10">
-                <div class="mb-6 text-center">
-                    <div class="mb-3 flex items-center justify-center gap-3">
-                        <div class="h-px w-8 rounded-full bg-cnt-400/35" />
-                        <span class="text-xs font-semibold uppercase tracking-widest text-cnt-400/75">Under the
-                            Hood</span>
-                        <div class="h-px w-8 rounded-full bg-cnt-400/35" />
-                    </div>
-                    <h2 class="title-2 mb-2">How RAG Actually Works.</h2>
-                    <p class="subtitle max-w-xl mx-auto">Every AI response is grounded in retrieved content from the
-                        actual
-                        notes — not hallucination.</p>
+        <!-- RAG technical deep-dive -->
+        <section class="chalk-rag">
+            <div class="rag-inner">
+                <div class="rag-header">
+                    <span class="rag-kicker">Under the Hood</span>
+                    <h2 class="rag-title">The AI Engine</h2>
+                    <p class="rag-sub">Retrieval-Augmented Generation, running entirely in your browser — no server, no API keys, no data ever leaving your machine.</p>
                 </div>
 
-                <!-- RAG flow diagram -->
-                <div class="flex flex-col items-center gap-3 sm:flex-row sm:items-stretch sm:gap-0">
-                    <template v-for="(node, i) in [
-                        { label: 'User Query', sub: 'natural language', icon: 'pi-comment', glow: false },
-                        { label: 'Embed Query', sub: 'text-embedding-3', icon: 'pi-chart-scatter', glow: false },
-                        { label: 'Search Index', sub: 'cosine similarity', icon: 'pi-database', glow: false },
-                        { label: 'Top-K Chunks', sub: 'from class notes', icon: 'pi-file', glow: false },
-                        { label: 'Llama 3.2-3B', sub: 'with context', icon: 'pi-sparkles', glow: true },
-                    ]" :key="node.label">
-                        <div class="flex shrink-0 flex-col items-center rounded-xl px-4 py-3 text-center sm:flex-1 sm:rounded-xl"
-                            :class="node.glow ? 'border border-cnt-400/40 bg-cnt-400/12' : 'border border-white/8 bg-white/4'">
-                            <i class="pi mb-1.5 text-lg"
-                                :class="[node.icon, node.glow ? 'text-cnt-400' : 'text-white/50']" />
-                            <p class="text-sm font-semibold" :class="node.glow ? 'text-cnt-400' : 'text-white/80'">{{
-                                node.label }}</p>
-                            <p class="font-mono text-xs text-white/35">{{ node.sub }}</p>
+                <div class="rag-pipeline">
+                    <div class="rag-step">
+                        <span class="rag-step__n">01</span>
+                        <div class="rag-step__content">
+                            <h3 class="rag-step__title">Document Ingestion</h3>
+                            <p class="rag-step__body">The CNT 4419 notes — 8 chapters of Typst-authored PDFs — are parsed and split into overlapping text chunks at build time. Each chunk is sized to preserve full concepts: a paragraph about Bell-LaPadula stays together, not split across two chunks where context evaporates.</p>
                         </div>
-                        <!-- Arrow -->
-                        <div v-if="i < 4" class="flex items-center justify-center py-0 sm:px-1">
-                            <svg width="16" height="12" viewBox="0 0 16 12"
-                                class="rotate-90 text-cnt-400/30 sm:rotate-0" fill="currentColor">
-                                <path d="M0 6 H12 M8 2 L14 6 L8 10" stroke="currentColor" stroke-width="1.5" fill="none"
-                                    stroke-linecap="round" />
-                            </svg>
+                    </div>
+                    <div class="rag-connector" aria-hidden="true"><span class="rag-arrow">↓</span></div>
+                    <div class="rag-step">
+                        <span class="rag-step__n">02</span>
+                        <div class="rag-step__content">
+                            <h3 class="rag-step__title">Embedding with Transformers.js</h3>
+                            <p class="rag-step__body">Each chunk is converted to a 384-dimensional vector using <code>all-MiniLM-L6-v2</code> — a lightweight sentence transformer that runs entirely in the browser via Transformers.js and ONNX Runtime Web. The vectors are precomputed and bundled with the app so startup is instant.</p>
                         </div>
-                    </template>
-                </div>
-
-                <!-- Note source annotation -->
-                <div class="mt-5 flex items-center justify-center gap-2 text-xs text-white/35">
-                    <div class="h-px w-8 rounded-full bg-white/10" />
-                    <span>Context window filled with retrieved Typst-sourced content — model never guesses</span>
-                    <div class="h-px w-8 rounded-full bg-white/10" />
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             QUIZ GENERATION IN PROGRESS (bonus screenshot)
-        ============================================================ -->
-        <div class="glass-card w-full p-5 sm:p-7">
-            <div class="flex flex-col items-start gap-6 md:flex-row md:items-center">
-                <div class="flex-1">
-                    <div
-                        class="mb-3 inline-flex items-center gap-1.5 rounded-lg border border-cnt-400/20 bg-cnt-400/8 px-2.5 py-1">
-                        <span class="font-mono text-xs font-semibold text-cnt-400">Real-time generation</span>
                     </div>
-                    <h3 class="card-title mb-1">Watch the AI work.</h3>
-                    <p class="card-body mb-4">
-                        Quiz generation is streamed in real time — a progress indicator shows each question
-                        being built as the model processes retrieved context from the notes. No waiting for a
-                        batch; the interface updates live.
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        <span
-                            class="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-white/55">Streamed
-                            output</span>
-                        <span
-                            class="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-white/55">Live
-                            progress bar</span>
-                        <span
-                            class="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-white/55">Configurable
-                            count</span>
-                    </div>
-                </div>
-                <div class="w-full shrink-0 md:w-[44%]">
-                    <div
-                        class="overflow-hidden rounded-xl border border-white/8 bg-[#0d1a10] shadow-xl shadow-black/50">
-                        <div class="flex items-center gap-1.5 border-b border-white/6 px-3 py-2">
-                            <div class="h-2 w-2 rounded-full bg-white/15" />
-                            <div class="h-2 w-2 rounded-full bg-white/15" />
-                            <div class="h-2 w-2 rounded-full bg-white/15" />
-                            <span class="ml-2 font-mono text-xs text-white/20">Quiz Generator</span>
+                    <div class="rag-connector" aria-hidden="true"><span class="rag-arrow">↓</span></div>
+                    <div class="rag-step">
+                        <span class="rag-step__n">03</span>
+                        <div class="rag-step__content">
+                            <h3 class="rag-step__title">Semantic Retrieval</h3>
+                            <p class="rag-step__body">When you ask a question, your query is embedded using the same model. Cosine similarity is computed against every stored chunk vector. The top-k most relevant passages are retrieved — so "what is the confused deputy problem?" surfaces exactly the right section on privilege escalation, not just keyword matches.</p>
                         </div>
-                        <img :src="`${base}cnt_4419_study_hub/ai_quiz_gen_in_progress.png`"
-                            alt="Quiz generation in progress" class="w-full" />
+                    </div>
+                    <div class="rag-connector" aria-hidden="true"><span class="rag-arrow">↓</span></div>
+                    <div class="rag-step">
+                        <span class="rag-step__n">04</span>
+                        <div class="rag-step__content">
+                            <h3 class="rag-step__title">On-Device LLM Generation</h3>
+                            <p class="rag-step__body">The retrieved passages are assembled into a grounded prompt and fed to a WebGPU-accelerated on-device language model. The LLM generates an answer that's anchored to the actual notes — no hallucinations about CNT 4419 content. WebGPU inference runs at near-native speed on modern GPUs.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- ============================================================
-             TECH STACK
-        ============================================================ -->
-        <div class="w-full">
-            <div class="mb-5 flex items-center justify-center gap-3">
-                <div class="h-px w-8 rounded-full bg-cnt-400/30" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-cnt-400/65">Built With</span>
-                <div class="h-px w-8 rounded-full bg-cnt-400/30" />
-            </div>
-            <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
-                <div v-for="tech in techStack" :key="tech.name" class="glass-card flex items-center gap-3 p-3.5 sm:p-4">
-                    <div
-                        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-cnt-400/20 bg-cnt-400/10">
-                        <i class="pi text-cnt-400 text-sm" :class="tech.icon" />
-                    </div>
+                <div class="rag-privacy">
+                    <span class="rag-privacy__icon">🔒</span>
                     <div>
-                        <p class="text-sm font-semibold leading-tight text-white/90">{{ tech.name }}</p>
-                        <p class="mt-0.5 text-xs text-white/45">{{ tech.desc }}</p>
+                        <h3 class="rag-privacy__title">Why on-device matters</h3>
+                        <p class="rag-privacy__body">Every step — embedding, retrieval, generation — runs in your browser's JavaScript runtime. Your questions, your notes, your answers: none of it ever reaches a server. There are no API keys to manage, no usage costs, no data collection. Once the model weights are cached after first load, it works completely offline. This isn't a privacy policy — it's an architectural guarantee.</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- ============================================================
-             FOOTER
-        ============================================================ -->
-        <div class="pb-4">
-            <p class="mx-auto max-w-xl text-center text-xs italic leading-relaxed text-white/35">
-                Built for CNT 4419: Secure Coding at the University of South Florida.
-                The Typst source notes, embedding pipeline, and AI interface are all open-source on GitHub.
+        <!-- Tech stack -->
+        <section class="chalk-stack">
+            <h2 class="stack-head">Tech Stack</h2>
+            <div class="stack-grid">
+                <div v-for="s in stack" :key="s.k" class="stack-item">
+                    <span class="stack-k">{{ s.k }}</span>
+                    <span class="stack-v">{{ s.v }}</span>
+                </div>
+            </div>
+        </section>
+
+        <footer class="chalk-foot">
+            <span class="erase-line" aria-hidden="true" />
+            <p class="foot-txt">
+                — end of lecture.
+                <a href="https://trevorflahardy.github.io/cnt_4419_class_notes/">open study hub</a>
+                ·
+                <a href="https://github.com/trevorflahardy/cnt_4419_class_notes">source</a> —
             </p>
-        </div>
+        </footer>
 
-    </PageLayoutSpacer>
+        <div class="ledge" aria-hidden="true">
+            <span class="chalk-stick chalk-stick--a" />
+            <span class="chalk-stick chalk-stick--b" />
+            <span class="eraser" />
+        </div>
+    </div>
 </template>
+
+<style scoped>
+.chalk-hall {
+    --board: #16362b;
+    --chalk: #f0ece0;
+    --chalk-soft: rgba(240, 236, 224, 0.78);
+    --chalk-mute: rgba(240, 236, 224, 0.52);
+    --chalk-faint: rgba(240, 236, 224, 0.28);
+    --chalk-yellow: #f2d46b;
+    --chalk-pink: #e8a2b8;
+    --chalk-blue: #9ec7e5;
+    --rule: rgba(240, 236, 224, 0.18);
+
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: var(--board);
+    color: var(--chalk);
+    padding-bottom: 6rem;
+    overflow: hidden;
+}
+
+/* ─── Animated chalk doodles ─── */
+.chalk-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.chalk-doodles {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    opacity: 0.12;
+    filter: blur(1.5px);
+}
+.doodle {
+    stroke: var(--chalk);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+}
+.doodle--a { animation: chalk-draw 3.5s 0.2s ease-out forwards; }
+.doodle--b { animation: chalk-draw 2.8s 1.0s ease-out forwards; }
+.doodle--c { animation: chalk-draw 4.0s 0.5s ease-out forwards; }
+.doodle--d { animation: chalk-draw 3.0s 1.8s ease-out forwards; }
+.doodle--e { animation: chalk-draw 2.5s 2.5s ease-out forwards; }
+.doodle--f { animation: chalk-draw 2.2s 3.0s ease-out forwards; }
+.doodle--g { animation: chalk-draw 3.2s 0.8s ease-out forwards; }
+.doodle--h { stroke-dasharray: 400; stroke-dashoffset: 400; animation: chalk-draw 3.8s 1.4s ease-out forwards; }
+.doodle-text {
+    font-family: "Caveat", cursive;
+    font-size: 22px;
+    fill: var(--chalk);
+    opacity: 0;
+    animation: chalk-fade 1.2s ease-out forwards;
+}
+.doodle--e { animation-delay: 2.5s; }
+.doodle--f { animation-delay: 3.0s; }
+@keyframes chalk-draw {
+    to { stroke-dashoffset: 0; }
+}
+@keyframes chalk-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+.chalk-bg__vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.45) 100%);
+}
+
+/* ─── Header ─── */
+.chalk-head {
+    position: relative; z-index: 2;
+    padding: 4rem clamp(1.5rem, 6vw, 5rem) 3rem;
+    border-bottom: 1px dashed var(--rule);
+}
+.chalk-head__meta {
+    display: flex; justify-content: space-between;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.68rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--chalk-mute); margin-bottom: 1.5rem;
+}
+.chalk-title {
+    font-family: "Caveat", cursive;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    margin: 0 0 0.65rem; line-height: 1.05;
+    color: var(--chalk);
+    text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+.chalk-title__accent { color: var(--chalk-yellow); }
+.chalk-sub {
+    font-size: 1rem; line-height: 1.65;
+    color: var(--chalk-soft);
+    max-width: 60ch; margin: 0 0 1.75rem;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.chalk-ctas { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.chalk-btn {
+    display: inline-flex; align-items: center;
+    padding: 0.6rem 1.1rem;
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.75rem; letter-spacing: 0.1em;
+    color: var(--chalk);
+    border: 1px dashed var(--rule);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 180ms ease, border-color 180ms ease;
+}
+.chalk-btn:hover { background: rgba(240,236,224,0.06); border-color: rgba(240,236,224,0.4); }
+.chalk-btn--primary {
+    background: rgba(242, 212, 107, 0.12);
+    border-color: rgba(242, 212, 107, 0.5);
+    color: var(--chalk-yellow);
+}
+.chalk-btn--primary:hover { background: rgba(242, 212, 107, 0.2); }
+
+/* ─── Features ─── */
+.chalk-features {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; gap: 0;
+}
+.feature-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    padding: 4rem clamp(1.5rem, 6vw, 5rem);
+    border-bottom: 1px dashed var(--rule);
+}
+.feature-row--flip { direction: rtl; }
+.feature-row--flip > * { direction: ltr; }
+@media (max-width: 900px) {
+    .feature-row, .feature-row--flip { grid-template-columns: 1fr; direction: ltr; }
+    .feature-shot { order: -1; }
+}
+.feature-eyebrow {
+    display: flex; align-items: center; gap: 0.65rem;
+    margin-bottom: 0.75rem;
+}
+.feature-icon { font-size: 1.4rem; }
+.feature-sub {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--chalk-blue);
+}
+.feature-title {
+    font-family: "Caveat", cursive;
+    font-size: 2.2rem; margin: 0 0 0.75rem;
+    color: var(--chalk);
+}
+.feature-body {
+    font-size: 0.95rem; line-height: 1.7;
+    color: var(--chalk-soft);
+    margin: 0 0 1rem;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.chapter-list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 0.3rem;
+}
+.chapter-list li {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.76rem; letter-spacing: 0.04em;
+    color: var(--chalk-mute); padding-left: 1rem;
+    position: relative;
+}
+.chapter-list li::before {
+    content: "·";
+    position: absolute; left: 0;
+    color: var(--chalk-yellow);
+}
+.feature-shot {
+    border: 1px dashed var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.25);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.feature-shot img {
+    width: 100%; height: auto; display: block;
+    transition: transform 300ms ease;
+}
+.feature-shot:hover img { transform: scale(1.02); }
+
+/* ─── RAG deep-dive ─── */
+.chalk-rag {
+    position: relative;
+    z-index: 2;
+    padding: 4rem clamp(1.5rem, 6vw, 5rem);
+    border-bottom: 1px dashed var(--rule);
+    background: rgba(0, 0, 0, 0.2);
+}
+.rag-inner { max-width: 62rem; }
+.rag-header { margin-bottom: 3rem; }
+.rag-kicker {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--chalk-blue);
+    display: block;
+    margin-bottom: 0.6rem;
+}
+.rag-title {
+    font-family: "Caveat", cursive;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    margin: 0 0 0.65rem;
+    color: var(--chalk);
+}
+.rag-sub {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--chalk-soft);
+    max-width: 52ch;
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.rag-pipeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 3rem;
+}
+.rag-step {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-top: 1px dashed var(--rule);
+}
+.rag-step:last-child { border-bottom: 1px dashed var(--rule); }
+.rag-step__n {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    color: var(--chalk-yellow);
+    background: rgba(242, 212, 107, 0.1);
+    border: 1px dashed rgba(242, 212, 107, 0.4);
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+.rag-step__title {
+    font-family: "Caveat", cursive;
+    font-size: 1.4rem;
+    margin: 0 0 0.5rem;
+    color: var(--chalk);
+}
+.rag-step__body {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--chalk-soft);
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+.rag-step__body code {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.82em;
+    color: var(--chalk-blue);
+    background: rgba(158, 199, 229, 0.12);
+    border: 1px dashed rgba(158, 199, 229, 0.35);
+    padding: 0.1em 0.4em;
+    border-radius: 3px;
+}
+.rag-connector {
+    display: flex;
+    align-items: center;
+    padding: 0 0 0 1.1rem;
+}
+.rag-arrow {
+    font-size: 1.2rem;
+    color: var(--chalk-mute);
+    opacity: 0.5;
+}
+
+.rag-privacy {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem 1.5rem;
+    background: rgba(158, 199, 229, 0.06);
+    border: 1px dashed rgba(158, 199, 229, 0.28);
+    border-radius: 4px;
+}
+.rag-privacy__icon { font-size: 1.6rem; align-self: start; margin-top: 0.15rem; }
+.rag-privacy__title {
+    font-family: "Caveat", cursive;
+    font-size: 1.3rem;
+    margin: 0 0 0.5rem;
+    color: var(--chalk);
+}
+.rag-privacy__body {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--chalk-soft);
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ─── Stack ─── */
+.chalk-stack {
+    position: relative; z-index: 2;
+    padding: 3.5rem clamp(1.5rem, 6vw, 5rem);
+    border-bottom: 1px dashed var(--rule);
+}
+.stack-head {
+    font-family: "Caveat", cursive;
+    font-size: 1.9rem; margin: 0 0 1.5rem;
+    color: var(--chalk);
+}
+.stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 0.75rem;
+}
+.stack-item {
+    display: flex; flex-direction: column; gap: 0.2rem;
+    padding: 0.85rem 1rem;
+    border: 1px dashed var(--rule);
+    border-radius: 4px;
+    background: rgba(240,236,224,0.03);
+}
+.stack-k {
+    font-family: "SF Mono", ui-monospace, monospace;
+    font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--chalk-yellow);
+}
+.stack-v {
+    font-size: 0.9rem; color: var(--chalk-soft);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ─── Footer & ledge ─── */
+.chalk-foot {
+    position: relative; z-index: 2;
+    padding: 3rem clamp(1.5rem, 5vw, 4rem) 2rem;
+    text-align: center;
+}
+.erase-line {
+    display: block; height: 8px; margin: 0 auto 1.25rem; max-width: 420px;
+    background: linear-gradient(90deg, transparent 0%, rgba(240,236,224,0.15) 20%, rgba(240,236,224,0.3) 50%, rgba(240,236,224,0.15) 80%, transparent 100%);
+    filter: blur(1px);
+}
+.foot-txt {
+    font-family: "Caveat", cursive;
+    font-size: 1.2rem; color: var(--chalk-mute); margin: 0;
+}
+.foot-txt a { color: var(--chalk-blue); text-decoration: underline; text-decoration-style: dotted; }
+.ledge {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2.25rem; z-index: 3;
+    background: linear-gradient(to bottom, #3a2a1c 0%, #2b1d12 45%, #1a110a 100%);
+    box-shadow: 0 -6px 16px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0 clamp(1.5rem, 5vw, 4rem);
+}
+.chalk-stick {
+    display: inline-block; width: 3rem; height: 0.55rem; border-radius: 1px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), 0 1px 2px rgba(0,0,0,0.4);
+}
+.chalk-stick--a { background: #f1ede0; transform: rotate(-4deg); }
+.chalk-stick--b { background: var(--chalk-yellow); transform: rotate(3deg); width: 2.3rem; }
+.eraser {
+    display: inline-block; width: 2.2rem; height: 1rem;
+    background: linear-gradient(to bottom, #5d3c22 0%, #3d2614 100%);
+    border-radius: 2px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 1px 3px rgba(0,0,0,0.5);
+    margin-left: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .doodle, .doodle-text { animation: none; stroke-dashoffset: 0; opacity: 1; }
+}
+</style>

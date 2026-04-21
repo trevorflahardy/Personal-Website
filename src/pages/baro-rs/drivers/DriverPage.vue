@@ -1,52 +1,48 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import PageLayoutSpacer from '@/components/PageLayoutSpacer.vue';
-import Button from '@/components/Button.vue';
-import { drivers } from './driver-data';
+import { computed } from "vue";
+import { drivers } from "./driver-data";
+import { useLenis } from "@/composables/useLenis";
 
 const props = defineProps<{ driverId: string }>();
 
 const driver = computed(() => drivers[props.driverId]);
 const otherDrivers = computed(() =>
-    Object.values(drivers).filter(d => d.id !== props.driverId)
+    Object.values(drivers).filter((d) => d.id !== props.driverId),
 );
 
-// CSS custom property style for theming
+// Per-driver theme — keeps the graphite canvas but swaps the accent hue in
+// every place that references `var(--dc)`.
 const themeStyle = computed(() => ({
-    '--dc': driver.value?.color ?? '#f59e0b',
+    "--dc": driver.value?.color ?? "#f59e0b",
 }));
 
-// Simple Rust syntax highlighting — tokenize-first approach to avoid nested replacements
+useLenis();
+
+// Rust syntax highlighting.  Token-first scan avoids nested-replacement bugs;
+// comments and strings win over keywords/types, numbers are claimed last.
 function highlightRust(code: string): string {
     const escaped = code
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
     const tokens: { start: number; end: number; html: string }[] = [];
-
     function scan(regex: RegExp, cls: string) {
         for (const m of escaped.matchAll(regex)) {
             const start = m.index!;
             const end = start + m[0].length;
-            // Skip if overlapping with an already-claimed token
-            if (tokens.some(t => start < t.end && end > t.start)) continue;
+            if (tokens.some((t) => start < t.end && end > t.start)) continue;
             tokens.push({ start, end, html: `<span class="${cls}">${m[0]}</span>` });
         }
     }
-
-    // Order matters: earlier rules claim tokens first
-    scan(/(\/\/.*$)/gm, 'text-white/30 italic');               // Comments
-    scan(/("(?:[^"\\]|\\.)*")/g, 'text-green-400/80');          // Strings
-    scan(/\b(println|format|vec)!/g, 'text-cyan-300');           // Macros (before keywords)
-    scan(/\b(use|let|mut|if|fn|pub|struct|impl|return|async|await|move|self|true|false)\b/g, 'text-purple-400'); // Keywords
-    scan(/\b([A-Z][A-Za-z0-9_]*)\b/g, 'text-amber-300');        // Types / modules
-    scan(/\b(\d+)\b/g, 'text-orange-300');                       // Numbers
-    scan(/(::|\?|&amp;)/g, 'text-white/50');                     // Punctuation
-
-    // Build result from left to right
+    scan(/(\/\/.*$)/gm, "c-comment");
+    scan(/("(?:[^"\\]|\\.)*")/g, "c-string");
+    scan(/\b(println|format|vec)!/g, "c-macro");
+    scan(/\b(use|let|mut|if|fn|pub|struct|impl|return|async|await|move|self|true|false)\b/g, "c-kw");
+    scan(/\b([A-Z][A-Za-z0-9_]*)\b/g, "c-type");
+    scan(/\b(\d+)\b/g, "c-num");
+    scan(/(::|\?|&amp;)/g, "c-punct");
     tokens.sort((a, b) => a.start - b.start);
-    let result = '';
+    let result = "";
     let cursor = 0;
     for (const t of tokens) {
         result += escaped.slice(cursor, t.start) + t.html;
@@ -58,231 +54,386 @@ function highlightRust(code: string): string {
 </script>
 
 <template>
-    <PageLayoutSpacer v-if="driver">
+    <div v-if="driver" class="drv" :style="themeStyle">
 
-        <!-- ============================================================
-             BREADCRUMB NAVIGATION
-        ============================================================ -->
-        <div class="w-full">
-            <router-link :to="{ name: 'project-baro-rs' }"
-                class="group inline-flex items-center gap-2 rounded-lg border border-white/8 bg-white/4 px-3 py-2 text-xs text-white/50 no-underline transition-all duration-300 hover:bg-white/8 hover:text-white/70 hover:border-white/15">
-                <i
-                    class="pi pi-arrow-left text-[10px] transition-transform duration-300 group-hover:-translate-x-0.5" />
-                <span>Baro-RS</span>
-                <span class="text-white/25">/</span>
-                <span :style="{ color: driver.color }">{{ driver.name }}</span>
+        <!-- ACT · HEADER.  Breadcrumb, protocol chip, massive driver name. -->
+        <section class="act act-hero">
+            <router-link :to="{ name: 'project-baro-rs' }" class="crumb">
+                <span class="crumb-chev">&larr;</span>
+                <span class="crumb-root">// baro.rs</span>
+                <span class="crumb-slash">/</span>
+                <span class="crumb-leaf">{{ driver.id }}</span>
             </router-link>
-        </div>
 
-        <!-- ============================================================
-             HERO
-        ============================================================ -->
-        <div class="relative w-full overflow-hidden rounded-2xl border border-white/8 shadow-xl" :style="themeStyle">
-            <!-- Background -->
-            <div class="absolute inset-0 bg-[#0c0a09]" />
-            <div class="absolute inset-0"
-                :style="{ background: `linear-gradient(135deg, ${driver.color}08, transparent 60%, ${driver.color}04)` }" />
-
-            <!-- Grid pattern -->
-            <div class="absolute inset-0 opacity-20"
-                :style="{ backgroundImage: `radial-gradient(circle, ${driver.color}18 1px, transparent 1px)`, backgroundSize: '20px 20px' }" />
-
-            <!-- Glow orbs -->
-            <div class="pointer-events-none absolute -left-20 -top-20 h-80 w-80 rounded-full blur-3xl animate-pulse"
-                :style="{ backgroundColor: driver.color + '18', animationDuration: '4s' }" />
-            <div class="pointer-events-none absolute -bottom-12 right-12 h-48 w-48 rounded-full blur-3xl animate-pulse"
-                :style="{ backgroundColor: driver.color + '10', animationDuration: '6s' }" />
-
-            <!-- Top accent line -->
-            <div class="absolute inset-x-0 top-0 h-px"
-                :style="{ background: `linear-gradient(90deg, transparent, ${driver.color}80, transparent)` }" />
-
-            <div class="relative z-10 px-6 py-10 sm:px-10 sm:py-12 md:px-14 md:py-14">
-                <!-- Protocol badge -->
-                <div class="mb-6 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 backdrop-blur-sm"
-                    :style="{ borderColor: driver.color + '30', backgroundColor: driver.color + '10' }">
-                    <span class="h-1.5 w-1.5 animate-pulse rounded-full" :style="{ backgroundColor: driver.color }" />
-                    <span class="text-xs font-semibold uppercase tracking-widest" :style="{ color: driver.color }">
-                        {{ driver.protocol }} · no_std · embedded-hal
-                    </span>
-                </div>
-
-                <!-- Icon + Title -->
-                <div class="mb-4 flex items-center gap-4">
-                    <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border shadow-lg sm:h-16 sm:w-16"
-                        :style="{ borderColor: driver.color + '30', backgroundColor: driver.color + '15' }">
-                        <i class="pi text-2xl sm:text-3xl" :class="driver.icon" :style="{ color: driver.color }" />
-                    </div>
-                    <div>
-                        <h1 class="text-4xl font-bold leading-none tracking-tight text-white sm:text-5xl md:text-6xl">
-                            {{ driver.name }}
-                        </h1>
-                        <p class="mt-1 text-sm font-medium tracking-wide" :style="{ color: driver.color + 'aa' }">
-                            {{ driver.fullName }}
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Description -->
-                <p class="mb-8 max-w-2xl text-base leading-relaxed text-white/60">
-                    {{ driver.description }}
-                </p>
-
-                <!-- CTA -->
-                <div class="flex flex-row flex-wrap gap-3">
-                    <Button :link="driver.repo" content="Source Code" icon="pi-github"
-                        background="border hover:opacity-90"
-                        :style="{ borderColor: driver.color + '40', backgroundColor: driver.color + '20' }" />
-                </div>
-            </div>
-        </div>
-
-        <!-- ============================================================
-             KEY SPECS
-        ============================================================ -->
-        <div class="grid w-full grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
-
-            <!-- I²C Address -->
-            <div v-if="driver.i2cAddress" class="glass-card flex flex-col items-center gap-1.5 px-4 py-5 text-center">
-                <div class="mb-1 flex h-8 w-8 items-center justify-center rounded-xl border"
-                    :style="{ borderColor: driver.color + '20', backgroundColor: driver.color + '10' }">
-                    <i class="pi pi-link text-sm" :style="{ color: driver.color }" />
-                </div>
-                <span class="font-mono text-lg font-bold leading-none tracking-tight sm:text-xl"
-                    :style="{ color: driver.color }">
-                    {{ driver.i2cAddress }}
-                </span>
-                <span class="text-xs leading-tight text-white/55">I²C Address</span>
+            <div class="proto-chip">
+                <span class="chip-dot" />
+                <span>{{ driver.protocol }} · no_std · embedded-hal 1.0</span>
             </div>
 
-            <!-- Measurements -->
-            <div v-for="m in driver.measurements" :key="m.name"
-                class="glass-card flex flex-col items-center gap-1.5 px-4 py-5 text-center">
-                <div class="mb-1 flex h-8 w-8 items-center justify-center rounded-xl border"
-                    :style="{ borderColor: driver.color + '20', backgroundColor: driver.color + '10' }">
-                    <i class="pi pi-chart-bar text-sm" :style="{ color: driver.color }" />
+            <h1 class="drv-title">{{ driver.name.toLowerCase() }}</h1>
+            <p class="drv-subtitle">{{ driver.fullName }}</p>
+
+            <p class="drv-lede">{{ driver.description }}</p>
+
+            <div class="hero-meta">
+                <span>&bull; open source</span>
+                <span class="sep">/</span>
+                <span>MIT</span>
+                <span class="sep">/</span>
+                <span>embedded-hal 1.0</span>
+                <span class="sep">/</span>
+                <span>crates.io ready</span>
+            </div>
+        </section>
+
+        <!-- ACT · SPEC READOUT.  Dotted-leader key/value rows, datasheet feel. -->
+        <section class="act act-spec">
+            <div class="act-label">// datasheet · readout</div>
+            <div class="spec-list">
+                <div v-if="driver.i2cAddress" class="spec-row">
+                    <span class="spec-key">i2c address</span>
+                    <span class="spec-dots" />
+                    <span class="spec-val">{{ driver.i2cAddress }}</span>
                 </div>
-                <span class="font-mono text-sm font-bold leading-none tracking-tight sm:text-base"
-                    :style="{ color: driver.color }">
-                    {{ m.range || m.unit }}
-                </span>
-                <span class="text-xs leading-tight text-white/55">{{ m.name }}</span>
+                <div class="spec-row">
+                    <span class="spec-key">protocol</span>
+                    <span class="spec-dots" />
+                    <span class="spec-val">{{ driver.protocol }}</span>
+                </div>
+                <div v-for="m in driver.measurements" :key="m.name" class="spec-row">
+                    <span class="spec-key">{{ m.name.toLowerCase() }}</span>
+                    <span class="spec-dots" />
+                    <span class="spec-val">{{ m.range || m.unit }}</span>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- ============================================================
-             FEATURES
-        ============================================================ -->
-        <div class="glass-card w-full p-6 sm:p-8" :style="themeStyle">
-            <div class="flex items-center gap-2.5 mb-5">
-                <div class="h-0.5 w-6 rounded-full" :style="{ backgroundColor: driver.color }" />
-                <span class="text-xs font-semibold uppercase tracking-widest"
-                    :style="{ color: driver.color }">Features</span>
-            </div>
-
-            <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <li v-for="feature in driver.features" :key="feature"
-                    class="flex items-start gap-3 rounded-xl border border-white/5 bg-white/2 px-4 py-3">
-                    <i class="pi pi-check-circle mt-0.5 shrink-0 text-sm" :style="{ color: driver.color }" />
-                    <span class="text-sm leading-snug text-white/70">{{ feature }}</span>
+        <!-- ACT · FEATURES.  Numbered list, minimal punctuation. -->
+        <section class="act act-feat">
+            <div class="act-label">// capabilities</div>
+            <ol class="feat-list">
+                <li v-for="(f, i) in driver.features" :key="f">
+                    <span class="feat-idx">{{ String(i + 1).padStart(2, "0") }}</span>
+                    <span class="feat-txt">{{ f }}</span>
                 </li>
-            </ul>
-        </div>
+            </ol>
+        </section>
 
-        <!-- ============================================================
-             CODE EXAMPLE
-        ============================================================ -->
-        <div class="w-full">
-            <div class="mb-4 flex items-center gap-2.5">
-                <div class="h-0.5 w-6 rounded-full" :style="{ backgroundColor: driver.color }" />
-                <span class="text-xs font-semibold uppercase tracking-widest" :style="{ color: driver.color }">Usage
-                    Example</span>
-            </div>
-
-            <div class="overflow-hidden rounded-xl border border-white/8 shadow-xl">
-                <!-- Editor chrome -->
-                <div class="flex items-center gap-2 border-b border-white/6 bg-[#1a1410] px-4 py-2.5">
-                    <div class="flex items-center gap-1.5">
-                        <div class="h-2.5 w-2.5 rounded-full bg-white/15" />
-                        <div class="h-2.5 w-2.5 rounded-full bg-white/15" />
-                        <div class="h-2.5 w-2.5 rounded-full bg-white/15" />
-                    </div>
-                    <div class="ml-3 rounded border border-white/8 bg-white/5 px-2.5 py-0.5">
-                        <span class="font-mono text-[10px] text-white/40">main.rs</span>
-                    </div>
-                    <div class="ml-auto">
-                        <span class="rounded border px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider"
-                            :style="{ borderColor: driver.color + '25', color: driver.color + '80', backgroundColor: driver.color + '08' }">
-                            Rust
-                        </span>
-                    </div>
+        <!-- ACT · CODE.  Rust excerpt in a framed editor pane. -->
+        <section class="act act-code">
+            <div class="act-label">// usage · main.rs</div>
+            <div class="editor">
+                <div class="editor-top">
+                    <span class="editor-dot" />
+                    <span class="editor-dot" />
+                    <span class="editor-dot" />
+                    <span class="editor-file">main.rs</span>
+                    <span class="editor-lang">rust</span>
                 </div>
-
-                <!-- Code content -->
-                <div class="bg-[#12100c] px-5 py-4 overflow-x-auto">
-                    <pre
-                        class="font-mono text-xs sm:text-sm leading-relaxed text-white/75"><code v-html="highlightRust(driver.codeExample)" /></pre>
-                </div>
+                <pre class="editor-body"><code v-html="highlightRust(driver.codeExample)" /></pre>
             </div>
-        </div>
+        </section>
 
-        <!-- ============================================================
-             INTEGRATION WITH BARO-RS
-        ============================================================ -->
-        <div class="glass-card w-full p-6 sm:p-8">
-            <div class="flex items-start gap-5">
-                <div
-                    class="mt-0.5 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-baro-default/20 bg-baro-default/10">
-                    <i class="pi pi-microchip text-baro-default text-xl" />
-                </div>
-                <div class="min-w-0 flex-1">
-                    <h3 class="card-title mb-0.5">Integration with Baro-RS</h3>
-                    <p class="mb-0 text-xs font-medium tracking-wide text-baro-default/70">How this driver connects to
-                        the monitoring station</p>
-                    <p class="card-body mt-3 mb-0">
-                        {{ driver.usedInBaroRs }}
-                    </p>
-                </div>
-            </div>
-        </div>
+        <!-- ACT · INTEGRATION.  How this driver fits into Baro-RS. -->
+        <section class="act act-integration">
+            <div class="act-label">// integration · baro.rs</div>
+            <p class="integration-prose">{{ driver.usedInBaroRs }}</p>
+            <a :href="driver.repo" target="_blank" rel="noopener" class="source-link">
+                view source on github &rarr;
+            </a>
+        </section>
 
-        <!-- ============================================================
-             EXPLORE OTHER DRIVERS
-        ============================================================ -->
-        <div class="w-full">
-            <div class="mb-4 flex items-center justify-center gap-3">
-                <div class="h-px w-8 rounded-full bg-white/15" />
-                <span class="text-xs font-semibold uppercase tracking-widest text-white/40">Other Drivers</span>
-                <div class="h-px w-8 rounded-full bg-white/15" />
-            </div>
-
-            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <!-- ACT · OTHER DRIVERS.  Row of siblings in the fleet. -->
+        <section class="act act-other">
+            <div class="act-label">// fleet · other drivers</div>
+            <ul class="other-list">
                 <router-link v-for="d in otherDrivers" :key="d.id"
                     :to="{ name: 'baro-rs-driver', params: { driverId: d.id } }"
-                    class="group glass-card flex items-center gap-3 p-3.5 no-underline transition-all duration-300 hover:scale-[1.02] hover:shadow-lg cursor-pointer">
-                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border transition-colors"
-                        :style="{ borderColor: d.color + '25', backgroundColor: d.color + '10' }">
-                        <i class="pi text-sm" :class="d.icon" :style="{ color: d.color }" />
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <p
-                            class="text-sm font-semibold leading-tight text-white/80 group-hover:text-white transition-colors">
-                            {{ d.name }}</p>
-                        <p class="mt-0.5 text-[10px] text-white/40 truncate">{{ d.fullName }}</p>
-                    </div>
-                    <i
-                        class="pi pi-chevron-right text-[10px] text-white/25 transition-all duration-300 group-hover:text-white/50 group-hover:translate-x-0.5" />
+                    class="other-row" :style="{ '--odc': d.color }">
+                    <span class="other-idx">&rarr;</span>
+                    <span class="other-swatch" />
+                    <span class="other-name">{{ d.id }}</span>
+                    <span class="other-full">{{ d.fullName }}</span>
                 </router-link>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="pb-4">
-            <p class="mx-auto max-w-lg text-center text-xs italic leading-relaxed text-white/35">
-                {{ driver.name }} is open-source under the MIT license.
-                Built with embedded-hal 1.0 for maximum portability across Rust embedded platforms.
-            </p>
-        </div>
-
-    </PageLayoutSpacer>
+            </ul>
+        </section>
+    </div>
 </template>
+
+<style scoped>
+/* ==================================================================
+   DRIVER PAGE · instrument aesthetic, amber on graphite
+   Per-driver accent colour lives in `--dc` (set via themeStyle above).
+================================================================== */
+.drv {
+    --graphite:    #0b0e10;
+    --graphite-2:  #12161b;
+    --amber:       #f59e0b;
+    --bone:        #f8fafc;
+    --grid-line:   rgba(245, 158, 11, 0.04);
+
+    min-height: 100vh;
+    background: var(--graphite);
+    color: var(--bone);
+    font-family: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+    background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 48px 48px;
+    padding-top: 4rem;
+    padding-bottom: 6rem;
+}
+
+.act {
+    position: relative;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 4rem 2.5rem;
+}
+.act-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dc);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* HERO */
+.act-hero {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+.crumb {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: rgba(248, 250, 252, 0.55);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    transition: color 200ms ease;
+}
+.crumb:hover { color: var(--bone); }
+.crumb:hover .crumb-chev { transform: translateX(-2px); }
+.crumb-chev { transition: transform 200ms ease; }
+.crumb-root { color: var(--dc); }
+.crumb-slash { color: rgba(248, 250, 252, 0.25); }
+.crumb-leaf { color: var(--bone); font-weight: 600; }
+
+.proto-chip {
+    display: inline-flex;
+    gap: 0.55rem;
+    align-items: center;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--dc) 45%, transparent);
+    background: color-mix(in srgb, var(--dc) 10%, transparent);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dc);
+    margin-bottom: 2.5rem;
+}
+.chip-dot {
+    width: 0.35rem; height: 0.35rem; border-radius: 50%;
+    background: var(--dc);
+    box-shadow: 0 0 8px var(--dc);
+    animation: chip-pulse 2s ease-in-out infinite;
+}
+@keyframes chip-pulse { 50% { opacity: 0.45; } }
+
+.drv-title {
+    font-family: "Geist", "Inter", system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(3rem, 10vw, 7rem);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin: 0 0 0.5rem 0;
+    color: var(--bone);
+}
+.drv-subtitle {
+    font-size: 0.88rem;
+    letter-spacing: 0.05em;
+    color: color-mix(in srgb, var(--dc) 75%, rgba(248, 250, 252, 0.6));
+    margin: 0 0 1.5rem 0;
+}
+.drv-lede {
+    max-width: 48rem;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(248, 250, 252, 0.72);
+    margin: 0 0 2rem 0;
+}
+.hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(248, 250, 252, 0.4);
+}
+.hero-meta .sep { color: rgba(248, 250, 252, 0.18); }
+
+/* SPEC */
+.spec-list { display: flex; flex-direction: column; }
+.spec-row {
+    display: grid;
+    grid-template-columns: 14rem 1fr auto;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    font-size: 0.9rem;
+}
+.spec-key {
+    color: rgba(248, 250, 252, 0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+}
+.spec-dots {
+    border-bottom: 1px dotted rgba(248, 250, 252, 0.18);
+    transform: translateY(-0.35em);
+}
+.spec-val {
+    color: var(--dc);
+    font-weight: 600;
+    text-align: right;
+}
+
+/* FEATURES */
+.feat-list { list-style: none; padding: 0; margin: 0; }
+.feat-list li {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+.feat-idx { color: var(--dc); font-size: 0.75rem; letter-spacing: 0.15em; padding-top: 0.15rem; }
+.feat-txt { color: rgba(248, 250, 252, 0.82); }
+
+/* CODE */
+.editor {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--graphite-2);
+    overflow: hidden;
+}
+.editor-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.9rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.7rem;
+}
+.editor-dot {
+    width: 0.55rem; height: 0.55rem; border-radius: 50%;
+    background: rgba(255, 255, 255, 0.14);
+}
+.editor-file {
+    color: rgba(248, 250, 252, 0.5);
+    margin-left: 0.6rem;
+    letter-spacing: 0.06em;
+}
+.editor-lang {
+    margin-left: auto;
+    padding: 0.1rem 0.5rem;
+    border: 1px solid color-mix(in srgb, var(--dc) 35%, transparent);
+    color: var(--dc);
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+.editor-body {
+    padding: 1rem 1.25rem;
+    margin: 0;
+    font-size: 0.82rem;
+    line-height: 1.65;
+    color: rgba(248, 250, 252, 0.85);
+    overflow-x: auto;
+    white-space: pre;
+}
+:deep(.c-comment) { color: rgba(248, 250, 252, 0.35); font-style: italic; }
+:deep(.c-string)  { color: #86efac; }
+:deep(.c-macro)   { color: #7dd3fc; }
+:deep(.c-kw)      { color: #c084fc; }
+:deep(.c-type)    { color: var(--amber); }
+:deep(.c-num)     { color: #fb923c; }
+:deep(.c-punct)   { color: rgba(248, 250, 252, 0.4); }
+
+/* INTEGRATION */
+.integration-prose {
+    font-family: "Geist", "Inter", system-ui, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(248, 250, 252, 0.82);
+    max-width: 52rem;
+    margin: 0 0 2rem 0;
+}
+.source-link {
+    display: inline-block;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dc);
+    text-decoration: none;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--dc) 40%, transparent);
+    transition: border-color 200ms ease;
+}
+.source-link:hover { border-bottom-color: var(--dc); }
+
+/* OTHER DRIVERS */
+.other-list {
+    list-style: none; padding: 0; margin: 0;
+    display: grid;
+    gap: 0;
+}
+.other-row {
+    display: grid;
+    grid-template-columns: 1.5rem 0.75rem 6rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    text-decoration: none;
+    color: var(--bone);
+    font-size: 0.9rem;
+    transition: background 200ms ease, padding-left 200ms ease;
+}
+.other-row:hover {
+    background: rgba(255, 255, 255, 0.02);
+    padding-left: 0.5rem;
+}
+.other-idx { color: rgba(248, 250, 252, 0.35); }
+.other-row:hover .other-idx { color: var(--odc); transform: translateX(3px); }
+.other-swatch {
+    width: 0.55rem; height: 0.55rem; border-radius: 50%;
+    background: var(--odc);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--odc) 55%, transparent);
+    transform: translateY(0.25rem);
+}
+.other-name {
+    color: var(--bone);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+.other-full {
+    color: rgba(248, 250, 252, 0.5);
+    font-size: 0.78rem;
+}
+
+@media (max-width: 700px) {
+    .spec-row { grid-template-columns: 1fr auto; }
+    .spec-dots { display: none; }
+    .other-row { grid-template-columns: 1rem 0.55rem 1fr; }
+    .other-full { display: none; }
+    .act { padding: 2.5rem 1.25rem; }
+}
+</style>
