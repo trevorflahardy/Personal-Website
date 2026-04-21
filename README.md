@@ -1,15 +1,12 @@
 # Personal Website
 
-View the website on [Github Pages](https://trevorflahardy.github.io/Personal-Website/) if you'd like!
-
 This is a background project of mine to get a personal website running for internship applications in the near future. This is a work in progress, basically everything is subject to change - but the main idea is that the website is going to be centered around mimicking Apple's VisionOS within a web application, which I thought was a nifty idea.
 
 <img width="1492" alt="image" src="https://github.com/user-attachments/assets/40c76167-7849-454c-bccd-d6702e0754d8">
 
-
 ## Mobile Tablets and Phones
-<img width="557" alt="image" src="https://github.com/user-attachments/assets/c3826e78-b001-401e-81c5-87b84266f54b">
 
+<img width="557" alt="image" src="https://github.com/user-attachments/assets/c3826e78-b001-401e-81c5-87b84266f54b">
 
 ## Installing
 
@@ -40,7 +37,9 @@ npm run build
 I'm keeping track of my progress as I continue to work on my website. Here are some previous versions as I figure out what I want and what I like. The version tracking is from newest to oldest.
 
 ### Version 3
+
 September 21st, 2024: I'm dubbing Version 3 of this project; I feel it's changed enough to constitute a progress update. I still have hopes for the following, which I plan to address in the coming update
+
 - [ ] More content on the profile page, like hobbies, education, achievements, and _why_ my personal website looks as it does.
 - [ ] A cleaner Docuflow page which has the name of "Docuflow" in the title perhaps
 - [x] A cleaner Chai introduction which has some better branding elements
@@ -61,8 +60,3 @@ September 21st, 2024: I'm dubbing Version 3 of this project; I feel it's changed
 
 ![Home Page Light](./previews/homepage_light_1.png)
 ![Chai Project Page](./previews/project_light_1.png)
-
-
-
-
-
