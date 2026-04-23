@@ -49,6 +49,16 @@
 
   --color-kew: #f97316;
   --color-kew-dim: #7c3b0a;
+  --color-kew-fg: #f59e0b;
+  --color-kew-fg-soft: rgba(245, 158, 11, 0.9);
+  --color-kew-mute: rgba(249, 115, 22, 0.6);
+  --color-kew-faint: rgba(249, 115, 22, 0.38);
+  --color-kew-prose: rgba(255, 236, 210, 0.88);
+  --color-kew-prose-soft: rgba(255, 236, 210, 0.72);
+  --color-kew-edge: rgba(249, 115, 22, 0.22);
+  --color-kew-edge-strong: rgba(249, 115, 22, 0.42);
+  --color-kew-panel: rgba(10, 8, 6, 0.55);
+  --color-kew-dim-terminal: rgba(249, 115, 22, 0.55);
 
   --color-rootline: #4ade80;
   --color-rootline-dim: #166534;
