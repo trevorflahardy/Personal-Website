@@ -34,3 +34,8 @@ build/
 
 .playwright-mcp/
 .claude/worktrees/*
+
+# Playwright visual-regression artifacts
+test-results/
+playwright-report/
+playwright/.cache/
