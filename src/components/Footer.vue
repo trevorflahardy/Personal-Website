@@ -17,7 +17,7 @@ const toggleThemeIcon = computed(() => {
 
 <template>
 	<footer
-		class="w-64 lg:w-96 h-12 backdrop-blur-2xl bg-white/8 dark:bg-white/5 border border-white/10 rounded-full relative -top-4 shadow-xl flex-row items-center justify-start p-3 flex xl:ml-auto xl:mr-auto">
+		class="w-64 lg:w-96 h-12 backdrop-blur-2xl bg-white/8 dark:bg-white/5 border border-white/10 rounded-full relative -top-4 shadow-xl flex-row items-center justify-start p-3 flex mx-auto">
 		<!-- Lightswitch for light and dark mode -->
 
 		<button type="button"
