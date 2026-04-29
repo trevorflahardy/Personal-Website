@@ -7,7 +7,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "dev": "vite",
     "format": "prettier --write src/",
-    "preview": "vite preview",
+    "preview": "vite preview"
   },
   "dependencies": {
     "@vueuse/motion": "^3.0.3",
