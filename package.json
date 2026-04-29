@@ -8,8 +8,6 @@
     "dev": "vite",
     "format": "prettier --write src/",
     "preview": "vite preview",
-    "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots"
   },
   "dependencies": {
     "@vueuse/motion": "^3.0.3",
