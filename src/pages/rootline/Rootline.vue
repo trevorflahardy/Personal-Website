@@ -46,7 +46,8 @@ import RootlineSignature from './RootlineSignature.vue';
     line-height: 1.55;
 }
 
-/* Light mode — warm parchment, walnut ink, forest accents. */
+/* Light mode — warm parchment, walnut ink, forest accents.
+   Custom properties cascade into children automatically. */
 html:not(.dark) .root-plate {
     --paper: #f3ead7;
     --ink: #2a2218;
@@ -58,29 +59,17 @@ html:not(.dark) .root-plate {
         radial-gradient(ellipse at 20% 10%, rgba(107, 79, 47, 0.06), transparent 55%),
         url("data:image/svg+xml;utf8,<svg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'><filter id='g'><feTurbulence baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23g)' opacity='0.18'/></svg>");
 }
-</style>
 
-<style>
-/* Unscoped light-mode overrides. The html:not(.dark) selector must reach
-   into each subcomponent's rendered element, so these rules live in an
-   unscoped block with !important to beat scoped child styles. Colours only
-   — no layout — per the page-rootline design thesis. */
-html:not(.dark) .root-plate {
-    --paper: #f3ead7 !important;
-    --ink: #2a2218 !important;
-    --ink-dim: rgba(42, 34, 24, 0.62) !important;
-    --forest: #15803d !important;
-    --forest-deep: #14532d !important;
-    --walnut: #6b4f2f !important;
-}
-
-html:not(.dark) .root-plate .col-prose p { color: rgba(42, 34, 24, 0.88) !important; }
-html:not(.dark) .root-plate .callout-body p { color: rgba(42, 34, 24, 0.78) !important; }
-html:not(.dark) .root-plate .frame-inner { background: rgba(255, 255, 255, 0.5) !important; }
-html:not(.dark) .root-plate .plate-frame { background: rgba(255, 255, 255, 0.55) !important; }
-html:not(.dark) .root-plate .plate-mount figcaption { color: rgba(42, 34, 24, 0.82) !important; }
-html:not(.dark) .root-plate .methods-val { color: rgba(42, 34, 24, 0.82) !important; }
-html:not(.dark) .root-plate .habitat-row dd { color: rgba(42, 34, 24, 0.85) !important; }
-html:not(.dark) .root-plate .plates-lede,
-html:not(.dark) .root-plate .methods-lede { color: rgba(42, 34, 24, 0.68) !important; }
+/* Light-mode overrides for child component elements — :deep() lets the
+   scoped selector pierce into child components' rendered DOM. Higher
+   specificity than child scoped rules so !important is not needed. */
+html:not(.dark) .root-plate :deep(.col-prose p) { color: rgba(42, 34, 24, 0.88); }
+html:not(.dark) .root-plate :deep(.callout-body p) { color: rgba(42, 34, 24, 0.78); }
+html:not(.dark) .root-plate :deep(.frame-inner) { background: rgba(255, 255, 255, 0.5); }
+html:not(.dark) .root-plate :deep(.plate-frame) { background: rgba(255, 255, 255, 0.55); }
+html:not(.dark) .root-plate :deep(.plate-mount figcaption) { color: rgba(42, 34, 24, 0.82); }
+html:not(.dark) .root-plate :deep(.methods-val) { color: rgba(42, 34, 24, 0.82); }
+html:not(.dark) .root-plate :deep(.habitat-row dd) { color: rgba(42, 34, 24, 0.85); }
+html:not(.dark) .root-plate :deep(.plates-lede),
+html:not(.dark) .root-plate :deep(.methods-lede) { color: rgba(42, 34, 24, 0.68); }
 </style>

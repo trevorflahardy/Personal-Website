@@ -20,7 +20,7 @@ const routes = [
     { path: '/p/fury', name: furyRouterName, component: () => import('@/pages/fury/Fury.vue'), meta: { fullBleed: true } },
     { path: '/p/cnt-study-hub', name: cntRouterName, component: () => import('@/pages/cnt/CNT.vue'), meta: { fullBleed: true } },
     { path: '/p/baro-rs', name: baroRsRouterName, component: () => import('@/pages/baro-rs/BaroRs.vue'), meta: { projectName: baroRsRouterName, fullBleed: true } },
-    { path: '/p/baro-rs/drivers/:driverId', name: 'baro-rs-driver', component: () => import('@/pages/baro-rs/BaroRs.vue'), props: true, meta: { projectName: baroRsRouterName, fullBleed: true } },
+    { path: '/p/baro-rs/drivers/:driverId', name: 'baro-rs-driver', component: () => import('@/pages/baro-rs/BaroRs.vue'), meta: { projectName: baroRsRouterName, fullBleed: true } },
     { path: '/p/kew', name: kewRouterName, component: () => import('@/pages/kew/Kew.vue'), meta: { fullBleed: true } },
     { path: '/p/rootline', name: rootlineRouterName, component: () => import('@/pages/rootline/Rootline.vue'), meta: { fullBleed: true } },
     { path: '/p/slice-guard', name: sliceGuardRouterName, component: () => import('@/pages/slice-guard/SliceGuard.vue'), meta: { fullBleed: true } },
@@ -32,9 +32,6 @@ const routes = [
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes,
-    scrollBehavior(to, from, savedPosition) {
-        return { top: 0 }
-    },
 });
 
 router.beforeEach((to, from, next) => {

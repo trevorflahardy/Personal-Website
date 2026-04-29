@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { shallowRef, onMounted, onBeforeUnmount } from "vue";
 import { useSidebarGuide } from "@/composables/useSidebarGuide";
 
 const { showGuide, dismiss } = useSidebarGuide();
 
-const visible = ref(false);
-const leaving = ref(false);
+const visible = shallowRef(false);
+const leaving = shallowRef(false);
 let showTimer: ReturnType<typeof setTimeout> | null = null;
 let autoTimer: ReturnType<typeof setTimeout> | null = null;
 

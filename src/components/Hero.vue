@@ -1,8 +1,18 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, nextTick } from "vue";
+import { computed, useTemplateRef, watch, onMounted, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Sidebar from "./sidebar/Sidebar.vue";
 import { useSidebar } from "@/composables/useSidebar";
+
+interface VanillaTiltElement extends HTMLElement {
+	vanillaTilt?: { destroy(): void };
+}
+
+declare global {
+	interface Window {
+		VanillaTilt?: { init(els: HTMLElement[], opts: object): void };
+	}
+}
 
 const { isCollapsed, toggle } = useSidebar();
 const route = useRoute();
@@ -10,27 +20,26 @@ const router = useRouter();
 
 const isFullBleed = computed(() => Boolean(route.meta?.fullBleed));
 
-const mainContent = ref<HTMLElement | null>(null);
+const mainContent = useTemplateRef<VanillaTiltElement>('mainContent');
 
 // Disable the VanillaTilt card-mouse effect on full-bleed pages — those pages
 // paint their own worlds and the perspective distortion fights their layout.
 watch(isFullBleed, async (bleed) => {
 	await nextTick();
-	const el = mainContent.value as any;
+	const el = mainContent.value;
 	if (!el) return;
 	if (bleed) {
 		el.vanillaTilt?.destroy();
 		el.style.transform = "";
 	} else {
-		(window as any).VanillaTilt?.init([el], { max: 0.5 });
+		window.VanillaTilt?.init([el], { max: 0.5 });
 	}
-}, { immediate: false });
+});
 
 onMounted(() => {
 	if (isFullBleed.value) {
-		const el = mainContent.value as any;
-		el?.vanillaTilt?.destroy();
-		if (el) el.style.transform = "";
+		mainContent.value?.vanillaTilt?.destroy();
+		if (mainContent.value) mainContent.value.style.transform = "";
 	}
 });
 

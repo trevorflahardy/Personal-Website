@@ -15,7 +15,7 @@ import { routerLinkName as sliceGuardRouterLink } from "@/pages/slice-guard/info
 import { routerLinkName as regVizRouterLink } from "@/pages/regviz/info";
 import { routerLinkName as ppRouterLink } from "@/pages/pickle-pockets/info";
 
-const isHamburgerOpen = defineModel();
+const isHamburgerOpen = defineModel<boolean>();
 const route = useRoute();
 const { showGuide, dismiss } = useSidebarGuide();
 

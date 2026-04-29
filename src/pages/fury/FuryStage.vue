@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CSSProperties } from 'vue';
 import type { FuryFeature } from './fury-data';
 
 defineProps<{
@@ -8,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-    <article class="stage" :style="{ '--i': index } as any">
+    <article class="stage" :style="{ '--i': String(index) } as CSSProperties">
         <div class="stage-rule-row">
             <span class="stage-num">STAGE {{ String(index + 1).padStart(2, '0') }}</span>
             <span class="stage-rule" />
