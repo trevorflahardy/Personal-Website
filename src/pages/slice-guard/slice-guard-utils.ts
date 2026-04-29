@@ -1,16 +1,18 @@
-const glyphMap: Record<string, string> = {
+import type { BedStatus } from './bed-fleet';
+
+const glyphMap: Record<BedStatus, string> = {
     idle: '—',
     printing: '◉',
     error: '✕',
     queue: '▢',
 };
 
-const labelMap: Record<string, string> = {
+const labelMap: Record<BedStatus, string> = {
     idle: 'AVAILABLE',
     printing: 'ACTIVE JOB',
     error: 'FAULT',
     queue: 'QUEUED',
 };
 
-export const statusGlyph = (s: string) => glyphMap[s] ?? '—';
-export const statusLabel = (s: string): string => labelMap[s] ?? s.toUpperCase();
+export const statusGlyph = (s: BedStatus) => glyphMap[s];
+export const statusLabel = (s: BedStatus): string => labelMap[s];

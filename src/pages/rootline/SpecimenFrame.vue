@@ -1,11 +1,16 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+const imgFailed = ref(false);
+</script>
+
 <template>
     <section class="specimen-frame">
         <h2 class="section-head"><i>Plate I</i>, the principal specimen.</h2>
         <figure>
             <div class="frame-inner">
-                <img src="/rootline/hero.png" alt="Rootline tree view"
-                    onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
-                <div class="frame-fallback" style="display:none">
+                <img v-if="!imgFailed" src="/rootline/hero.png" alt="Rootline tree view"
+                    @error="imgFailed = true" />
+                <div v-else class="frame-fallback">
                     <i>plate unavailable — specimen in preparation</i>
                 </div>
             </div>

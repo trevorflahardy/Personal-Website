@@ -61,6 +61,10 @@ import { lexTokens } from './regviz-data';
     border-radius: 2px;
 }
 
+section {
+    position: relative;
+}
+
 .margin-note--inline {
     position: absolute;
     font-family: "Caveat", cursive;

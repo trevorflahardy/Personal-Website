@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { plates } from './rootline-data';
+
+const failedPlates = ref(new Set<number>());
+function onImgError(num: number) { failedPlates.value = new Set([...failedPlates.value, num]); }
 </script>
 
 <template>
@@ -14,9 +18,9 @@ import { plates } from './rootline-data';
             <figure v-for="p in plates" :key="p.num" class="plate-mount">
                 <span class="plate-num">Plate&nbsp;{{ p.num }}</span>
                 <div class="plate-frame">
-                    <img :src="p.src" :alt="p.caption"
-                        onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
-                    <div class="plate-fallback" style="display:none">
+                    <img v-if="!failedPlates.has(p.num)" :src="p.src" :alt="p.caption"
+                        @error="onImgError(p.num)" />
+                    <div v-else class="plate-fallback">
                         <i>specimen pending</i>
                     </div>
                 </div>

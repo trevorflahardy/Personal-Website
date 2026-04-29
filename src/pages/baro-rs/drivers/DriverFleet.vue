@@ -8,14 +8,15 @@ defineProps<{ otherDrivers: Driver[] }>();
     <section class="act act-other">
         <div class="act-label">// fleet · other drivers</div>
         <ul class="other-list">
-            <router-link v-for="d in otherDrivers" :key="d.id"
-                :to="{ name: 'baro-rs-driver', params: { driverId: d.id } }"
-                class="other-row" :style="{ '--odc': d.color }">
-                <span class="other-idx">&rarr;</span>
-                <span class="other-swatch" />
-                <span class="other-name">{{ d.id }}</span>
-                <span class="other-full">{{ d.fullName }}</span>
-            </router-link>
+            <li v-for="d in otherDrivers" :key="d.id">
+                <router-link :to="{ name: 'baro-rs-driver', params: { driverId: d.id } }"
+                    class="other-row" :style="{ '--odc': d.color }">
+                    <span class="other-idx">&rarr;</span>
+                    <span class="other-swatch" />
+                    <span class="other-name">{{ d.id }}</span>
+                    <span class="other-full">{{ d.fullName }}</span>
+                </router-link>
+            </li>
         </ul>
     </section>
 </template>

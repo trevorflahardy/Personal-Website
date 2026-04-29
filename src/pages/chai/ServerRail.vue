@@ -5,6 +5,8 @@ import { servers } from './chai-data';
 <template>
     <nav class="server-rail" aria-label="Servers">
         <div v-for="s in servers" :key="s.id"
+            role="button"
+            tabindex="0"
             class="server-pill"
             :class="{ 'is-active': s.active, 'is-ghost': s.ghost }">
             <span v-if="s.colored" class="server-glyph server-glyph--chai">C</span>
