@@ -34,34 +34,34 @@ const features = [
         </div>
 
         <!-- Content column -->
-        <div class="kew-content relative z-[1] mx-auto w-full max-w-6xl px-6 sm:px-10 lg:px-14 py-12 lg:py-16 space-y-12">
+        <div class="relative z-[1] mx-auto w-full max-w-6xl px-6 sm:px-10 lg:px-14 py-12 lg:py-16 space-y-12">
 
             <!-- HERO TERMINAL -->
-            <section class="kew-terminal rounded-lg border overflow-hidden shadow-2xl">
-                <div class="kew-titlebar flex items-center gap-2 px-4 py-2 border-b">
+            <section class="rounded-lg border border-kew-edge-strong bg-[rgba(10,8,6,0.72)] overflow-hidden shadow-2xl">
+                <div class="flex items-center gap-2 px-4 py-2 border-b border-kew-edge bg-[rgba(249,115,22,0.06)]">
                     <span class="w-2.5 h-2.5 rounded-full bg-red-500/70" />
                     <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/70" />
                     <span class="w-2.5 h-2.5 rounded-full bg-green-500/70" />
-                    <span class="ml-4 text-xs kew-dim">~/.kew — zsh — 120×36</span>
+                    <span class="ml-4 text-xs text-kew-dim-terminal">~/.kew — zsh — 120×36</span>
                 </div>
                 <div class="px-6 sm:px-10 lg:px-14 py-10 sm:py-14">
-                    <p class="text-sm kew-mute mb-1">
-                        <span class="kew-faint">$</span> cargo install kew &amp;&amp; kew init
+                    <p class="text-sm text-kew-mute mb-1">
+                        <span class="text-kew-faint">$</span> cargo install kew &amp;&amp; kew init
                     </p>
-                    <p class="text-xs kew-faint mb-8">→ configured · ready.</p>
+                    <p class="text-xs text-kew-faint mb-8">→ configured · ready.</p>
 
-                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-2 kew-fg kew-glow">
+                    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-2 text-kew-fg kew-glow">
                         kew<span class="kew-cursor">_</span>
                     </h1>
-                    <p class="text-sm kew-mute uppercase tracking-[0.3em] mb-8">local llm agent orchestration</p>
+                    <p class="text-sm text-kew-mute uppercase tracking-[0.3em] mb-8">local llm agent orchestration</p>
 
-                    <p class="text-base sm:text-lg kew-prose max-w-2xl leading-relaxed mb-10">
+                    <p class="text-base sm:text-lg text-kew-prose max-w-2xl leading-relaxed mb-10">
                         Offloads code generation, debugging, testing, security audits, and docs from Claude Code to local Ollama models. Install it. Forget about it. Save tokens.
                     </p>
 
-                    <div class="kew-ascii rounded border p-4 text-xs leading-relaxed mb-10 overflow-x-auto">
-                        <div class="kew-faint mb-2">// architecture</div>
-<pre class="kew-mute">Claude Code ──MCP──▶ kew_run / kew_context_* ──▶ Worker Pool (tokio)
+                    <div class="rounded border border-kew-edge bg-black/55 text-kew-prose-soft p-4 text-xs leading-relaxed mb-10 overflow-x-auto">
+                        <div class="text-kew-faint mb-2">// architecture</div>
+<pre class="text-kew-mute">Claude Code ──MCP──▶ kew_run / kew_context_* ──▶ Worker Pool (tokio)
                          │
               ┌──────────┼──────────┐
               ▼          ▼          ▼
@@ -88,17 +88,17 @@ const features = [
 
             <!-- FEATURES -->
             <section>
-                <p class="text-xs kew-mute mb-3">
-                    <span class="kew-faint">$</span> kew --describe
+                <p class="text-xs text-kew-mute mb-3">
+                    <span class="text-kew-faint">$</span> kew --describe
                 </p>
-                <div class="kew-panel rounded-lg border">
+                <div class="rounded-lg border border-kew-edge bg-kew-panel">
                     <div v-for="(f, i) in features" :key="f.title"
                         class="px-5 sm:px-6 py-5 grid grid-cols-[auto_1fr] gap-4"
-                        :class="i < features.length - 1 ? 'kew-divide' : ''">
-                        <span class="kew-mute text-sm select-none pt-0.5">[{{ String(i + 1).padStart(2, '0') }}]</span>
+                        :class="i < features.length - 1 ? 'border-b border-[rgba(249,115,22,0.1)]' : ''">
+                        <span class="text-kew-mute text-sm select-none pt-0.5">[{{ String(i + 1).padStart(2, '0') }}]</span>
                         <div>
-                            <p class="text-base font-bold kew-fg mb-1">&gt; {{ f.title }}</p>
-                            <p class="text-sm kew-prose-soft leading-relaxed font-sans">{{ f.body }}</p>
+                            <p class="text-base font-bold text-kew-fg mb-1">&gt; {{ f.title }}</p>
+                            <p class="text-sm text-kew-prose-soft leading-relaxed font-sans">{{ f.body }}</p>
                         </div>
                     </div>
                 </div>
@@ -106,29 +106,29 @@ const features = [
 
             <!-- AGENTS -->
             <section>
-                <p class="text-xs kew-mute mb-3">
-                    <span class="kew-faint">$</span> kew agents --list
+                <p class="text-xs text-kew-mute mb-3">
+                    <span class="text-kew-faint">$</span> kew agents --list
                 </p>
-                <div class="kew-panel rounded-lg border overflow-hidden">
-                    <div class="grid grid-cols-[auto_1fr_1.5fr] text-xs kew-faint uppercase tracking-widest px-5 py-3 kew-divide kew-row-head">
+                <div class="rounded-lg border border-kew-edge bg-kew-panel overflow-hidden">
+                    <div class="grid grid-cols-[auto_1fr_1.5fr] text-xs text-kew-faint uppercase tracking-widest px-5 py-3 border-b border-[rgba(249,115,22,0.1)] bg-[rgba(249,115,22,0.05)]">
                         <span class="w-32">NAME</span>
                         <span>ROLE</span>
                         <span class="hidden sm:block">TRIGGERS</span>
                     </div>
                     <div v-for="(agent, i) in agents" :key="agent.name"
                         class="grid grid-cols-[auto_1fr_1.5fr] items-center px-5 py-3 text-sm"
-                        :class="i < agents.length - 1 ? 'kew-divide' : ''">
-                        <span class="w-32 font-bold kew-fg">{{ agent.name }}</span>
-                        <span class="kew-prose-soft font-sans">{{ agent.role }}</span>
-                        <span class="hidden sm:block text-xs kew-mute truncate">{{ agent.keywords }}</span>
+                        :class="i < agents.length - 1 ? 'border-b border-[rgba(249,115,22,0.1)]' : ''">
+                        <span class="w-32 font-bold text-kew-fg">{{ agent.name }}</span>
+                        <span class="text-kew-prose-soft font-sans">{{ agent.role }}</span>
+                        <span class="hidden sm:block text-xs text-kew-mute truncate">{{ agent.keywords }}</span>
                     </div>
                 </div>
             </section>
 
             <!-- INSTALL -->
             <section>
-                <p class="text-xs kew-mute mb-3">
-                    <span class="kew-faint">$</span> kew install --help
+                <p class="text-xs text-kew-mute mb-3">
+                    <span class="text-kew-faint">$</span> kew install --help
                 </p>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                     <div v-for="opt in [
@@ -136,29 +136,29 @@ const features = [
                         { label: 'Shell script', cmd: 'curl -fsSL install.sh | sh\nkew init' },
                         { label: 'From source', cmd: 'cargo install --path .\nkew init' },
                     ]" :key="opt.label"
-                        class="kew-panel rounded-lg border p-4">
-                        <p class="text-xs kew-faint uppercase tracking-widest mb-3">// {{ opt.label }}</p>
-                        <pre class="text-sm kew-fg-soft whitespace-pre">{{ opt.cmd }}</pre>
+                        class="rounded-lg border border-kew-edge bg-kew-panel p-4">
+                        <p class="text-xs text-kew-faint uppercase tracking-widest mb-3">// {{ opt.label }}</p>
+                        <pre class="text-sm text-kew-fg-soft whitespace-pre">{{ opt.cmd }}</pre>
                     </div>
                 </div>
             </section>
 
             <!-- EXAMPLE -->
             <section>
-                <p class="text-xs kew-mute mb-3">
-                    <span class="kew-faint">$</span> # example session
+                <p class="text-xs text-kew-mute mb-3">
+                    <span class="text-kew-faint">$</span> # example session
                 </p>
-                <div class="kew-panel rounded-lg border p-6 text-sm">
-                    <p class="kew-prose mb-4">
-                        <span class="kew-mute">you:</span> "Add rate limiting to the API and make sure it's secure"
+                <div class="rounded-lg border border-kew-edge bg-kew-panel p-6 text-sm">
+                    <p class="text-kew-prose mb-4">
+                        <span class="text-kew-mute">you:</span> "Add rate limiting to the API and make sure it's secure"
                     </p>
-                    <div class="pl-4 kew-border-l space-y-1.5 mb-4">
-                        <p class="kew-faint text-xs">// Claude orchestrates 3 parallel kew calls</p>
-                        <p class="kew-fg">├─ kew_run { agent: "developer", ... }  ─┐</p>
-                        <p class="kew-fg">├─ kew_run { agent: "security",  ... }  ─┤ parallel</p>
-                        <p class="kew-fg">└─ kew_run { agent: "tester",    ... }  ─┘</p>
+                    <div class="pl-4 border-l-2 border-[rgba(249,115,22,0.3)] space-y-1.5 mb-4">
+                        <p class="text-kew-faint text-xs">// Claude orchestrates 3 parallel kew calls</p>
+                        <p class="text-kew-fg">├─ kew_run { agent: "developer", ... }  ─┐</p>
+                        <p class="text-kew-fg">├─ kew_run { agent: "security",  ... }  ─┤ parallel</p>
+                        <p class="text-kew-fg">└─ kew_run { agent: "tester",    ... }  ─┘</p>
                     </div>
-                    <p class="text-xs kew-faint">→ 3× Ollama (local, free) · Claude reviews · Claude commits.</p>
+                    <p class="text-xs text-kew-faint">→ 3× Ollama (local, free) · Claude reviews · Claude commits.</p>
                 </div>
             </section>
 
@@ -167,18 +167,7 @@ const features = [
 </template>
 
 <style scoped>
-/* Force our own palette regardless of html.dark class */
 .kew-world {
-    --kew-fg: #f59e0b;
-    --kew-fg-soft: rgba(245, 158, 11, 0.9);
-    --kew-mute: rgba(249, 115, 22, 0.6);
-    --kew-faint: rgba(249, 115, 22, 0.38);
-    --kew-prose: rgba(255, 236, 210, 0.88);
-    --kew-prose-soft: rgba(255, 236, 210, 0.72);
-    --kew-edge: rgba(249, 115, 22, 0.22);
-    --kew-edge-strong: rgba(249, 115, 22, 0.42);
-    --kew-panel: rgba(10, 8, 6, 0.55);
-
     position: relative;
     min-height: 100%;
     width: 100%;
@@ -187,27 +176,6 @@ const features = [
     isolation: isolate;
 }
 
-/* Beat the html:not(.dark) .text-white/X !important overrides by NOT using them;
-   these scoped classes win no matter which theme is active. */
-.kew-fg        { color: var(--kew-fg); }
-.kew-fg-soft   { color: var(--kew-fg-soft); }
-.kew-mute      { color: var(--kew-mute); }
-.kew-faint     { color: var(--kew-faint); }
-.kew-prose     { color: var(--kew-prose); }
-.kew-prose-soft{ color: var(--kew-prose-soft); }
-.kew-dim       { color: rgba(249, 115, 22, 0.55); }
-
-.kew-terminal,
-.kew-panel,
-.kew-ascii { border-color: var(--kew-edge); }
-.kew-terminal { border-color: var(--kew-edge-strong); background: rgba(10, 8, 6, 0.72); }
-.kew-panel { background: var(--kew-panel); }
-.kew-ascii { background: rgba(0, 0, 0, 0.55); color: var(--kew-prose-soft); }
-.kew-titlebar { border-color: var(--kew-edge); background: rgba(249, 115, 22, 0.06); }
-.kew-divide { border-bottom: 1px solid rgba(249, 115, 22, 0.1); }
-.kew-row-head { background: rgba(249, 115, 22, 0.05); }
-.kew-border-l { border-left: 2px solid rgba(249, 115, 22, 0.3); }
-
 .kew-glow {
     text-shadow: 0 0 18px rgba(249, 115, 22, 0.55), 0 0 2px rgba(249, 115, 22, 0.9);
 }
@@ -215,7 +183,7 @@ const features = [
 .kew-cursor {
     display: inline-block;
     animation: kew-blink 1.1s steps(1) infinite;
-    color: var(--kew-fg);
+    color: var(--color-kew-fg);
 }
 
 @keyframes kew-blink {
