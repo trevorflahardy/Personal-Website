@@ -421,25 +421,25 @@ html:not(.dark) .theme-scope .divider-line.origin-left {
      (255,253,248) avoids the clinical glare of pure white panels. */
   html:not(.dark) .lg-thin,
   html:not(.dark).lg-thin {
-    --lg-tint: rgba(255, 253, 248, 0.26);
+    --lg-tint: rgba(255, 253, 248, 0.32);
     --lg-border: rgba(60, 60, 67, 0.14);
     --lg-highlight: rgba(255, 255, 255, 0.6);
   }
   html:not(.dark) .lg-regular,
   html:not(.dark).lg-regular {
-    --lg-tint: rgba(255, 253, 248, 0.36);
+    --lg-tint: rgba(255, 253, 248, 0.44);
     --lg-border: rgba(60, 60, 67, 0.16);
     --lg-highlight: rgba(255, 255, 255, 0.7);
   }
   html:not(.dark) .lg-thick,
   html:not(.dark).lg-thick {
-    --lg-tint: rgba(255, 253, 248, 0.46);
+    --lg-tint: rgba(255, 253, 248, 0.55);
     --lg-border: rgba(60, 60, 67, 0.18);
     --lg-highlight: rgba(255, 255, 255, 0.78);
   }
   html:not(.dark) .lg-sidebar,
   html:not(.dark).lg-sidebar {
-    --lg-tint: rgba(255, 253, 248, 0.52);
+    --lg-tint: rgba(255, 253, 248, 0.6);
     --lg-border: rgba(60, 60, 67, 0.2);
     --lg-highlight: rgba(255, 255, 255, 0.82);
   }
@@ -534,27 +534,27 @@ html:not(.dark) .theme-scope .divider-line.origin-left {
   /* Light mode — warm frosted glass, matching the lg-* treatment above.
      Triggered by the `.dark` toggle, not system preference. */
   html:not(.dark) .glass-thin {
-    --lg-tint: rgba(255, 253, 248, 0.26);
+    --lg-tint: rgba(255, 253, 248, 0.32);
     --lg-border: rgba(60, 60, 67, 0.14);
     --lg-highlight: rgba(255, 255, 255, 0.6);
   }
   html:not(.dark) .glass-regular {
-    --lg-tint: rgba(255, 253, 248, 0.36);
+    --lg-tint: rgba(255, 253, 248, 0.44);
     --lg-border: rgba(60, 60, 67, 0.16);
     --lg-highlight: rgba(255, 255, 255, 0.7);
   }
   html:not(.dark) .glass-semithick {
-    --lg-tint: rgba(255, 253, 248, 0.42);
+    --lg-tint: rgba(255, 253, 248, 0.5);
     --lg-border: rgba(60, 60, 67, 0.17);
     --lg-highlight: rgba(255, 255, 255, 0.74);
   }
   html:not(.dark) .glass-thick {
-    --lg-tint: rgba(255, 253, 248, 0.46);
+    --lg-tint: rgba(255, 253, 248, 0.55);
     --lg-border: rgba(60, 60, 67, 0.18);
     --lg-highlight: rgba(255, 255, 255, 0.78);
   }
   html:not(.dark) .glass-card {
-    --lg-tint: rgba(255, 253, 248, 0.4);
+    --lg-tint: rgba(255, 253, 248, 0.48);
     --lg-border: rgba(60, 60, 67, 0.17);
     --lg-highlight: rgba(255, 255, 255, 0.74);
   }
