@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { shallowRef, onMounted, onBeforeUnmount } from 'vue';
 
-const score = ref(0);
-const hiScore = ref(137420);
+const score = shallowRef(0);
+const hiScore = shallowRef(137420);
 let scoreTimer: number | undefined;
 
 onMounted(() => {

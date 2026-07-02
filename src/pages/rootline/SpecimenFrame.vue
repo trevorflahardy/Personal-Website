@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-const imgFailed = ref(false);
+import { shallowRef } from 'vue';
+const imgFailed = shallowRef(false);
 </script>
 
 <template>

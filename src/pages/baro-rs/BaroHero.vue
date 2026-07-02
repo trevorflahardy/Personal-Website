@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { onBeforeUnmount, onMounted, useTemplateRef } from 'vue';
 
-const heroCanvas = ref<HTMLCanvasElement | null>(null);
+const heroCanvas = useTemplateRef<HTMLCanvasElement>('heroCanvas');
 
 // Oscilloscope — amber sine wave that lives in the hero. Frequency breathes
 // slowly; a secondary high-frequency line adds texture. Runs on rAF and

@@ -17,9 +17,18 @@ export function useLenis(targetSelector = "#main-content") {
         const el = document.querySelector<HTMLElement>(targetSelector);
         if (!el) return;
 
+        // The router-view wrapper is the element whose height IS the page.
+        // (firstElementChild used to grab the sidebar-collapse button, so
+        // Lenis' scroll limit never tracked async content growth and the
+        // bottom of the page became unreachable by wheel.)
+        const content =
+            el.querySelector<HTMLElement>(".page-swap__content") ??
+            (el.lastElementChild as HTMLElement | null) ??
+            el;
+
         lenis = new Lenis({
             wrapper: el,
-            content: el.firstElementChild as HTMLElement | undefined ?? el,
+            content,
             lerp: 0.08,
             smoothWheel: true,
             wheelMultiplier: 1.0,

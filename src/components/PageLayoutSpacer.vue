@@ -15,65 +15,42 @@ const props = defineProps<PageLayoutSpacerProps>();
     <div
         class="flex items-center flex-col flex-nowrap space-y-6 lg:space-y-8 px-5 sm:px-7 md:px-8 lg:px-10 xl:px-10 2xl:px-12 py-5 sm:py-6 md:py-7 lg:py-8 min-h-full w-full">
         <TransitionGroup name="slam" appear :tag="props.tag">
-            <!-- Insert any slots from the page into the slam transition. -->
-            <slot v-for="(slot, index) in $slots" :key="`slot-${index}`">
-                <slot :name="slot" />
-            </slot>
+            <slot />
         </TransitionGroup>
     </div>
 </template>
 
-<style>
-.slam-enter-active {
-    transition: transform v-bind("props.transformDuration || '600ms'") ease-in-out;
+<style scoped>
+/* Transform-only entrance (rise + settle). Deliberately no opacity/filter —
+   animating either on an ancestor of backdrop-filter glass breaks the glass
+   blur in Chromium for the duration of the transition. */
+:deep(.slam-enter-active) {
+    transition: transform v-bind("props.transformDuration || '550ms'") cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.slam-enter-from {
-    transform: scale(1.05);
+:deep(.slam-enter-from) {
+    transform: translateY(16px) scale(0.985);
 }
 
-.slam-enter-to {
-    transform: scale(1);
+:deep(.slam-enter-to) {
+    transform: translateY(0) scale(1);
 }
 
 /* Apply different delays based on the order of the elements */
-.slam-enter-active:nth-child(1) {
-    transition-delay: 0.1s;
-}
+:deep(.slam-enter-active:nth-child(1)) { transition-delay: 0.05s; }
+:deep(.slam-enter-active:nth-child(2)) { transition-delay: 0.13s; }
+:deep(.slam-enter-active:nth-child(3)) { transition-delay: 0.21s; }
+:deep(.slam-enter-active:nth-child(4)) { transition-delay: 0.29s; }
+:deep(.slam-enter-active:nth-child(5)) { transition-delay: 0.37s; }
+:deep(.slam-enter-active:nth-child(6)) { transition-delay: 0.45s; }
+:deep(.slam-enter-active:nth-child(7)) { transition-delay: 0.53s; }
+:deep(.slam-enter-active:nth-child(8)) { transition-delay: 0.61s; }
+:deep(.slam-enter-active:nth-child(9)) { transition-delay: 0.69s; }
+:deep(.slam-enter-active:nth-child(10)) { transition-delay: 0.77s; }
 
-.slam-enter-active:nth-child(2) {
-    transition-delay: 0.2s;
-}
-
-.slam-enter-active:nth-child(3) {
-    transition-delay: 0.3s;
-}
-
-.slam-enter-active:nth-child(4) {
-    transition-delay: 0.4s;
-}
-
-.slam-enter-active:nth-child(5) {
-    transition-delay: 0.5s;
-}
-
-.slam-enter-active:nth-child(6) {
-    transition-delay: 0.6s;
-}
-
-.slam-enter-active:nth-child(7) {
-    transition-delay: 0.7s;
-}
-
-.slam-enter-active:nth-child(8) {
-    transition-delay: 0.8s;
-}
-
-.slam-enter-active:nth-child(9) {
-    transition-delay: 0.9s;
-}
-
-.slam-enter-active:nth-child(10) {
-    transition-delay: 1s;
+@media (prefers-reduced-motion: reduce) {
+    :deep(.slam-enter-active) {
+        transition: none;
+    }
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, nextTick, ref, watch } from 'vue';
+import { computed, onMounted, nextTick, useTemplateRef, watch } from 'vue';
 
 const props = defineProps<{ modelValue: string }>();
 const emit = defineEmits<{
@@ -7,8 +7,8 @@ const emit = defineEmits<{
     'cursor-change': [position: { line: number; col: number }];
 }>();
 
-const textareaRef = ref<HTMLTextAreaElement | null>(null);
-const lineNumsRef = ref<HTMLPreElement | null>(null);
+const textareaRef = useTemplateRef<HTMLTextAreaElement>('textareaRef');
+const lineNumsRef = useTemplateRef<HTMLPreElement>('lineNumsRef');
 
 const lineNumsContent = computed(() =>
     props.modelValue.split('\n').map((_, i) => String(i + 1).padStart(2, ' ')).join('\n'),

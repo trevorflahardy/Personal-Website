@@ -1,7 +1,7 @@
-import { ref, computed, watch } from 'vue';
+import { shallowRef, computed, watch } from 'vue';
 
 const GUIDE_KEY = 'sidebar-guide-v1';
-const hasSeen = ref(localStorage.getItem(GUIDE_KEY) === 'true');
+const hasSeen = shallowRef(localStorage.getItem(GUIDE_KEY) === 'true');
 
 watch(hasSeen, (val) => {
     localStorage.setItem(GUIDE_KEY, String(val));

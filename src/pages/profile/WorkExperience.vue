@@ -1,150 +1,112 @@
 <script setup lang="ts">
-const jobs = [
-    {
-        company: 'University of South Florida',
-        url: 'https://www.usf.edu',
-        color: '#006747',
-        roles: [
-            {
-                title: 'Lead Teaching Assistant — 3D Printing Lab Operations',
-                period: 'Nov 2025 – Present',
-                bullets: [
-                    'Led maintenance, upgrades, and repair operations for 12 course-operated FDM printers — full disassembly, diagnostics, part sourcing, reassembly, and cooling/calibration improvements.',
-                    'Rewrote instructional materials to shift from checklist compliance to conceptual understanding; led full slicer migration to Orca Flashforge across all lab sections.',
-                    'Produced and distributed 500+ durable 3D-printed STEM outreach items for elementary and middle school events.',
-                    'Built SliceGuard — an internal web app to replace email submissions, manual file checks, and ad-hoc filament tracking with a unified request-management system.',
-                ],
-            },
-            {
-                title: 'Student Assistant — Foundations of Engineering Lab',
-                period: 'Jan 2025 – Present',
-                bullets: [
-                    'Lead weekly lab sessions covering robotics, programming, circuit construction, and mechanical design for a 200-student engineering course.',
-                    'Developed "The Foundations Resource Hub" — an open-source Sphinx/ReadTheDocs tutorial enabling consistent self-paced learning across all course sections.',
-                    'Refactored Canvas assignments and provided structured feedback on technical presentations and written reports.',
-                ],
-            },
-        ],
-    },
-    {
-        company: 'Pickle Pockets',
-        url: 'https://picklepockets.shop',
-        color: '#dfff00',
-        roles: [
-            {
-                title: 'Founder & Product Designer',
-                period: 'Aug 2025 – Present',
-                bullets: [
-                    'Designed and launched the Tri Pickle Pocket — a lightweight, 3D-printed PETG carabiner holder for pickleballs — from first prototype through manufacturing to retail.',
-                    'Built and managed a Shopify storefront with SEO, collections, and automated fulfillment; ran Meta Ads and Instagram campaigns.',
-                    'Established wholesale partnerships with local pickleball clubs and retail outlets; implemented customer feedback loops to optimize product-market fit.',
-                ],
-            },
-        ],
-    },
-    {
-        company: 'Chai Designs',
-        url: null,
-        color: '#7f5cff',
-        roles: [
-            {
-                title: 'Full Stack Developer',
-                period: 'Aug 2024 – Dec 2025',
-                bullets: [
-                    'Designed and built production websites and web applications using Vue.js and React, leveraging Bun for fast builds and modern tooling.',
-                    'Implemented full-stack architectures with live database-backed data — schema design, API development, and efficient querying.',
-                    'Built and integrated secure user authentication and authorization systems; developed internal Rust tooling for performance-critical workflows.',
-                ],
-            },
-        ],
-    },
-    {
-        company: 'Self-employed — Cryptocurrency & Blockchain',
-        url: null,
-        color: '#f97316',
-        roles: [
-            {
-                title: 'Full-Stack Software Developer',
-                period: 'Feb 2020 – Jun 2024',
-                bullets: [
-                    'Developed custom user panels for NFT project launches — purchase, sale, and management of Solana and Ethereum NFTs — using Vue.js, React, and SQL.',
-                    'Engineered Solana smart contracts in Rust for Discord integration to deliver NFT-gated perks.',
-                    'Collaborated with 223 clients to build and deploy blockchain solutions; reached a community of 1M+ users across all systems.',
-                ],
-            },
-        ],
-    },
-    {
-        company: 'Florida Virtual School',
-        url: 'https://www.flvs.net',
-        color: '#38bdf8',
-        roles: [
-            {
-                title: 'Software Engineering Tutor',
-                period: 'Jun 2020 – Jun 2023',
-                bullets: [
-                    'Taught software engineering practices including designing, building, testing, and debugging Python programs.',
-                    'Covered Object-Oriented principles — polymorphism, encapsulation, and abstraction — with high school students over 3 years.',
-                ],
-            },
-        ],
-    },
-];
+import { jobs } from './work-data';
 </script>
 
 <template>
     <div class="w-full">
-        <div class="mb-8">
-            <h2 class="title-2 mb-2">Work &amp; experience</h2>
-            <p class="subtitle">Where the projects came from.</p>
+        <div v-reveal class="mb-10">
+            <p class="font-mono text-xs uppercase tracking-[0.28em] text-white/40 mb-3">Career</p>
+            <h2 class="text-4xl md:text-5xl font-black tracking-tight text-white text-pretty">
+                Work &amp; experience
+            </h2>
         </div>
 
-        <div class="relative flex flex-col gap-0">
-            <div class="absolute left-[19px] top-3 bottom-3 w-px bg-white/8 hidden sm:block pointer-events-none" />
+        <!-- Editorial ledger — no boxes. Each entry is a full-width row cut by
+             hairlines, oversized company names doing the visual work, and the
+             job's accent color arriving on hover (rail + name + glow). -->
+        <div class="flex flex-col">
+            <article v-for="(job, ji) in jobs" :key="job.company" v-reveal="{ delay: ji * 90 }" data-glow
+                class="group relative border-t border-white/10 last:border-b py-8 md:py-10 pl-4 md:pl-6"
+                :style="{ '--job-color': job.color }">
 
-            <div v-for="(job, ji) in jobs" :key="job.company"
-                class="relative flex flex-col sm:flex-row gap-0 sm:gap-6 mb-8 last:mb-0">
+                <!-- Accent rail — draws down the entry on hover -->
+                <span class="job-rail absolute left-0 top-0 bottom-0 w-[3px] origin-top scale-y-0
+                             group-hover:scale-y-100 transition-transform duration-500 ease-out" aria-hidden="true" />
 
-                <div class="hidden sm:flex flex-col items-center flex-none w-10 pt-1">
-                    <div class="w-3.5 h-3.5 rounded-full border-2 flex-none z-10"
-                        :style="{ backgroundColor: job.color + '40', borderColor: job.color }" />
-                </div>
+                <!-- Pointer-following accent light (same --gx/--gy pipeline as glass) -->
+                <div class="glow-tint" aria-hidden="true"
+                    :style="{ background: `radial-gradient(340px circle at var(--gx, 50%) var(--gy, 50%), ${job.color}14, transparent 70%)` }" />
 
-                <div class="flex-1 rounded-2xl border bg-white/[0.02] overflow-hidden"
-                    :style="{ borderColor: job.color + '25' }">
-
-                    <!-- Company header — only shows company-level period if there are multiple roles -->
-                    <div class="px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 border-b"
-                        :style="{ borderColor: job.color + '20', backgroundColor: job.color + '08' }">
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-2 h-2 rounded-full flex-none" :style="{ backgroundColor: job.color }" />
-                            <a v-if="job.url" :href="job.url" target="_blank" rel="noreferrer"
-                                class="font-semibold text-white text-sm hover:underline underline-offset-2">
-                                {{ job.company }}
-                            </a>
-                            <span v-else class="font-semibold text-white text-sm">{{ job.company }}</span>
-                        </div>
+                <div class="relative grid grid-cols-12 gap-x-6">
+                    <div class="hidden md:block md:col-span-1 pt-3 font-mono text-sm text-white/30
+                                group-hover:text-white/60 transition-colors duration-300">
+                        {{ String(ji + 1).padStart(2, '0') }}
                     </div>
 
-                    <div>
-                        <div v-for="(role, ri) in job.roles" :key="role.title"
-                            class="px-5 py-4"
-                            :style="ri > 0 ? { borderTop: `1px solid ${job.color}12` } : {}">
-                            <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5 mb-2">
-                                <p class="text-sm font-medium text-white/85">{{ role.title }}</p>
-                                <span class="text-xs font-mono flex-none" :style="{ color: job.color + 'aa' }">{{ role.period }}</span>
+                    <div class="col-span-12 md:col-span-11">
+                        <div class="mb-5">
+                            <a v-if="job.url" :href="job.url" target="_blank" rel="noreferrer"
+                                class="company inline-block text-3xl sm:text-4xl md:text-[2.75rem] font-black tracking-tight leading-[1.05] text-white text-pretty">
+                                {{ job.company }}
+                            </a>
+                            <span v-else
+                                class="company inline-block text-3xl sm:text-4xl md:text-[2.75rem] font-black tracking-tight leading-[1.05] text-white text-pretty">
+                                {{ job.company }}
+                            </span>
+                        </div>
+
+                        <div v-for="role in job.roles" :key="role.title" class="mb-6 last:mb-0">
+                            <div
+                                class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-x-6 gap-y-0.5 mb-2.5">
+                                <h3 class="text-base md:text-lg font-semibold text-white/90">{{ role.title }}</h3>
+                                <span class="job-period font-mono text-xs md:text-sm uppercase tracking-wider flex-none"
+                                    :style="{ color: job.color + 'aa', '--job-color': job.color }">
+                                    {{ role.period }}
+                                </span>
                             </div>
-                            <ul class="flex flex-col gap-1.5">
+                            <ul class="flex flex-col gap-1.5 max-w-4xl">
                                 <li v-for="b in role.bullets" :key="b"
-                                    class="flex gap-2.5 items-start text-sm text-white/55 leading-relaxed">
-                                    <span class="mt-[7px] w-1 h-1 rounded-full flex-none" :style="{ backgroundColor: job.color + '80' }" />
+                                    class="flex gap-3 items-start text-sm text-white/55 font-light leading-relaxed">
+                                    <span class="bullet-dash mt-[0.65em] h-px w-4 flex-none" aria-hidden="true" />
                                     {{ b }}
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
+            </article>
         </div>
     </div>
 </template>
+
+<style scoped>
+.job-rail,
+.bullet-dash {
+    background-color: var(--job-color);
+}
+
+.bullet-dash {
+    opacity: 0.65;
+}
+
+/* Company name takes the job's accent on hover — brightened against dark
+   glass, ink-darkened against light glass, so even deep colors like USF
+   green and neon Pickle-Pockets yellow stay legible. */
+.company {
+    transition: color 0.3s ease;
+}
+
+.group:hover .company {
+    color: color-mix(in srgb, var(--job-color) 65%, white);
+}
+
+html:not(.dark) .group:hover .company {
+    color: color-mix(in srgb, var(--job-color) 55%, rgb(28, 28, 30));
+}
+
+/* Project accent colors are tuned for dark glass — darken them with ink for
+   readable period stamps on light glass. */
+html:not(.dark) .job-period {
+    color: color-mix(in srgb, var(--job-color) 55%, rgb(28, 28, 30)) !important;
+}
+
+/* Pointer-following accent tint — visible only while the cursor is on the
+   entry (the glow composable flips --glare-o between 0 and 1). */
+.glow-tint {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--glare-o, 0);
+    transition: opacity 0.45s ease;
+}
+</style>

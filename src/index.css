@@ -81,9 +81,48 @@
   --font-family-sf-pro-display:
     "SF Pro Display", "Helvetica Neue", -apple-system, BlinkMacSystemFont,
     sans-serif;
+
+  /* Default sans — makes the SF Pro stack the site-wide typeface instead of
+     Tailwind's generic ui-sans-serif default. */
+  --font-sans:
+    "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", sans-serif;
 }
 
 @layer base {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Frosted-blue selection — the visionOS highlight tint. */
+  ::selection {
+    background: rgba(147, 197, 253, 0.3);
+    color: #fff;
+  }
+  html:not(.dark) ::selection {
+    background: rgba(37, 99, 235, 0.18);
+    color: inherit;
+  }
+
+  /* Visible-but-quiet keyboard focus on glass. */
+  :focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.45);
+    outline-offset: 2px;
+  }
+  html:not(.dark) :focus-visible {
+    outline-color: rgba(28, 28, 30, 0.45);
+  }
+
+  /* Warm serif italic accent — the neo-minimalist "human touch" against the
+     SF sans system. Use sparingly: one phrase per section at most. */
+  .serif-accent {
+    font-family: "New York", "Iowan Old Style", "Palatino", Georgia, serif;
+    font-style: italic;
+    letter-spacing: -0.01em;
+  }
+
   .hero-title {
     @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl font-bold text-white text-pretty tracking-tight;
   }
@@ -134,26 +173,26 @@
   html:not(.dark) .title,
   html:not(.dark) .title-2,
   html:not(.dark) .card-title {
-    color: rgb(15, 23, 42);
+    color: rgb(28, 28, 30);
   }
   html:not(.dark) .title-3 {
-    color: rgba(15, 23, 42, 0.92);
+    color: rgba(28, 28, 30, 0.92);
   }
   html:not(.dark) .title-4 {
-    color: rgba(15, 23, 42, 0.88);
+    color: rgba(28, 28, 30, 0.88);
   }
   html:not(.dark) .subtitle {
-    color: rgba(15, 23, 42, 0.72);
+    color: rgba(28, 28, 30, 0.72);
   }
   html:not(.dark) .body,
   html:not(.dark) .card-body {
-    color: rgba(15, 23, 42, 0.78);
+    color: rgba(28, 28, 30, 0.78);
   }
   html:not(.dark) .card-title-2 {
-    color: rgba(15, 23, 42, 0.82);
+    color: rgba(28, 28, 30, 0.82);
   }
   html:not(.dark) .card-caption {
-    color: rgba(15, 23, 42, 0.62);
+    color: rgba(28, 28, 30, 0.62);
   }
 }
 
@@ -163,68 +202,153 @@
    typography classes above. Use !important because Tailwind utility styles are
    emitted after cascade layers in v4 and the engine often re-emits them per
    route chunk. */
-html:not(.dark) .text-white {
-  color: rgb(15, 23, 42) !important;
+html:not(.dark) .theme-scope .text-white {
+  color: rgb(28, 28, 30) !important;
 }
-html:not(.dark) .text-white\/95 {
-  color: rgb(15 23 42 / 0.95) !important;
+html:not(.dark) .theme-scope .text-white\/95 {
+  color: rgb(28 28 30 / 0.95) !important;
 }
-html:not(.dark) .text-white\/90 {
-  color: rgb(15 23 42 / 0.9) !important;
+html:not(.dark) .theme-scope .text-white\/90 {
+  color: rgb(28 28 30 / 0.9) !important;
 }
-html:not(.dark) .text-white\/85 {
-  color: rgb(15 23 42 / 0.85) !important;
+html:not(.dark) .theme-scope .text-white\/85 {
+  color: rgb(28 28 30 / 0.85) !important;
 }
-html:not(.dark) .text-white\/80 {
-  color: rgb(15 23 42 / 0.8) !important;
+html:not(.dark) .theme-scope .text-white\/80 {
+  color: rgb(28 28 30 / 0.8) !important;
 }
-html:not(.dark) .text-white\/78 {
-  color: rgb(15 23 42 / 0.78) !important;
+html:not(.dark) .theme-scope .text-white\/78 {
+  color: rgb(28 28 30 / 0.78) !important;
 }
-html:not(.dark) .text-white\/75 {
-  color: rgb(15 23 42 / 0.75) !important;
+html:not(.dark) .theme-scope .text-white\/75 {
+  color: rgb(28 28 30 / 0.75) !important;
 }
-html:not(.dark) .text-white\/72 {
-  color: rgb(15 23 42 / 0.72) !important;
+html:not(.dark) .theme-scope .text-white\/72 {
+  color: rgb(28 28 30 / 0.72) !important;
 }
-html:not(.dark) .text-white\/70 {
-  color: rgb(15 23 42 / 0.7) !important;
+html:not(.dark) .theme-scope .text-white\/70 {
+  color: rgb(28 28 30 / 0.7) !important;
 }
-html:not(.dark) .text-white\/65 {
-  color: rgb(15 23 42 / 0.65) !important;
+html:not(.dark) .theme-scope .text-white\/65 {
+  color: rgb(28 28 30 / 0.65) !important;
 }
-html:not(.dark) .text-white\/60 {
-  color: rgb(15 23 42 / 0.6) !important;
+html:not(.dark) .theme-scope .text-white\/60 {
+  color: rgb(28 28 30 / 0.6) !important;
 }
-html:not(.dark) .text-white\/55 {
-  color: rgb(15 23 42 / 0.6) !important;
+html:not(.dark) .theme-scope .text-white\/55 {
+  color: rgb(28 28 30 / 0.6) !important;
 }
-html:not(.dark) .text-white\/50 {
-  color: rgb(15 23 42 / 0.55) !important;
+html:not(.dark) .theme-scope .text-white\/50 {
+  color: rgb(28 28 30 / 0.55) !important;
 }
-html:not(.dark) .text-white\/45 {
-  color: rgb(15 23 42 / 0.55) !important;
+html:not(.dark) .theme-scope .text-white\/45 {
+  color: rgb(28 28 30 / 0.55) !important;
 }
-html:not(.dark) .text-white\/40 {
-  color: rgb(15 23 42 / 0.52) !important;
+html:not(.dark) .theme-scope .text-white\/40 {
+  color: rgb(28 28 30 / 0.52) !important;
 }
-html:not(.dark) .text-white\/35 {
-  color: rgb(15 23 42 / 0.5) !important;
+html:not(.dark) .theme-scope .text-white\/35 {
+  color: rgb(28 28 30 / 0.5) !important;
 }
-html:not(.dark) .text-white\/30 {
-  color: rgb(15 23 42 / 0.48) !important;
+html:not(.dark) .theme-scope .text-white\/30 {
+  color: rgb(28 28 30 / 0.48) !important;
 }
-html:not(.dark) .text-white\/25 {
-  color: rgb(15 23 42 / 0.45) !important;
+html:not(.dark) .theme-scope .text-white\/25 {
+  color: rgb(28 28 30 / 0.45) !important;
 }
-html:not(.dark) .text-white\/20 {
-  color: rgb(15 23 42 / 0.4) !important;
+html:not(.dark) .theme-scope .text-white\/20 {
+  color: rgb(28 28 30 / 0.4) !important;
 }
-html:not(.dark) .text-white\/15 {
-  color: rgb(15 23 42 / 0.38) !important;
+html:not(.dark) .theme-scope .text-white\/15 {
+  color: rgb(28 28 30 / 0.38) !important;
 }
-html:not(.dark) .text-white\/10 {
-  color: rgb(15 23 42 / 0.32) !important;
+html:not(.dark) .theme-scope .text-white\/10 {
+  color: rgb(28 28 30 / 0.32) !important;
+}
+
+/* Accent colors picked for dark glass need a darker cousin on light glass. */
+html:not(.dark) .theme-scope .text-emerald-400 {
+  color: #047857 !important;
+}
+
+/* Same blanket strategy for translucent-white FILLS and BORDERS: surfaces
+   designed as "white light on dark glass" flip to ink-tinted equivalents in
+   light mode, so hover states and chips stay visible on bright glass.
+   Scoped to .theme-scope so full-bleed project pages (self-contained dark
+   worlds) are untouched. */
+html:not(.dark) .theme-scope .bg-white\/4 {
+  background-color: rgba(28, 28, 30, 0.04) !important;
+}
+html:not(.dark) .theme-scope .bg-white\/5 {
+  background-color: rgba(28, 28, 30, 0.045) !important;
+}
+html:not(.dark) .theme-scope .bg-white\/6 {
+  background-color: rgba(28, 28, 30, 0.05) !important;
+}
+html:not(.dark) .theme-scope .bg-white\/8 {
+  background-color: rgba(28, 28, 30, 0.06) !important;
+}
+html:not(.dark) .theme-scope .bg-white\/10 {
+  background-color: rgba(28, 28, 30, 0.08) !important;
+}
+html:not(.dark) .theme-scope .bg-white\/12 {
+  background-color: rgba(28, 28, 30, 0.09) !important;
+}
+html:not(.dark) .theme-scope .bg-white\/\[0\.02\] {
+  background-color: rgba(28, 28, 30, 0.025) !important;
+}
+html:not(.dark) .theme-scope .hover\:bg-white\/8:hover {
+  background-color: rgba(28, 28, 30, 0.07) !important;
+}
+html:not(.dark) .theme-scope .hover\:bg-white\/10:hover {
+  background-color: rgba(28, 28, 30, 0.08) !important;
+}
+html:not(.dark) .theme-scope .hover\:bg-white\/12:hover {
+  background-color: rgba(28, 28, 30, 0.1) !important;
+}
+html:not(.dark) .theme-scope .hover\:bg-white\/15:hover {
+  background-color: rgba(28, 28, 30, 0.12) !important;
+}
+html:not(.dark) .theme-scope .border-white\/8 {
+  border-color: rgba(60, 60, 67, 0.14) !important;
+}
+html:not(.dark) .theme-scope .border-white\/10 {
+  border-color: rgba(60, 60, 67, 0.16) !important;
+}
+html:not(.dark) .theme-scope .border-white\/15 {
+  border-color: rgba(60, 60, 67, 0.2) !important;
+}
+html:not(.dark) .theme-scope .hover\:border-white\/15:hover {
+  border-color: rgba(60, 60, 67, 0.22) !important;
+}
+html:not(.dark) .theme-scope .hover\:border-white\/20:hover {
+  border-color: rgba(60, 60, 67, 0.26) !important;
+}
+html:not(.dark) .theme-scope .ring-white\/10 {
+  --tw-ring-color: rgba(60, 60, 67, 0.18) !important;
+}
+html:not(.dark) .theme-scope .ring-white\/15 {
+  --tw-ring-color: rgba(60, 60, 67, 0.22) !important;
+}
+
+/* Intro divider hairlines — gradient stops need their own light values.
+   Direction mirrors the dark version: each line fades out toward the page
+   edge and lands darkest beside the social buttons. */
+html:not(.dark) .theme-scope .divider-line.origin-right {
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(60, 60, 67, 0.24),
+    rgba(60, 60, 67, 0.3)
+  ) !important;
+}
+html:not(.dark) .theme-scope .divider-line.origin-left {
+  background: linear-gradient(
+    to left,
+    transparent,
+    rgba(60, 60, 67, 0.24),
+    rgba(60, 60, 67, 0.3)
+  ) !important;
 }
 
 @layer components {
@@ -292,29 +416,32 @@ html:not(.dark) .text-white\/10 {
     --lg-highlight: rgba(255, 255, 255, 0.18);
   }
 
+  /* Light mode — warm frosted glass, not white haze. Tint alphas stay low
+     enough that the day room reads through the blur; the warm off-white base
+     (255,253,248) avoids the clinical glare of pure white panels. */
   html:not(.dark) .lg-thin,
   html:not(.dark).lg-thin {
-    --lg-tint: rgba(255, 255, 255, 0.5);
-    --lg-border: rgba(0, 0, 0, 0.08);
-    --lg-highlight: rgba(255, 255, 255, 0.65);
+    --lg-tint: rgba(255, 253, 248, 0.26);
+    --lg-border: rgba(60, 60, 67, 0.14);
+    --lg-highlight: rgba(255, 255, 255, 0.6);
   }
   html:not(.dark) .lg-regular,
   html:not(.dark).lg-regular {
-    --lg-tint: rgba(255, 255, 255, 0.62);
-    --lg-border: rgba(0, 0, 0, 0.1);
-    --lg-highlight: rgba(255, 255, 255, 0.75);
+    --lg-tint: rgba(255, 253, 248, 0.36);
+    --lg-border: rgba(60, 60, 67, 0.16);
+    --lg-highlight: rgba(255, 255, 255, 0.7);
   }
   html:not(.dark) .lg-thick,
   html:not(.dark).lg-thick {
-    --lg-tint: rgba(255, 255, 255, 0.76);
-    --lg-border: rgba(15, 23, 42, 0.12);
-    --lg-highlight: rgba(255, 255, 255, 0.82);
+    --lg-tint: rgba(255, 253, 248, 0.46);
+    --lg-border: rgba(60, 60, 67, 0.18);
+    --lg-highlight: rgba(255, 255, 255, 0.78);
   }
   html:not(.dark) .lg-sidebar,
   html:not(.dark).lg-sidebar {
-    --lg-tint: rgba(255, 255, 255, 0.82);
-    --lg-border: rgba(15, 23, 42, 0.14);
-    --lg-highlight: rgba(255, 255, 255, 0.88);
+    --lg-tint: rgba(255, 253, 248, 0.52);
+    --lg-border: rgba(60, 60, 67, 0.2);
+    --lg-highlight: rgba(255, 255, 255, 0.82);
   }
 
   @media (prefers-reduced-transparency: reduce) {
@@ -404,31 +531,77 @@ html:not(.dark) .text-white\/10 {
     --lg-highlight: rgba(255, 255, 255, 0.14);
   }
 
-  /* Light mode — clean frosted white. Triggered by the `.dark` toggle, not system preference. */
+  /* Light mode — warm frosted glass, matching the lg-* treatment above.
+     Triggered by the `.dark` toggle, not system preference. */
   html:not(.dark) .glass-thin {
-    --lg-tint: rgba(255, 255, 255, 0.5);
-    --lg-border: rgba(15, 23, 42, 0.08);
-    --lg-highlight: rgba(255, 255, 255, 0.65);
+    --lg-tint: rgba(255, 253, 248, 0.26);
+    --lg-border: rgba(60, 60, 67, 0.14);
+    --lg-highlight: rgba(255, 255, 255, 0.6);
   }
   html:not(.dark) .glass-regular {
-    --lg-tint: rgba(255, 255, 255, 0.62);
-    --lg-border: rgba(15, 23, 42, 0.1);
-    --lg-highlight: rgba(255, 255, 255, 0.75);
+    --lg-tint: rgba(255, 253, 248, 0.36);
+    --lg-border: rgba(60, 60, 67, 0.16);
+    --lg-highlight: rgba(255, 255, 255, 0.7);
   }
   html:not(.dark) .glass-semithick {
-    --lg-tint: rgba(255, 255, 255, 0.7);
-    --lg-border: rgba(15, 23, 42, 0.11);
-    --lg-highlight: rgba(255, 255, 255, 0.8);
+    --lg-tint: rgba(255, 253, 248, 0.42);
+    --lg-border: rgba(60, 60, 67, 0.17);
+    --lg-highlight: rgba(255, 255, 255, 0.74);
   }
   html:not(.dark) .glass-thick {
-    --lg-tint: rgba(255, 255, 255, 0.78);
-    --lg-border: rgba(15, 23, 42, 0.12);
-    --lg-highlight: rgba(255, 255, 255, 0.84);
+    --lg-tint: rgba(255, 253, 248, 0.46);
+    --lg-border: rgba(60, 60, 67, 0.18);
+    --lg-highlight: rgba(255, 255, 255, 0.78);
   }
   html:not(.dark) .glass-card {
-    --lg-tint: rgba(255, 255, 255, 0.72);
-    --lg-border: rgba(15, 23, 42, 0.11);
-    --lg-highlight: rgba(255, 255, 255, 0.8);
+    --lg-tint: rgba(255, 253, 248, 0.4);
+    --lg-border: rgba(60, 60, 67, 0.17);
+    --lg-highlight: rgba(255, 255, 255, 0.74);
+  }
+
+  /* ============================================================
+     POINTER GLARE — a specular highlight that tracks the cursor across
+     every glass surface, like light catching real glass as you move.
+     Driven by --gx / --gy / --glare-o custom props set from a single
+     delegated pointermove listener (src/composables/useGlassGlow.ts).
+  ============================================================ */
+  .glass-thin::after,
+  .glass-regular::after,
+  .glass-semithick::after,
+  .glass-thick::after,
+  .glass-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: var(--glare-o, 0);
+    background: radial-gradient(
+      var(--glare-r, 320px) circle at var(--gx, 50%) var(--gy, 50%),
+      rgba(255, 255, 255, var(--glare-a, 0.09)),
+      rgba(255, 255, 255, calc(var(--glare-a, 0.09) * 0.35)) 42%,
+      transparent 68%
+    );
+    transition: opacity 0.45s ease;
+  }
+
+  /* Page-shell-sized surfaces get a wider, fainter pool of light. */
+  .glass-thick {
+    --glare-r: 480px;
+    --glare-a: 0.05;
+  }
+
+  html:not(.dark) .glass-thin::after,
+  html:not(.dark) .glass-regular::after,
+  html:not(.dark) .glass-semithick::after,
+  html:not(.dark) .glass-thick::after,
+  html:not(.dark) .glass-card::after {
+    background: radial-gradient(
+      var(--glare-r, 320px) circle at var(--gx, 50%) var(--gy, 50%),
+      rgba(255, 255, 255, calc(var(--glare-a, 0.09) * 3.2)),
+      rgba(255, 255, 255, calc(var(--glare-a, 0.09) * 1.2)) 42%,
+      transparent 68%
+    );
   }
 
   /* ============================================================
@@ -490,10 +663,10 @@ html:not(.dark) .text-white\/10 {
       .glass-thick,
       .glass-card
     ) {
-    background-color: rgba(15, 23, 42, 0.05);
-    border-color: rgba(15, 23, 42, 0.09);
+    background-color: rgba(28, 28, 30, 0.05);
+    border-color: rgba(28, 28, 30, 0.09);
     box-shadow:
-      inset 0 1px 2px rgba(15, 23, 42, 0.1),
+      inset 0 1px 2px rgba(28, 28, 30, 0.1),
       inset 0 -1px 0 rgba(255, 255, 255, 0.6);
   }
 
@@ -545,6 +718,44 @@ html:not(.dark) .text-white\/10 {
     animation-delay: 0.38s;
   }
 
+  /* ============================================================
+     SCROLL REVEAL — driven by the global v-reveal directive
+     (src/directives/reveal.ts). Elements start hidden and settle in
+     with a rise + optional blur as they cross into the viewport.
+     NOTE: only apply blur (--reveal-blur) to elements that do NOT
+     contain backdrop-filter glass — an animating ancestor filter
+     breaks descendant backdrop blur in Chromium.
+  ============================================================ */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(var(--reveal-y, 22px)) scale(var(--reveal-scale, 1));
+    filter: blur(var(--reveal-blur, 0px));
+    transition:
+      opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0s);
+  }
+  [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+
+  /* Gentle idle float for hero ornaments (profile portrait). */
+  @keyframes float-soft {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
+  .float-soft {
+    animation: float-soft 6.5s ease-in-out infinite;
+  }
+
   @keyframes orb-drift {
     0%,
     100% {
@@ -563,10 +774,17 @@ html:not(.dark) .text-white\/10 {
       transform: none;
     }
     .rise-in,
-    .orb-drift {
+    .orb-drift,
+    .float-soft {
       animation: none;
       opacity: 1;
       transform: none;
+    }
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      filter: none;
+      transition: none;
     }
   }
 
@@ -618,6 +836,12 @@ html:not(.dark) .text-white\/10 {
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.8'/></svg>");
     background-size: 180px 180px;
+  }
+
+  /* Light mode is already bright — heavy grain reads as glare/noise. */
+  html:not(.dark) .grain-overlay::after {
+    opacity: 0.035;
+    mix-blend-mode: multiply;
   }
 
   @media (prefers-reduced-motion: reduce) {

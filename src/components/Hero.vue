@@ -1,8 +1,19 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, nextTick } from "vue";
+import { computed, useTemplateRef, watch, onMounted, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Sidebar from "./sidebar/Sidebar.vue";
 import { useSidebar } from "@/composables/useSidebar";
+import { useScrollProgress } from "@/composables/useScrollProgress";
+
+interface VanillaTiltElement extends HTMLElement {
+	vanillaTilt?: { destroy(): void };
+}
+
+declare global {
+	interface Window {
+		VanillaTilt?: { init(els: HTMLElement[], opts: object): void };
+	}
+}
 
 const { isCollapsed, toggle } = useSidebar();
 const route = useRoute();
@@ -10,27 +21,33 @@ const router = useRouter();
 
 const isFullBleed = computed(() => Boolean(route.meta?.fullBleed));
 
-const mainContent = ref<HTMLElement | null>(null);
+// Hairline read-progress indicator across the top of the glass shell.
+const { progress, recompute } = useScrollProgress();
+watch(() => route.fullPath, async () => {
+	await nextTick();
+	recompute();
+});
+
+const mainContent = useTemplateRef<VanillaTiltElement>('mainContent');
 
 // Disable the VanillaTilt card-mouse effect on full-bleed pages — those pages
 // paint their own worlds and the perspective distortion fights their layout.
 watch(isFullBleed, async (bleed) => {
 	await nextTick();
-	const el = mainContent.value as any;
+	const el = mainContent.value;
 	if (!el) return;
 	if (bleed) {
 		el.vanillaTilt?.destroy();
 		el.style.transform = "";
 	} else {
-		(window as any).VanillaTilt?.init([el], { max: 0.5 });
+		window.VanillaTilt?.init([el], { max: 0.5 });
 	}
-}, { immediate: false });
+});
 
 onMounted(() => {
 	if (isFullBleed.value) {
-		const el = mainContent.value as any;
-		el?.vanillaTilt?.destroy();
-		if (el) el.style.transform = "";
+		mainContent.value?.vanillaTilt?.destroy();
+		if (mainContent.value) mainContent.value.style.transform = "";
 	}
 });
 
@@ -66,6 +83,13 @@ const exitFullBleed = () => {
 			class="page-shell w-full h-full relative overflow-y-scroll no-scrollbar transform-gpu"
 			:class="isFullBleed ? 'page-shell--bleed' : ''"
 			data-tilt data-tilt-max="0.5" style="transform-style: preserve-3d; transform: perspective(1000px)">
+
+			<!-- Read-progress hairline — sticks to the top edge of the scroll
+			     container and fills left-to-right as the page is read. -->
+			<div v-if="!isFullBleed" class="sticky top-0 z-40 h-0 pointer-events-none" aria-hidden="true">
+				<div class="scroll-progress h-[2px] origin-left rounded-r-full transition-opacity duration-300"
+					:style="{ transform: `scaleX(${progress})`, opacity: progress > 0.02 ? 1 : 0 }" />
+			</div>
 
 			<!-- Sidebar collapse toggle — pinned top-right so it never collides
 			     with page-level headers that start at top-left. -->
@@ -111,6 +135,21 @@ const exitFullBleed = () => {
 </template>
 
 <style scoped>
+/* Read-progress hairline — soft white light in dark mode, slate in light. */
+.scroll-progress {
+	background: linear-gradient(to right,
+			rgba(255, 255, 255, 0.55),
+			rgba(255, 255, 255, 0.28) 70%,
+			rgba(255, 255, 255, 0.12));
+}
+
+html:not(.dark) .scroll-progress {
+	background: linear-gradient(to right,
+			rgba(15, 23, 42, 0.5),
+			rgba(15, 23, 42, 0.25) 70%,
+			rgba(15, 23, 42, 0.1));
+}
+
 /* Default card chrome — rounded corners + subtle outline.  Transitions so the
    shell dissolves cleanly when switching to full-bleed routes. */
 .page-shell {

@@ -1,7 +1,7 @@
-import { ref, watch } from 'vue';
+import { shallowRef, readonly, watch } from 'vue';
 
 const STORAGE_KEY = 'sidebar-collapsed';
-const isCollapsed = ref(localStorage.getItem(STORAGE_KEY) === 'true');
+const isCollapsed = shallowRef(localStorage.getItem(STORAGE_KEY) === 'true');
 
 watch(isCollapsed, (val) => {
     localStorage.setItem(STORAGE_KEY, String(val));
@@ -20,5 +20,5 @@ export function useSidebar() {
         isCollapsed.value = false;
     }
 
-    return { isCollapsed, toggle, collapse, expand };
+    return { isCollapsed: readonly(isCollapsed), toggle, collapse, expand };
 }

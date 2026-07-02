@@ -1,21 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { shallowRef, useTemplateRef } from 'vue';
 import EditorChrome from './EditorChrome.vue';
 import SourcePane from './SourcePane.vue';
 import PreviewPane from './PreviewPane.vue';
 import { initialMarkdown } from './docuflow-data';
 
-const markdownSource = ref(initialMarkdown);
-const cursorLine = ref(1);
-const cursorCol = ref(1);
+const markdownSource = shallowRef(initialMarkdown);
+const cursorLine = shallowRef(1);
+const cursorCol = shallowRef(1);
 
 function onCursorChange(position: { line: number; col: number }) {
     cursorLine.value = position.line;
     cursorCol.value = position.col;
 }
 
-const splitPct = ref(44.4);
-const splitRef = ref<HTMLElement | null>(null);
+const splitPct = shallowRef(44.4);
+const splitRef = useTemplateRef<HTMLElement>('splitRef');
 let isDragging = false;
 
 function startResize(e: MouseEvent) {

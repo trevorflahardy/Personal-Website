@@ -1,12 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { shallowRef } from "vue";
 import Content from "./Content.vue";
 
-// Holds if the hamburger is open or not on mobile
-const isHamburgerOpen = ref(false);
-const hamburgerRotation = computed(() => {
-  return isHamburgerOpen.value ? "rotate-90" : "rotate-0";
-});
+const isHamburgerOpen = shallowRef(false);
 
 function toggleHamburger() {
   isHamburgerOpen.value = !isHamburgerOpen.value;
@@ -27,7 +23,7 @@ function toggleHamburger() {
     <div class="flex xl:hidden h-full">
       <!-- Shows the hamburger. When disabled it's rotated 0 but when enabled it's rotated 90 -->
       <Transition name="spin">
-        <button type="button" class="absolute z-20 top-0 left-0 p-5" :key="hamburgerRotation" :class="hamburgerRotation"
+        <button type="button" class="absolute z-20 top-0 left-0 p-5" :key="String(isHamburgerOpen)" :class="isHamburgerOpen ? 'rotate-90' : 'rotate-0'"
           @click="toggleHamburger()">
           <i class="pi pi-bars text-white" />
         </button>
