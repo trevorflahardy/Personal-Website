@@ -2,15 +2,27 @@
 // Load prime icons for the use around the application
 import 'primeicons/primeicons.css';
 
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Hero from './components/Hero.vue';
 import Footer from './components/Footer.vue';
 import Background from './components/Background.vue';
+import BootIntro from './components/BootIntro.vue';
 import { useGlassGlow } from './composables/useGlassGlow';
 
 // Pointer-tracking specular light across every glass surface (site-wide).
 useGlassGlow();
+
+// visionOS power-on sequence — once per browser session. The app mounts only
+// after the boot veil dissolves so all entrance animations play post-reveal.
+const booted = ref(
+	window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+	sessionStorage.getItem('site-booted') === '1',
+);
+const onBooted = () => {
+	booted.value = true;
+	sessionStorage.setItem('site-booted', '1');
+};
 
 const route = useRoute();
 // Full-bleed routes take over the entire viewport — the page's own world
@@ -20,7 +32,9 @@ const isFullBleed = computed(() => Boolean(route.meta?.fullBleed));
 </script>
 
 <template>
-	<main class="h-screen w-screen" :class="isFullBleed ? '' : 'grain-overlay theme-scope'">
+	<BootIntro v-if="!booted" @done="onBooted" />
+
+	<main v-else class="h-screen w-screen" :class="isFullBleed ? '' : 'grain-overlay theme-scope'">
 		<!-- The default ambient background is hidden when a page takes over. -->
 		<Background v-if="!isFullBleed" class="z-10 absolute" />
 

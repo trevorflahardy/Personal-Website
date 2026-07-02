@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
-import { useScrollScene } from '@/composables/useScrollScene';
+import { nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
+import gsap from 'gsap';
+import ScrollTrigger from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 // The site's one-off: a single serpentine thread that draws itself down the
 // entire page as you scroll, shifting through the section accent colors,
@@ -37,47 +40,105 @@ function buildPath() {
     d.value = path;
 }
 
-onMounted(() => {
+let st: ScrollTrigger | null = null;
+let introTween: gsap.core.Tween | null = null;
+let contentRo: ResizeObserver | null = null;
+
+onMounted(async () => {
     buildPath();
     const parent = host.value?.parentElement;
     if (parent && 'ResizeObserver' in window) {
         ro = new ResizeObserver(() => buildPath());
         ro.observe(parent);
     }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    // The SVG is gated behind v-if="size.h" — it does not exist in the DOM
+    // until the patch after buildPath(). Querying it in the same tick was a
+    // silent no-op that left the thread permanently fully-drawn.
+    await nextTick();
+    setupScene();
 });
 
-onBeforeUnmount(() => ro?.disconnect());
+onBeforeUnmount(() => {
+    ro?.disconnect();
+    contentRo?.disconnect();
+    introTween?.kill();
+    st?.kill();
+});
 
-useScrollScene(({ gsap, ScrollTrigger }) => {
+function setupScene() {
     const pathEl = host.value?.querySelector<SVGPathElement>('.thread-path');
     const comet = host.value?.querySelector<SVGCircleElement>('.thread-comet');
     const parent = host.value?.parentElement;
-    if (!pathEl || !comet || !parent) return;
+    const scroller = document.querySelector('#main-content');
+    if (!pathEl || !comet || !parent || !scroller) return;
 
     let length = pathEl.getTotalLength();
+
+    // A short "peek" of thread is always drawn, even before any scroll — the
+    // line introduces itself instead of looking like a stray artifact, and
+    // the comet rests at its head like a firefly waiting to lead the way.
+    const peek = () => Math.min(240, length * 0.05);
+    const drawnFor = (p: number) => peek() + (length - peek()) * p;
+    const offsetFor = (p: number) => Math.max(0, length - drawnFor(p));
+
+    const placeComet = (drawn: number) => {
+        const pt = pathEl.getPointAtLength(Math.min(length, Math.max(0, drawn)));
+        comet.setAttribute('cx', pt.x.toFixed(1));
+        comet.setAttribute('cy', pt.y.toFixed(1));
+    };
+
     gsap.set(pathEl, { strokeDasharray: length, strokeDashoffset: length });
 
-    const st = ScrollTrigger.create({
-        trigger: parent,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: 0.4,
-        onRefresh: () => {
-            length = pathEl.getTotalLength();
-            gsap.set(pathEl, { strokeDasharray: length });
-        },
-        onUpdate(self) {
-            const p = self.progress;
-            pathEl.style.strokeDashoffset = String(length * (1 - p));
-            const pt = pathEl.getPointAtLength(length * p);
-            comet.setAttribute('cx', pt.x.toFixed(1));
-            comet.setAttribute('cy', pt.y.toFixed(1));
-            comet.style.opacity = p > 0.004 && p < 0.996 ? '1' : '0';
+    // Playful boot draw: the peek sketches itself in and the comet fades on.
+    const intro = { t: 0 };
+    introTween = gsap.to(intro, {
+        t: 1,
+        duration: 1.4,
+        delay: 0.5,
+        ease: 'power3.out',
+        onUpdate() {
+            pathEl.style.strokeDashoffset = String(length - peek() * intro.t);
+            placeComet(peek() * intro.t);
+            comet.style.opacity = String(Math.min(1, intro.t * 2));
         },
     });
 
-    return () => st.kill();
-});
+    st = ScrollTrigger.create({
+        trigger: parent,
+        scroller,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.4,
+        // Content grows after mount (async chapters) — the path is rebuilt
+        // longer, so dash metrics MUST resync to the current progress or a
+        // stale offset exposes a random segment of line.
+        onRefresh(self) {
+            length = pathEl.getTotalLength();
+            gsap.set(pathEl, { strokeDasharray: length });
+            if (!introTween?.isActive()) {
+                pathEl.style.strokeDashoffset = String(offsetFor(self.progress));
+                placeComet(drawnFor(self.progress));
+            }
+        },
+        onUpdate(self) {
+            if (introTween?.isActive()) {
+                if (self.progress <= 0.005) return; // let the intro finish at rest
+                introTween.kill();
+                comet.style.opacity = '1';
+            }
+            pathEl.style.strokeDashoffset = String(offsetFor(self.progress));
+            placeComet(drawnFor(self.progress));
+        },
+    });
+
+    // ScrollTrigger only auto-refreshes on window resize — watch the content
+    // itself so async growth (chapter stage, live stats) resyncs everything.
+    contentRo = new ResizeObserver(() => ScrollTrigger.refresh());
+    contentRo.observe(parent);
+}
 </script>
 
 <template>
@@ -119,6 +180,21 @@ html:not(.dark) .thread-path {
     fill: #fff;
     filter: drop-shadow(0 0 8px rgba(10, 132, 255, 0.9)) drop-shadow(0 0 18px rgba(10, 132, 255, 0.55));
     transition: opacity 0.3s ease;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: comet-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes comet-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.4);
+    }
 }
 
 html:not(.dark) .thread-comet {
