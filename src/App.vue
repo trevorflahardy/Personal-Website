@@ -20,7 +20,7 @@ const isFullBleed = computed(() => Boolean(route.meta?.fullBleed));
 </script>
 
 <template>
-	<main class="h-screen w-screen" :class="isFullBleed ? '' : 'grain-overlay'">
+	<main class="h-screen w-screen" :class="isFullBleed ? '' : 'grain-overlay theme-scope'">
 		<!-- The default ambient background is hidden when a page takes over. -->
 		<Background v-if="!isFullBleed" class="z-10 absolute" />
 

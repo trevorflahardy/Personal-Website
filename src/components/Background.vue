@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { useLocalStorage } from "@vueuse/core";
-import { computed, onBeforeUnmount, onMounted, useTemplateRef } from "vue";
+import { onBeforeUnmount, onMounted, useTemplateRef } from "vue";
+import { useTheme } from "@/composables/useTheme";
 
-const theme = useLocalStorage("theme", "dark");
-
-const isDark = computed(() => theme.value === "dark");
+const { isDark } = useTheme();
 
 // Pointer parallax — the room drifts gently against the cursor so the glass
 // panels have a physical world to refract. Slightly overscaled so the edges

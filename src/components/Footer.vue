@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { useLocalStorage } from '@vueuse/core';
 import { computed } from 'vue';
+import { useTheme } from '@/composables/useTheme';
 
-const theme = useLocalStorage('theme', 'dark');
-
-function toggleTheme() {
-	theme.value = theme.value === 'dark' ? 'light' : 'dark';
-	document.documentElement.classList.toggle('dark');
-}
+const { theme, toggle: toggleTheme } = useTheme();
 
 const toggleThemeIcon = computed(() => {
 	return theme.value === 'dark' ? 'pi-moon' : 'pi-sun';

@@ -51,7 +51,8 @@ import { jobs } from './work-data';
                             :style="ri > 0 ? { borderTop: `1px solid ${job.color}12` } : {}">
                             <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5 mb-2">
                                 <p class="text-sm font-medium text-white/85">{{ role.title }}</p>
-                                <span class="text-xs font-mono flex-none" :style="{ color: job.color + 'aa' }">{{ role.period }}</span>
+                                <span class="job-period text-xs font-mono flex-none"
+                                    :style="{ color: job.color + 'aa', '--job-color': job.color }">{{ role.period }}</span>
                             </div>
                             <ul class="flex flex-col gap-1.5">
                                 <li v-for="b in role.bullets" :key="b"
@@ -80,6 +81,12 @@ import { jobs } from './work-data';
 [data-reveal].spine-draw.is-revealed {
     transform: scaleY(1);
     transition-duration: 1.6s;
+}
+
+/* Project accent colors are tuned for dark glass — darken them with ink for
+   readable period stamps on light glass. */
+html:not(.dark) .job-period {
+    color: color-mix(in srgb, var(--job-color) 55%, rgb(28, 28, 30)) !important;
 }
 
 /* Pointer-following accent tint — visible only while the cursor is on the
