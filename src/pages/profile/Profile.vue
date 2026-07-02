@@ -3,9 +3,11 @@ import { defineAsyncComponent, Suspense } from "vue";
 
 import Intro from "./Intro.vue";
 import StoryReveal from "./StoryReveal.vue";
+import ProjectsIndex from "./ProjectsIndex.vue";
 import WorkExperience from "./WorkExperience.vue";
 import Outro from "./Outro.vue";
 import PageLayoutSpacer from "@/components/PageLayoutSpacer.vue";
+import JourneyThread from "@/components/JourneyThread.vue";
 import { useLenis } from "@/composables/useLenis";
 
 // Inertial smooth-scroll — same treatment the Baro-RS pages get.
@@ -24,16 +26,23 @@ const Extras = defineAsyncComponent(() => {
     <div class="page-orb page-orb--amber orb-drift" style="animation-delay: -9s" aria-hidden="true" />
     <div class="page-orb page-orb--green orb-drift" style="animation-delay: -5s" aria-hidden="true" />
 
+    <!-- The journey thread — one continuous line drawn down the whole page
+         as you scroll, story order: who I am → what I build → who I am when
+         the laptop closes → where I've worked → say hello. -->
+    <JourneyThread />
+
     <PageLayoutSpacer class="relative z-10">
       <Intro />
 
       <StoryReveal />
 
-      <WorkExperience />
+      <ProjectsIndex />
 
       <Suspense>
         <Extras />
       </Suspense>
+
+      <WorkExperience />
 
       <Outro />
     </PageLayoutSpacer>

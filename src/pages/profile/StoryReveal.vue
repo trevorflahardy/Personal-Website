@@ -36,16 +36,17 @@ useScrollScene(({ gsap }) => {
 
 <template>
     <div ref="root" class="w-full py-6 md:py-10">
-        <p class="text-xs uppercase tracking-[0.22em] text-white/45 font-medium mb-5">
+        <p class="font-mono text-xs uppercase tracking-[0.28em] text-white/40 mb-5">
             About
         </p>
         <p
-            class="story-text max-w-5xl text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] leading-snug lg:leading-[1.25] font-medium tracking-tight text-white text-pretty">
+            class="story-text max-w-5xl text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] leading-snug lg:leading-tight font-semibold tracking-tight text-white text-pretty">
             I'm a Computer Science student at the
             <span class="text-emerald-400">University of South Florida</span>,
             and tech has been part of my life for as long as I can remember.
-            It's not just about users — it's about real people with real
-            stories. I build with that in mind: technology should serve,
+            It's not just about users — it's about
+            <span class="serif-accent">real people with real stories.</span>
+            I build with that in mind: technology should serve,
             not just function. Technology without people is meaningless.
         </p>
     </div>

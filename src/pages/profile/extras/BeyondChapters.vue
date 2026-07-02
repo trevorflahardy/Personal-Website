@@ -13,6 +13,7 @@ interface Chapter {
     title: string;
     body: string;
     accent: string;
+    caption: string;
 }
 
 const chapters: Chapter[] = [
@@ -23,6 +24,7 @@ const chapters: Chapter[] = [
         title: 'I think with my hands.',
         body: 'Time under the hood is how I decompress. There\'s something grounding about working with your hands on mechanical problems — it sharpens the same problem-solving instincts I bring to code.',
         accent: '#f59e0b',
+        caption: 'redline therapy',
     },
     {
         id: 'gym',
@@ -31,6 +33,7 @@ const chapters: Chapter[] = [
         title: 'Discipline compounds.',
         body: 'Discipline in the gym translates directly to discipline in engineering. Consistency, progressive overload, and showing up even when you don\'t feel like it — sounds a lot like shipping software.',
         accent: '#fb7185',
+        caption: 'progressive overload',
     },
     {
         id: 'pickle',
@@ -39,6 +42,7 @@ const chapters: Chapter[] = [
         title: 'I play to win.',
         body: 'I\'m competitive by nature, and pickleball is where that comes out. The fast-paced strategy and reading opponents keeps my mind sharp in a completely different way than writing code.',
         accent: '#4ade80',
+        caption: 'kitchen-line strategy',
     },
 ];
 
@@ -116,11 +120,13 @@ useScrollScene(({ gsap: g }) => {
         // Signature motion per chapter.
         const id = chapters[i].id;
         if (id === 'car') {
+            // Needle sweeps from idle to redline. The needle is NOT part of
+            // the draw set — drawing and rotating the same line reads broken.
             tl.fromTo(
-                ch.querySelector('.gauge-needle'),
-                { rotate: -95, svgOrigin: '110 118' },
-                { rotate: 18, duration: 0.42, ease: 'power3.inOut' },
-                t0 + 0.32,
+                ch.querySelector('.tach-needle'),
+                { rotate: 0, svgOrigin: '110 116' },
+                { rotate: 145, duration: 0.45, ease: 'power3.inOut' },
+                t0 + 0.3,
             );
         } else if (id === 'gym') {
             tl.from(
@@ -164,7 +170,10 @@ useScrollScene(({ gsap: g }) => {
 <template>
     <div class="w-full">
         <div v-reveal class="mb-2">
-            <h2 class="title-2 mb-2">Beyond the Code</h2>
+            <p class="font-mono text-xs uppercase tracking-[0.28em] text-white/40 mb-3">Off hours</p>
+            <h2 class="text-4xl md:text-5xl font-black tracking-tight text-white text-pretty mb-2">
+                Beyond the Code
+            </h2>
             <p class="subtitle mb-0">
                 What occupies my time when the laptop closes — scroll through it.
             </p>
@@ -183,7 +192,7 @@ useScrollScene(({ gsap: g }) => {
 
         <!-- Scroll-driven stage: tall wrapper provides the scrub distance, the
              sticky stage inside holds one chapter at a time. -->
-        <div v-else ref="root" class="relative h-[300vh]">
+        <div v-else ref="root" class="relative h-[400vh]">
             <div class="sticky top-2 h-[calc(100dvh-9rem)] min-h-[430px] flex items-center overflow-hidden">
 
                 <!-- Chapter progress dots -->
@@ -208,11 +217,11 @@ useScrollScene(({ gsap: g }) => {
 
                     <div class="relative w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center px-8 md:px-14">
                         <div class="lg:col-span-6 max-w-xl">
-                            <p class="chapter-kicker text-xs uppercase tracking-[0.22em] font-medium mb-3">
+                            <p class="chapter-kicker font-mono text-xs uppercase tracking-[0.28em] mb-3">
                                 {{ ch.num }} — {{ ch.kicker }}
                             </p>
                             <h3
-                                class="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-white mb-4 text-pretty">
+                                class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.02] text-white mb-5 text-pretty">
                                 {{ ch.title }}
                             </h3>
                             <p class="text-base md:text-lg text-white/70 font-light leading-relaxed max-w-lg">
@@ -220,25 +229,29 @@ useScrollScene(({ gsap: g }) => {
                             </p>
                         </div>
 
-                        <div class="lg:col-span-6 relative hidden sm:flex items-center justify-center chapter-art">
+                        <div class="lg:col-span-6 relative hidden sm:flex flex-col items-center justify-center chapter-art">
                             <!-- Accent bloom — a pool of the chapter's color behind the art -->
                             <div class="chapter-bloom" aria-hidden="true" />
 
-                            <!-- Car — instrument gauge, needle sweeps on scroll -->
-                            <svg v-if="ch.id === 'car'" viewBox="0 0 220 150" class="relative w-full max-w-[420px]"
-                                fill="none" stroke-linecap="round">
-                                <path class="draw stroke-line" pathLength="1" stroke-width="1.8"
-                                    d="M 38 128 A 78 78 0 1 1 182 128" />
+                            <!-- Car — tachometer. The dial draws in, then the needle
+                                 sweeps from idle to the redline as you scroll. -->
+                            <svg v-if="ch.id === 'car'" viewBox="0 0 220 160" class="relative w-full max-w-[420px]"
+                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <!-- Dial arc (top semicircle) -->
+                                <path class="draw stroke-line" pathLength="1" stroke-width="2"
+                                    d="M 40 116 A 70 70 0 0 1 180 116" />
                                 <!-- Redline segment -->
-                                <path class="draw accent-pop" pathLength="1" stroke-width="4"
-                                    d="M 160 74 A 78 78 0 0 1 182 128" />
+                                <path class="draw accent-pop" pathLength="1" stroke-width="4.5"
+                                    d="M 167.3 75.9 A 70 70 0 0 1 180 116" />
+                                <!-- Ticks -->
                                 <path class="draw stroke-line" pathLength="1" stroke-width="1.8"
-                                    d="M110 36 v12 M52 60 l8 8 M168 60 l-8 -8 M34 104 h12 M186 104 h-12" />
-                                <line class="draw gauge-needle accent-pop" pathLength="1" stroke-width="3" x1="110"
-                                    y1="118" x2="154" y2="72" />
-                                <circle class="draw accent-pop" pathLength="1" stroke-width="3" cx="110" cy="118"
-                                    r="7" />
-                                <path class="draw stroke-line" pathLength="1" stroke-width="1.8" d="M 92 140 h 36"
+                                    d="M40 116 h8 M60.5 66.5 l5.7 5.7 M110 46 v8 M159.5 66.5 l-5.7 5.7 M180 116 h-8" />
+                                <!-- Needle: anchored at the hub, rotated by GSAP (never dash-drawn) -->
+                                <line class="tach-needle accent-pop" stroke-width="3.5" x1="110" y1="116" x2="56.8"
+                                    y2="106.6" />
+                                <circle class="draw accent-pop" pathLength="1" stroke-width="3" cx="110" cy="116"
+                                    r="6" />
+                                <path class="draw stroke-line" pathLength="1" stroke-width="1.8" d="M 92 138 h 36"
                                     opacity="0.5" />
                             </svg>
 
@@ -278,6 +291,10 @@ useScrollScene(({ gsap: g }) => {
                                     stroke-dasharray="3 5" opacity="0.5" />
                                 <circle class="pickle-ball" cx="34" cy="44" r="5.5" opacity="0" />
                             </svg>
+
+                            <p class="chapter-kicker font-mono text-[11px] uppercase tracking-[0.28em] mt-5 opacity-70">
+                                {{ ch.caption }}
+                            </p>
                         </div>
                     </div>
                 </div>

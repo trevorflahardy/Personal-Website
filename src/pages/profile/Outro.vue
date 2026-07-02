@@ -14,11 +14,11 @@ import Button from '@/components/Button.vue';
 
 <template>
     <div class="w-full py-10 md:py-16 flex flex-col items-center text-center">
-        <p v-reveal class="text-xs uppercase tracking-[0.22em] text-white/45 font-medium mb-4">
+        <p v-reveal class="font-mono text-xs uppercase tracking-[0.28em] text-white/40 mb-4">
             Say hello
         </p>
         <h2 v-reveal="{ delay: 80 }"
-            class="max-w-3xl text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-white text-pretty mb-8">
+            class="max-w-3xl text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white text-pretty mb-8">
             Let's build something that <span class="pop">matters.</span>
         </h2>
         <div v-reveal="{ delay: 180 }" class="flex flex-wrap items-center justify-center gap-3">

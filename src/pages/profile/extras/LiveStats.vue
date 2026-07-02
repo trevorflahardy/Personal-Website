@@ -13,7 +13,8 @@ const ProfileDiscord = defineAsyncComponent(
 <template>
     <div class="w-full">
         <div v-reveal>
-            <h3 class="title-3 mb-2">Live Stats</h3>
+            <p class="font-mono text-xs uppercase tracking-[0.28em] text-white/40 mb-3">Telemetry</p>
+            <h3 class="text-3xl md:text-4xl font-black tracking-tight text-white mb-2">Live Stats</h3>
             <p class="subtitle mb-5">
                 Real-time data from WakaTime and Discord — updated automatically.
             </p>

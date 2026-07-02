@@ -115,6 +115,14 @@
     outline-color: rgba(28, 28, 30, 0.45);
   }
 
+  /* Warm serif italic accent — the neo-minimalist "human touch" against the
+     SF sans system. Use sparingly: one phrase per section at most. */
+  .serif-accent {
+    font-family: "New York", "Iowan Old Style", "Palatino", Georgia, serif;
+    font-style: italic;
+    letter-spacing: -0.01em;
+  }
+
   .hero-title {
     @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl 2xl:text-8xl font-bold text-white text-pretty tracking-tight;
   }

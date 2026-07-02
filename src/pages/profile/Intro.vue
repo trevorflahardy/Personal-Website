@@ -18,7 +18,7 @@ onMounted(() => {
 
 	const name = root.querySelector<HTMLElement>('.hero-name');
 	const tagline = root.querySelector<HTMLElement>('.hero-tagline');
-	nameSplit = name ? new SplitType(name, { types: 'chars' }) : null;
+	nameSplit = name ? new SplitType(name, { types: 'words,chars' }) : null;
 	taglineSplit = tagline ? new SplitType(tagline, { types: 'words' }) : null;
 
 	// One orchestrated entrance: overline → name cascade → tagline → portrait →
@@ -68,9 +68,20 @@ useScrollScene(({ gsap: g }) => {
 		ease: 'none',
 		scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: true },
 	});
-	g.to(root.querySelector('.scroll-cue'), {
+	// Variable-weight exhale: the name thins as it leaves. SF Pro is variable
+	// on Apple platforms; other stacks step between weights, which still reads.
+	g.fromTo(root.querySelector('.hero-name'), { fontWeight: 700 }, {
+		fontWeight: 320,
+		ease: 'none',
+		immediateRender: false,
+		scrollTrigger: { trigger: root, start: 'top top', end: 'bottom top', scrub: true },
+	});
+	// fromTo with explicit start — a plain to() would capture the cue's
+	// opacity mid-entrance (still 0) and lock it invisible forever.
+	g.fromTo(root.querySelector('.scroll-cue'), { opacity: 1 }, {
 		opacity: 0,
 		ease: 'none',
+		immediateRender: false,
 		scrollTrigger: { trigger: root, start: 'top top', end: 'top+=140 top', scrub: true },
 	});
 });
@@ -96,7 +107,7 @@ onBeforeUnmount(() => {
 						Trevor Flahardy
 					</h1>
 					<p class="hero-tagline text-base md:text-lg lg:text-xl text-white/70 font-light">
-						A full stack developer working to change lives.
+						A full stack developer working to <span class="serif-accent">change lives.</span>
 					</p>
 				</div>
 
@@ -110,7 +121,7 @@ onBeforeUnmount(() => {
 			</div>
 
 			<!-- Scroll cue — fades away within the first flick of the wheel. -->
-			<div class="scroll-cue absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/40"
+			<div class="scroll-cue absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-white/40"
 				aria-hidden="true">
 				<span class="text-[10px] uppercase tracking-[0.3em] font-medium">scroll</span>
 				<i class="pi pi-chevron-down text-xs cue-bob" />
