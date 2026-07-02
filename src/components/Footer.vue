@@ -20,11 +20,11 @@ const toggleThemeIcon = computed(() => {
 		class="w-64 lg:w-96 h-12 backdrop-blur-2xl bg-white/8 dark:bg-white/5 border border-white/10 rounded-full relative -top-4 shadow-xl flex-row items-center justify-start p-3 flex mx-auto">
 		<!-- Lightswitch for light and dark mode -->
 
-		<button type="button"
-			class="backdrop-blur-xl bg-white/10 rounded-full h-8 w-8 flex flex-row items-center justify-center overflow-hidden relative border border-white/10 hover:bg-white/15 transition-colors"
+		<button type="button" v-magnetic
+			class="backdrop-blur-xl bg-white/10 rounded-full h-8 w-8 flex flex-row items-center justify-center overflow-hidden relative border border-white/10 hover:bg-white/15 hover:border-white/20 transition-colors"
 			@click="toggleTheme()">
 			<Transition name="slide-up">
-				<i class="pi text-black absolute" :class="toggleThemeIcon" :key="theme" />
+				<i class="pi absolute text-slate-800 dark:text-white/90" :class="toggleThemeIcon" :key="theme" />
 			</Transition>
 		</button>
 	</footer>

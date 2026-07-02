@@ -17,7 +17,7 @@ const buttonBackground = computed(() => {
 });
 
 const buttonClass = computed(() => {
-  return `text-white text-sm font-medium flex flex-row items-center justify-center gap-2 py-2.5 px-5 sm:py-3 sm:px-6 rounded-xl shadow transition-all duration-500 hover:scale-105 ease-in-out ${buttonBackground.value} ${props.textExtra ?? ''}`;
+  return `text-white text-sm font-medium flex flex-row items-center justify-center gap-2 py-2.5 px-5 sm:py-3 sm:px-6 rounded-xl shadow transition-all duration-300 hover:scale-105 active:scale-95 ease-out ${buttonBackground.value} ${props.textExtra ?? ''}`;
 });
 
 const shouldOpenInNewTab = computed(() => props.openInNewTab ?? true);

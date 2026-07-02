@@ -34,19 +34,37 @@ const accentColor = computed(() => props.accent ?? "rgba(255,255,255,0.35)");
       </span>
     </template>
 
-    <!-- Typographic variant — accent bar grows on hover/active, name takes focus. -->
+    <!-- Typographic variant — accent bar grows + glows on hover/active, name takes focus. -->
     <template v-else>
-      <span class="flex-none h-5 rounded-full transition-all duration-200"
-        :style="{
-          backgroundColor: accentColor,
-          width: isActive ? '3px' : '2px',
-          opacity: isActive ? '1' : '0.65',
-        }" />
+      <span class="accent-bar flex-none h-5 rounded-full"
+        :class="{ 'accent-bar--active': isActive }"
+        :style="{ '--accent': accentColor }" />
     </template>
 
-    <span class="text-sm font-normal text-left"
+    <span class="text-sm font-normal text-left transition-[color,transform] duration-200 group-hover:translate-x-0.5"
       :class="isActive ? 'text-white' : 'text-white/70 group-hover:text-white/90'">
       {{ displayName }}
     </span>
   </button>
 </template>
+
+<style scoped>
+.accent-bar {
+  width: 2px;
+  opacity: 0.65;
+  background-color: var(--accent);
+  transition: width 0.2s ease, opacity 0.2s ease, box-shadow 0.3s ease;
+}
+
+.group:hover .accent-bar {
+  width: 3px;
+  opacity: 0.9;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+.accent-bar--active {
+  width: 3px;
+  opacity: 1;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+</style>

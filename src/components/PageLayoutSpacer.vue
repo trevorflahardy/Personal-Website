@@ -21,27 +21,36 @@ const props = defineProps<PageLayoutSpacerProps>();
 </template>
 
 <style scoped>
+/* Transform-only entrance (rise + settle). Deliberately no opacity/filter —
+   animating either on an ancestor of backdrop-filter glass breaks the glass
+   blur in Chromium for the duration of the transition. */
 :deep(.slam-enter-active) {
-    transition: transform v-bind("props.transformDuration || '600ms'") ease-in-out;
+    transition: transform v-bind("props.transformDuration || '550ms'") cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :deep(.slam-enter-from) {
-    transform: scale(1.05);
+    transform: translateY(16px) scale(0.985);
 }
 
 :deep(.slam-enter-to) {
-    transform: scale(1);
+    transform: translateY(0) scale(1);
 }
 
 /* Apply different delays based on the order of the elements */
-:deep(.slam-enter-active:nth-child(1)) { transition-delay: 0.1s; }
-:deep(.slam-enter-active:nth-child(2)) { transition-delay: 0.2s; }
-:deep(.slam-enter-active:nth-child(3)) { transition-delay: 0.3s; }
-:deep(.slam-enter-active:nth-child(4)) { transition-delay: 0.4s; }
-:deep(.slam-enter-active:nth-child(5)) { transition-delay: 0.5s; }
-:deep(.slam-enter-active:nth-child(6)) { transition-delay: 0.6s; }
-:deep(.slam-enter-active:nth-child(7)) { transition-delay: 0.7s; }
-:deep(.slam-enter-active:nth-child(8)) { transition-delay: 0.8s; }
-:deep(.slam-enter-active:nth-child(9)) { transition-delay: 0.9s; }
-:deep(.slam-enter-active:nth-child(10)) { transition-delay: 1s; }
+:deep(.slam-enter-active:nth-child(1)) { transition-delay: 0.05s; }
+:deep(.slam-enter-active:nth-child(2)) { transition-delay: 0.13s; }
+:deep(.slam-enter-active:nth-child(3)) { transition-delay: 0.21s; }
+:deep(.slam-enter-active:nth-child(4)) { transition-delay: 0.29s; }
+:deep(.slam-enter-active:nth-child(5)) { transition-delay: 0.37s; }
+:deep(.slam-enter-active:nth-child(6)) { transition-delay: 0.45s; }
+:deep(.slam-enter-active:nth-child(7)) { transition-delay: 0.53s; }
+:deep(.slam-enter-active:nth-child(8)) { transition-delay: 0.61s; }
+:deep(.slam-enter-active:nth-child(9)) { transition-delay: 0.69s; }
+:deep(.slam-enter-active:nth-child(10)) { transition-delay: 0.77s; }
+
+@media (prefers-reduced-motion: reduce) {
+    :deep(.slam-enter-active) {
+        transition: none;
+    }
+}
 </style>

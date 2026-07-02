@@ -7,6 +7,10 @@ import { useRoute } from 'vue-router';
 import Hero from './components/Hero.vue';
 import Footer from './components/Footer.vue';
 import Background from './components/Background.vue';
+import { useGlassGlow } from './composables/useGlassGlow';
+
+// Pointer-tracking specular light across every glass surface (site-wide).
+useGlassGlow();
 
 const route = useRoute();
 // Full-bleed routes take over the entire viewport — the page's own world

@@ -3,6 +3,7 @@ import { computed, useTemplateRef, watch, onMounted, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Sidebar from "./sidebar/Sidebar.vue";
 import { useSidebar } from "@/composables/useSidebar";
+import { useScrollProgress } from "@/composables/useScrollProgress";
 
 interface VanillaTiltElement extends HTMLElement {
 	vanillaTilt?: { destroy(): void };
@@ -19,6 +20,13 @@ const route = useRoute();
 const router = useRouter();
 
 const isFullBleed = computed(() => Boolean(route.meta?.fullBleed));
+
+// Hairline read-progress indicator across the top of the glass shell.
+const { progress, recompute } = useScrollProgress();
+watch(() => route.fullPath, async () => {
+	await nextTick();
+	recompute();
+});
 
 const mainContent = useTemplateRef<VanillaTiltElement>('mainContent');
 
@@ -76,6 +84,13 @@ const exitFullBleed = () => {
 			:class="isFullBleed ? 'page-shell--bleed' : ''"
 			data-tilt data-tilt-max="0.5" style="transform-style: preserve-3d; transform: perspective(1000px)">
 
+			<!-- Read-progress hairline — sticks to the top edge of the scroll
+			     container and fills left-to-right as the page is read. -->
+			<div v-if="!isFullBleed" class="sticky top-0 z-40 h-0 pointer-events-none" aria-hidden="true">
+				<div class="scroll-progress h-[2px] origin-left rounded-r-full transition-opacity duration-300"
+					:style="{ transform: `scaleX(${progress})`, opacity: progress > 0.02 ? 1 : 0 }" />
+			</div>
+
 			<!-- Sidebar collapse toggle — pinned top-right so it never collides
 			     with page-level headers that start at top-left. -->
 			<button type="button" @click="toggle()"
@@ -120,6 +135,21 @@ const exitFullBleed = () => {
 </template>
 
 <style scoped>
+/* Read-progress hairline — soft white light in dark mode, slate in light. */
+.scroll-progress {
+	background: linear-gradient(to right,
+			rgba(255, 255, 255, 0.55),
+			rgba(255, 255, 255, 0.28) 70%,
+			rgba(255, 255, 255, 0.12));
+}
+
+html:not(.dark) .scroll-progress {
+	background: linear-gradient(to right,
+			rgba(15, 23, 42, 0.5),
+			rgba(15, 23, 42, 0.25) 70%,
+			rgba(15, 23, 42, 0.1));
+}
+
 /* Default card chrome — rounded corners + subtle outline.  Transitions so the
    shell dissolves cleanly when switching to full-bleed routes. */
 .page-shell {
